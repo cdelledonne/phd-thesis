@@ -1,8 +1,23 @@
+\PassOptionsToPackage{capitalise}{cleveref}
+
 \documentclass[
     % print,
     % draft,
     % nativefonts,
 ]{dissertation}
+
+\usepackage{lettrine}
+\renewcommand{\LettrineTextFont}{\scshape}
+
+% Bibliography managed using BibLaTeX
+\usepackage[
+    giveninits=true,  % only given name initials and not the full given name
+    maxnames=50,      % max authors in bibliography
+    maxcitenames=2,   % max authors when citing
+    backend=biber,    % biber backend
+]{biblatex}
+
+\addbibresource{ref.bib}
 
 \newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
 
@@ -13,31 +28,27 @@
 \renewcommand*{\textrightarrow}{\fontfamily{cmr}\selectfont\origrightarrow}
 \loadglsentries[main]{glossary}
 
-% \input{abbreviations}
-
 \begin{document}
 
 % Specify the title and author of the thesis. This information will be used on the title page (in
-% sections/title/index.tex) and in the metadata of the final PDF.
+% chapters/meta/title.tex) and in the metadata of the final PDF.
 \title{Software Abstractions for Quantum Network Nodes}
 \author{Carlo}{Delle Donne}
 
 % Use Roman numerals for the page numbers of the title pages and table of contents.
 \frontmatter
 
-\include{sections/meta/title}
+\include{chapters/meta/title}
 
 % The (optional) dedication can be used to thank someone or display a significant quotation.
 \dedication{\epigraph{
-    Some very smart quote, by some very smart person. \\
-    Or not.
+    Some quote. \\
 }{Firstname Lastname}}
 
 \tableofcontents
 
-\include{sections/meta/summary}
-\include{sections/meta/samenvatting}
-\include{sections/meta/acks}
+\include{chapters/meta/summary}
+\include{chapters/meta/samenvatting}
 
 % Use Arabic numerals for the page numbers of the chapters.
 \mainmatter
@@ -45,27 +56,22 @@
 % Turn on thumb indices.
 \thumbtrue
 
-\include{sections/intro/index}
-\include{sections/conclusion/index}
+\include{chapters/intro/index}
+\include{chapters/background/index}
+\include{chapters/netstack/index}
+\include{chapters/qnodeos/index}
+\include{chapters/doa/index}
+\include{chapters/conclusion/index}
 
 % Use letters for the chapter numbers of the appendices.
-%\appendix
+\appendix
 
-%\include{appendix-a/appendix-a}
+% \include{chapters/appendix/intro}
+\include{chapters/appendix/arch}
+\include{chapters/appendix/apps}
 
 % Turn off thumb indices for unnumbered chapters.
 \thumbfalse
-
-\chapter*{Bibliography}
-\addcontentsline{toc}{chapter}{Bibliography}
-\setheader{Bibliography}
-
-URLs in this thesis have been archived on Archive.org. Their link target in digital editions refers
-to this timestamped version.
-
-\bibliographystyle{unsrt}
-% argument is your BibTeX string definitions and bibliography database(s)
-\bibliography{dissertation}
 
 \chapter*{Glossary}
 
@@ -74,7 +80,8 @@ to this timestamped version.
 \addcontentsline{toc}{chapter}{Glossary}
 \setheader{Glossary}
 
-\include{sections/meta/cv}
-\include{sections/meta/publications}
+\include{chapters/meta/acks}
+\include{chapters/meta/cv}
+\include{chapters/meta/publications}
 
 \end{document}
