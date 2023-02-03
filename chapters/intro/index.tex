@@ -9,16 +9,70 @@ Chapter abstract.
 
 \newpage
 
-\noindent
-Short chapter with informal overview of challenges and goals. This should mostly answer the
-question: \emph{Why does this thesis exist?} I would defer a more technical explanation of
-background and challenges to \cref{chp:background}.
+\lettrine{Q}{uite} possibly, the word ``quantum'' is one of the most trending, and perhaps one of
+the most abused, of the last decade, at least in the context of science and technology. Attaching it
+to the name of tech products makes them sound more advanced. Even just a capital ``Q'' in a brand's
+name suggests superiority. When I embarked on my PhD at the end of 2018, I started to comprehend how
+challenging it is to develop actual quantum technology. Nevertheless, then next thing I learned is
+that Mozilla had already dropped a quantum (?) browser~\cite{firefox_quantum}.
+
+However, quantum physics is not just an otherworldly theory from science fiction books, nor just a
+catchy name for 21st-century consumer electronics. Since the formulation of the theory of quantum
+mechanics in (YEAR, and CITATION), researchers and enthusiasts have been looking for how to make use
+of these physical properties, particularly in the fields of electronics, information processing and
+telecommunications. Today, we know of a handful of applications that exploit the axioms of quantum
+information theory to achieve something that was though to be very hard, sometimes even impossible.
+The most well-known use cases include fast resolution of computational problems --- like integer
+factorization (CITE) and database searching (CITE) --- and efficient and secure communication
+schemes --- for instance quantum key distribution (CITE) and superdense coding (CITE).
+
+\emph{Quantum networking}, a new paradigm of telecommunications, would enhance --- not replace ---
+our current internet technology to provide new functionalities that are impossible to achieve
+exclusively with classical communications. Novel applications include security-enhancing
+communication schemes such as \acrfull{qkd} (CITE), advanced clock synchronization routines (CITE),
+distributed consensus protocols (CITE), distributed sensing (CITE), distributed quantum computation
+(CITE), and secure cloud quantum computing (CITE). Even though quantum communications are an
+established reality, and their potential applications have garnered attention from industry and
+research institutes, the general public is still rather puzzled, on average, when someone tries to
+pitch their research on quantum networking. The above list of applications does not necessarily
+appeal to the masses, which are still sometimes stuck with the hope that quantum teleportation will
+instantly get them to the Bahamas~\cite{xkcd_teleportation}. Nonetheless, the community of quantum
+networking researchers is not discouraged by this mismatch in expectations, as it hopes that more
+applications will be devised once the technology becomes more widespread and available to more
+``consumers''. After all, we were also not aware of all the possible uses of the classical internet
+when it was first developed. Yet, today the internet means instantaneous access to low-cost clothes,
+scenes of hilarious felines, and --- for some --- tapes of bare bodies engaging in intimate action
+on camera.
+
+One of the most frequently asked questions about quantum technology is: \emph{When can we use it?}
+If more people had access to quantum networks, they would perhaps come up with more ideas for
+quantum networking applications. Thus, what is missing before we can deploy quantum networks
+consisting of a useful number of nodes? What are the main limitations we are facing? How can we
+overcome them? Not surprisingly, the answers to these questions are complicated. There is a cauldron
+of fundamental and theoretical limitations, technological hardware obstacles, and computer science
+puzzles that hinder the success of quantum networking. In this thesis, we will focus on some of the
+challenges of managing the activity and the resource of a quantum network node, from an operating
+system's perspective. We thus aim to answer a tiny fraction of the research questions in the field
+of quantum networking, and to lay another brick in the construction of \emph{scalable},
+\emph{controllable}, and \emph{configurable} quantum networks.
+
+The remainder of this chapter introduces the reader to basic networking concepts and quantum
+networking challenges, lists the research questions we address, and provides an outline of the rest
+of the thesis.
 
 \section{Networking and Quantum Networking}
 
 Give a layperson's overview of networking-related computer science and quantum
 information/networking, and informally introduce the reader to the challenges of applying the former
 to the latter.
+
+Also, briefly list all main challenges that come with quantum information: decoherence, no-cloning.
+But also advantages of no-cloning/monogamy of entanglement.
+
+Initially, it was okay to have "slow" classical computers and classical networks. With "slow"
+quantum computers and control algorithms, info is lost.
+
+Drawing of the idea I have for the layperson talk.
 
 \section{Research Goals and Methodology}
 
