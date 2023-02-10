@@ -6,5 +6,6 @@ modifyLineBreaks:
   condenseMultipleBlankLinesInto: 1
   textWrapOptions:
     columns: 101
+    when: after
     blocksBeginWith:
       other: '\\emph|\\lettrine'
