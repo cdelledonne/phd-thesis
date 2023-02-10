@@ -3,11 +3,11 @@
 
 \begin{refsection}
 
-\begin{abstract}
-Chapter abstract.
-\end{abstract}
+% \begin{abstract}
+% Chapter abstract.
+% \end{abstract}
 
-\newpage
+% \newpage
 
 \lettrine{Q}{uite} possibly, the word ``quantum'' is one of the most trending, and perhaps one of
 the most abused, of the last decade, at least in the context of science and technology. Attaching it
@@ -22,62 +22,120 @@ mechanics in (YEAR, and CITATION), researchers and enthusiasts have been looking
 of these physical properties, particularly in the fields of electronics, information processing and
 telecommunications. Today, we know of a handful of applications that exploit the axioms of quantum
 information theory to achieve something that was though to be very hard, sometimes even impossible.
-The most well-known use cases include fast resolution of computational problems --- like integer
-factorization (CITE) and database searching (CITE) --- and efficient and secure communication
-schemes --- for instance quantum key distribution (CITE) and superdense coding (CITE).
+Some of the most well-known use cases include fast resolution of computational problems --- like
+integer factorization (CITE) and database searching (CITE) --- and efficient and secure
+communication schemes --- for instance quantum key distribution (CITE) and superdense coding (CITE).
 
-\emph{Quantum networking}, a new paradigm of telecommunications, would enhance --- not replace ---
-our current internet technology to provide new functionalities that are impossible to achieve
-exclusively with classical communications. Novel applications include security-enhancing
-communication schemes such as \acrfull{qkd} (CITE), advanced clock synchronization routines (CITE),
-distributed consensus protocols (CITE), distributed sensing (CITE), distributed quantum computation
-(CITE), and secure cloud quantum computing (CITE). Even though quantum communications are an
-established reality, and their potential applications have garnered attention from industry and
-research institutes, the general public is still rather puzzled, on average, when someone tries to
-pitch their research on quantum networking. The above list of applications does not necessarily
-appeal to the masses, which are still sometimes stuck with the hope that quantum teleportation will
-instantly get them to the Bahamas~\cite{xkcd_teleportation}. Nonetheless, the community of quantum
-networking researchers is not discouraged by this mismatch in expectations, as it hopes that more
-applications will be devised once the technology becomes more widespread and available to more
-``consumers''. After all, we were also not aware of all the possible uses of the classical internet
-when it was first developed. Yet, today the internet means instantaneous access to low-cost clothes,
-scenes of hilarious felines, and --- for some --- tapes of bare bodies engaging in intimate action
-on camera.
+\emph{Quantum networking}, a new paradigm of telecommunications, seeks to enhance --- not replace
+--- our current internet technology to provide new functionalities that are impossible to attain
+with purely classical communications. Novel applications include security-enhancing communication
+schemes such as \acrfull{qkd} (CITE), advanced clock synchronization routines (CITE), distributed
+consensus protocols (CITE), distributed sensing (CITE), distributed quantum computation (CITE), and
+secure cloud quantum computing (CITE). Even though quantum communications are an established
+reality, and their potential applications have garnered attention from industry and research
+institutes, the general public is still rather puzzled, on average, when someone tries to pitch
+their research on quantum networking. The above list of applications does not necessarily appeal to
+the masses, which are still sometimes stuck with the hope that quantum teleportation will instantly
+get them to the Bahamas~\cite{xkcd_teleportation}. Nonetheless, the community of quantum networking
+researchers is not discouraged by this mismatch in expectations, as it hopes that more applications
+will be devised once the technology becomes more widespread and available to more ``consumers''.
+After all, we were also not aware of all the possible uses of the classical internet when it was
+first developed. Yet, today the internet means instantaneous access to low-cost clothes, scenes of
+hilarious felines, and --- for some --- tapes of bare bodies engaging in intimate action on camera.
 
 One of the most frequently asked questions about quantum technology is: \emph{When can we use it?}
-If more people had access to quantum networks, they would perhaps come up with more ideas for
+If more people had access to quantum networks, they would perhaps come up with more ideas for useful
 quantum networking applications. Thus, what is missing before we can deploy quantum networks
 consisting of a useful number of nodes? What are the main limitations we are facing? How can we
 overcome them? Not surprisingly, the answers to these questions are complicated. There is a cauldron
 of fundamental and theoretical limitations, technological hardware obstacles, and computer science
-puzzles that hinder the success of quantum networking. In this thesis, we will focus on some of the
-challenges of managing the activity and the resource of a quantum network node, from an operating
-system's perspective. We thus aim to answer a tiny fraction of the research questions in the field
-of quantum networking, and to lay another brick in the construction of \emph{scalable},
-\emph{controllable}, and \emph{configurable} quantum networks.
+puzzles that hinder the success of quantum networking. Fortunately, though, there is an increasing
+community of passionate researchers trying to study these limitations, build better hardware, and
+solve these puzzles. In this thesis, we will address some of the challenges of managing the activity
+and the resources of a quantum network node, from an operating system's perspective. We thus aim to
+answer a tiny fraction of the research questions in the field of quantum networking, and to lay
+another brick in the construction of \emph{scalable}, \emph{controllable}, and \emph{configurable}
+quantum networks.
 
-The remainder of this chapter introduces the reader to basic networking concepts and quantum
-networking challenges, lists the research questions we address, and provides an outline of the rest
-of the thesis.
+The remainder of this chapter walks the reader through basic networking concepts and quantum
+networking challenges, lists the research questions we aim to address, and provides an outline of
+the rest of the thesis.
 
 \section{Networking and Quantum Networking}
 
-Give a layperson's overview of networking-related computer science and quantum
-information/networking, and informally introduce the reader to the challenges of applying the former
-to the latter.
+% - Drawing of the idea I have for the layperson talk
+% - Or some other diagram 
 
-Also, briefly list all main challenges that come with quantum information: decoherence, no-cloning.
-But also advantages of no-cloning/monogamy of entanglement.
+Digital communication networks have come a long way from the early days of the \textsc{arpanet} ---
+one of the most important precursors of today's internet. Back in 1969, one of the most advanced
+networks of computers consisted of just \emph{four} nodes. As the global network grew larger,
+networking researchers standardized, in 1981, the \acrfull{ipv4}, which allowed up to \num{4}
+billion devices to have their own address on the public internet (CITE RFC791). Soon after, it
+became clear that the pool of available \acrshort{ipv4} addresses was going to be depleted sooner
+than later --- which happened in 2011~\cite{icann_2011}. In 2023, there are \num{3.6} devices
+connected to the internet per capita, as estimated by \textcite{cisco_2020} in 2020.
 
-Initially, it was okay to have "slow" classical computers and classical networks. With "slow"
-quantum computers and control algorithms, info is lost.
+Scaling up from a four-node experiment to the massive networks of the 21st century was made possible
+by advancements in various fields, including networking hardware, traffic engineering, and network
+programmability. You would most likely not be able to download a digital copy of this thesis in a
+fraction of a second if it were not for \unit{\tera\bit\per\second} network
+switches~\cite{broadcom_tomahawk, juniper_qfx5220}, a diverse spectrum of routing protocols (CITE),
+and \acrlong{sdn} (CITE). Nevertheless, classical networking was already appealing in its infant
+stages, for the simple reason that even a small network of nodes can accomplish tasks that would not
+be attainable without it --- in the case of the \textsc{arpanet}, sending simple pieces of text over
+large distances almost instantaneously. The applications of quantum networking are not dissimilar to
+their classical networking counterpart, in that some of them can be useful and effective on small
+quantum networks already, whilst other use cases require more powerful nodes and more complex
+networks~\cite{wehner_stages_2018}.
 
-Drawing of the idea I have for the layperson talk.
+Even though hardware and software advancements were essential to the betterment of the internet,
+there are a few ingredients that have been there since the dawn of classical networking and that
+have made these technological leaps even possible. Nailing down some basic design aspects right from
+the start is often the key for a truly scalable system. For instance, it was immediately clear that
+data was to be grouped and transmitted according to the \emph{packet switching} model, to maximize
+network utilization and to allow for dynamic routing decisions. As another example, networking
+protocols have been organized in \emph{abstraction layers} since the very beginning of computer
+networks, so as to encapsulate network functionalities in services of increasing user-friendliness.
+When designing quantum networks and networking services, one should draw inspiration from classical
+networking principles and avoid monolithic designs and software architectures that would render the
+system hard to scale.
+
+Then, how similar are quantum networks and classical networks? Which are the challenges that they
+have in common, and which ones are exclusive to quantum networking? How much can we capitalize on
+the vast body of classical networking literature? In principle, quantum networks are just networks
+with a special physical layer, which, albeit more technologically complex, could be abstracted away
+and encapsulated into an ad-hoc networking protocol. This simplification would, however, disregard
+some fundamental limitations that are inherent to quantum information, as well as the imperfect
+nature of near-term quantum hardware. Standard networking routines like signal amplification,
+classical error correction, and data retransmission would not work in quantum networks --- one
+fundamental theorem of quantum mechanics states that \emph{an arbitrary quantum state cannot be
+cloned}~\cite{wootters_nocloning_1982, dieks_communication_1982}. Moreover, quantum states are
+subject to \emph{decoherence}, a physical process whereby the quality of the stored information
+degrades due to time and external interferences, Thus, not only do computation and networking delays
+affect throughput and latency, but they also exact a toll on the quality of the service, effectively
+determining whether a certain application produced meaningful results or not. Whilst decoherence can
+be worked around with more sophisticated quantum hardware and control algorithms, the no-cloning
+theorem is a hard limit on what one can do with quantum information --- which, incidentally, has
+also positive implications and is the foundation of many quantum networking applications.
+
+Without being too speculative, we can argue that we cannot just encapsulate the requirements of
+quantum networking into a specialized physical layer. Reusing classical networking techniques and
+protocols as they are would fall short of the aforementioned challenges posed by quantum mechanics.
+Nonetheless, many of the questions that drove the classical networking research community can be of
+inspiration for analyzing requirements and limitations of quantum networks. Examples of such
+questions are: \emph{Can we organize quantum information into packets?} \emph{Do we need to resort
+to path reservation for quantum communication?} \emph{In which situations can we tolerate local and
+network latency?} \emph{How do we organize and layer quantum networking protocols and services?}
+\emph{What metrics do we look at when designing routing protocols?} \emph{Can we improve performance
+and quality of service with the employment of a software-defined control plane?}
 
 \section{Research Goals and Methodology}
 
-Succinctly list main research questions and goals. Also, clarify scope of thesis, stating that we
-took an implementation- and experiment-driven approach, rather than a more fundamental one.
+% Succinctly list main research questions and goals. Also, clarify scope of thesis, stating that we
+% took an implementation- and experiment-driven approach, rather than a more fundamental one.
+
+Perhaps disappointingly, but unsurprisingly too, this thesis will not try to answer all the research
+questions from the previous section.
 
 \section{Thesis Outline}
 
