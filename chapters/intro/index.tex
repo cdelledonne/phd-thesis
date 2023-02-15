@@ -1,14 +1,6 @@
 \chapter{Introduction}
 \label{chp:intro}
 
-\begin{refsection}
-
-% \begin{abstract}
-% Chapter abstract.
-% \end{abstract}
-
-% \newpage
-
 \lettrine{Q}{uite} possibly, the word ``quantum'' is one of the most trending, and perhaps one of
 the most abused, of the last decade, at least in the context of science and technology. Attaching it
 to the name of tech products makes them sound more advanced. Even just a capital ``Q'' in a brand's
@@ -63,9 +55,6 @@ the rest of the thesis.
 
 \section{Networking and Quantum Networking}
 
-% - Drawing of the idea I have for the layperson talk
-% - Or some other diagram 
-
 Digital communication networks have come a long way from the early days of the \textsc{arpanet} ---
 one of the most important precursors of today's internet. Back in 1969, one of the most advanced
 networks of computers consisted of just \emph{four} nodes. As the global network grew larger,
@@ -73,32 +62,32 @@ networking researchers standardized, in 1981, the \acrfull{ipv4}, which allowed 
 billion devices to have their own address on the public internet (CITE RFC791). Soon after, it
 became clear that the pool of available \acrshort{ipv4} addresses was going to be depleted sooner
 than later --- which happened in 2011~\cite{icann_2011}. In 2023, there are \num{3.6} devices
-connected to the internet per capita, as estimated by \textcite{cisco_2020} in 2020.
+connected to the internet per capita, as estimated by \citeauthor{cisco_2020} in
+2020~\cite{cisco_2020}.
 
-Scaling up from a four-node experiment to the massive networks of the 21st century was made possible
-by advancements in various fields, including networking hardware, traffic engineering, and network
-programmability. You would most likely not be able to download a digital copy of this thesis in a
-fraction of a second if it were not for \unit{\tera\bit\per\second} network
-switches~\cite{broadcom_tomahawk, juniper_qfx5220}, a diverse spectrum of routing protocols (CITE),
-and \acrlong{sdn} (CITE). Nevertheless, classical networking was already appealing in its infant
-stages, for the simple reason that even a small network of nodes can accomplish tasks that would not
-be attainable without it --- in the case of the \textsc{arpanet}, sending simple pieces of text over
-large distances almost instantaneously. The applications of quantum networking are not dissimilar to
-their classical networking counterpart, in that some of them can be useful and effective on small
-quantum networks already, whilst other use cases require more powerful nodes and more complex
-networks~\cite{wehner_stages_2018}.
+Scaling up from a four-node experiment to the massive networks of the 21st century was no easy feat
+of course. This was made possible by advancements in various fields, including networking hardware,
+traffic engineering, and network programmability. You would most likely not be able to download a
+digital copy of this thesis in a fraction of a second if it were not for \unit{\tera\bit\per\second}
+network switches~\cite{broadcom_tomahawk, juniper_qfx5220}, a diverse spectrum of routing protocols
+(CITE), and \acrlong{sdn} (CITE). Nevertheless, classical networking was already appealing in its
+infant stages, for the simple reason that even a small network of nodes can accomplish tasks that
+would not be attainable without it --- in the case of the \textsc{arpanet}, sending simple pieces of
+text over large distances almost instantaneously. The applications of quantum networking are not
+dissimilar to their classical networking counterpart, in that some of them can be useful and
+effective on small quantum networks already, whilst other use cases require more powerful nodes and
+more complex networks~\cite{wehner_2018_stages}.
 
 Even though hardware and software advancements were essential to the betterment of the internet,
-there are a few ingredients that have been there since the dawn of classical networking and that
-have made these technological leaps even possible. Nailing down some basic design aspects right from
-the start is often the key for a truly scalable system. For instance, it was immediately clear that
-data was to be grouped and transmitted according to the \emph{packet switching} model, to maximize
-network utilization and to allow for dynamic routing decisions. As another example, networking
-protocols have been organized in \emph{abstraction layers} since the very beginning of computer
-networks, so as to encapsulate network functionalities in services of increasing user-friendliness.
-When designing quantum networks and networking services, one should draw inspiration from classical
-networking principles and avoid monolithic designs and software architectures that would render the
-system hard to scale.
+there are a few basic design ingredients that have been there since the dawn of classical networking
+and that have made these technological leaps even possible. For instance, it was immediately clear
+that data was to be grouped and transmitted according to the \emph{packet switching} model, to
+maximize network utilization and to allow for dynamic routing decisions. As another example,
+networking protocols have been organized in \emph{abstraction layers} since the very beginning of
+computer networks, so as to encapsulate network functionalities in services of increasing
+user-friendliness. When designing quantum networks and networking services, one should draw
+inspiration from classical networking principles and avoid monolithic designs and software
+architectures that would render the system hard to scale.
 
 Then, how similar are quantum networks and classical networks? Which are the challenges that they
 have in common, and which ones are exclusive to quantum networking? How much can we capitalize on
@@ -109,38 +98,96 @@ some fundamental limitations that are inherent to quantum information, as well a
 nature of near-term quantum hardware. Standard networking routines like signal amplification,
 classical error correction, and data retransmission would not work in quantum networks --- one
 fundamental theorem of quantum mechanics states that \emph{an arbitrary quantum state cannot be
-cloned}~\cite{wootters_nocloning_1982, dieks_communication_1982}. Moreover, quantum states are
+cloned}~\cite{wootters_1982_nocloning, dieks_1982_communication}. Moreover, quantum states are
 subject to \emph{decoherence}, a physical process whereby the quality of the stored information
-degrades due to time and external interferences, Thus, not only do computation and networking delays
-affect throughput and latency, but they also exact a toll on the quality of the service, effectively
-determining whether a certain application produced meaningful results or not. Whilst decoherence can
-be worked around with more sophisticated quantum hardware and control algorithms, the no-cloning
-theorem is a hard limit on what one can do with quantum information --- which, incidentally, has
-also positive implications and is the foundation of many quantum networking applications.
+degrades over time and due to external interferences. Thus, not only do computation and networking
+delays affect throughput and latency, but they also exact a toll on the quality of the service,
+effectively determining whether a certain application produced meaningful results or not. Whilst
+decoherence can be worked around with more sophisticated quantum hardware and control algorithms,
+the no-cloning theorem is a hard limit on what one can do with quantum information, and thus we
+cannot design quantum networking protocols assuming quantum information can be freely copied and
+stored indefinitely.
 
 Without being too speculative, we can argue that we cannot just encapsulate the requirements of
 quantum networking into a specialized physical layer. Reusing classical networking techniques and
 protocols as they are would fall short of the aforementioned challenges posed by quantum mechanics.
 Nonetheless, many of the questions that drove the classical networking research community can be of
 inspiration for analyzing requirements and limitations of quantum networks. Examples of such
-questions are: \emph{Can we organize quantum information into packets?} \emph{Do we need to resort
-to path reservation for quantum communication?} \emph{In which situations can we tolerate local and
-network latency?} \emph{How do we organize and layer quantum networking protocols and services?}
-\emph{What metrics do we look at when designing routing protocols?} \emph{Can we improve performance
-and quality of service with the employment of a software-defined control plane?}
+questions are: \emph{Can we organize quantum information into packets? Do we need to resort to path
+reservation for quantum communications? In which situations can we tolerate local and network
+latency? How do we organize and layer quantum networking protocols and services? What metrics do we
+look at when designing routing protocols? Can we improve performance and quality of service with the
+employment of a software-defined control plane?}
 
-\section{Research Goals and Methodology}
-
-% Succinctly list main research questions and goals. Also, clarify scope of thesis, stating that we
-% took an implementation- and experiment-driven approach, rather than a more fundamental one.
+\section{Research Goals}
 
 Perhaps disappointingly, but unsurprisingly too, this thesis will not try to answer all the research
-questions from the previous section.
+questions from the previous section. The good news is that there are many ongoing efforts from
+various scientists that are looking into these questions. Most of the times, however, researchers
+have to validate their designs on a simulated quantum network, given that we do not yet have access
+to mid-scale testbeds consisting of more than a handful of nodes --- the most advanced of which
+features three interconnected devices~\cite{pompili_2021_multinode}. On the other hand, we need a
+framework to evaluate quantum networking protocols and applications on real quantum networks, to
+help us verify our assumptions and simulation results even in the early stages of this research
+field. In this thesis, we will discuss design considerations for such a framework, design and
+implement a rudimentary instance of it, and evaluate our design and implementation on a quantum
+network.
+
+This thesis's one-sentence goal is to provide a framework that facilitates the experimental
+investigation of quantum networking-related research questions, and that can help researchers learn
+about the behavior of quantum communication applications without having to delve into the complexity
+of running and managing the underlying network and the interaction of the nodes with it. We refer to
+this framework as an \emph{\acrlong{os}} (\acrshort{os}), as its goal is to abstract and manage
+quantum physical processes and resources to provide a user-friendly interface to the application.
+More specifically, we will address the following questions:
+
+\begin{enumerate}[label={Q\arabic*.}]
+    \item \emph{What goals should an \acrshort{os} for quantum network nodes achieve?} We explore
+          challenges, requirements and goals that one should consider when designing such an
+          \acrshort{os}, whose overarching objective is to bridge the gap between high-level user
+          applications and low-level quantum networking hardware.
+    \item \emph{What does an architecture for such an \acrshort{os} look like?} We propose the first
+          proof-of-principle architecture for an \acrshort{os} for quantum network nodes. The
+          architecture ensures the \acrshort{os} can be deployed on various quantum platforms,
+          provides means to manage resources and schedule operations, and allows running multiple
+          quantum networking applications concurrently.
+    \item \emph{What is the performance of the \acrshort{os}'s quantum network stack?} We revise and
+          implement state-of-the-art quantum network protocols to be integrated in the proposed
+          \acrshort{os}, and evaluate their performance for a basic networking feature: entanglement
+          delivery.
+    \item \emph{What is the performance of the whole \acrshort{os}?} We implement the proposed
+          architecture, and evaluate its functioning and performance for some basic quantum
+          networking applications, including scenarios of concurrent execution of multiple
+          applications.
+    \item \emph{How would \acrlong{doa} affect the performance of a quantum link?} We evaluate, this
+          time in simulation, what penalty would be incurred in the performance of entanglement
+          generation if the quantum network stack would communicate over an authenticated classical
+          channels, as opposed to exchanging non-authenticated classical messages.
+\end{enumerate}
+
+This work is aimed at designing, implementing and evaluating a ``product'' that, although
+experimental and not production-ready, is a fully-functional research tool, and as such is ready to
+be reused and adapted with little effort by anyone who is interested in experimenting with quantum
+networking protocols and applications on real networks. Our implementation-driven research does not
+intend to produce the best protocols and algorithms for the control of quantum network nodes ---
+rather, it wishes to establish a baseline for such a system, and a framework to study and test more
+advanced versions of its components. To demonstrate the applicability of our tool, we evaluate the
+\acrshort{os} on a small state-of-the-art quantum network based on nitrogen-vacancy centers in
+diamond, deployed in a laboratory environment.
 
 \section{Thesis Outline}
 
-List and brief overview of chapters that follow.
+The rest of this thesis provides some useful preliminary knowledge and then tackles the research
+questions listed above. \Cref{chp:background} offers some background on quantum information, quantum
+networking and classical networking, and recaps the main challenges involved. \Cref{chp:arch}
+outlines the most important design considerations that serve as the basis for the design of our
+\acrshort{os} (question Q1), and describes our proposal for the architecture of a quantum network
+node's \acrshort{os} (question Q2). \Cref{chp:netstack} evaluates the performance of the quantum
+network stack integrated in the \acrshort{os} for entanglement generation (question Q3).
+\Cref{chp:qnodeos} validates and benchmarks the full \acrshort{os} against a set of simple quantum
+networking applications, also when running multiple of these concurrently (question Q4).
+\Cref{chp:doa} quantifies, this time in simulation, the effect of authenticating classical messages
+in the quantum network stack on the performance of a quantum link (question Q5). Finally,
+\cref{chp:conclusion} concludes this thesis and reflects upon future steps.
 
 \printbibliography[heading=subbibintoc,title={References}]
-
-\end{refsection}
