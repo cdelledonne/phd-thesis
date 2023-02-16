@@ -26,6 +26,9 @@
     per-mode=symbol,
 }
 
+% Math packages. 
+\usepackage{braket}
+
 % Bibliography managed using BibLaTeX.
 \usepackage[
     giveninits=true,     % only given name initials and not the full given name
@@ -78,6 +81,21 @@
     partopsep=0ex,
     leftmargin=*
 }
+
+% Redefine \paragraph command to reduce vertical and horizontal spacing and to add a period after
+% the heading. References:
+% - https://tex.stackexchange.com/questions/40943/new-line-and-no-indent-after-paragraph
+% - https://tex.stackexchange.com/questions/328355/add-a-period-after-each-paragraph-title
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+    {1ex \@plus 1ex \@minus 0.2ex}%
+    {-0.5em}%
+    {\normalfont\normalsize\bfseries\maybe@addperiod}%
+}
+\newcommand{\maybe@addperiod}[1]{%
+    #1\@addpunct{.}%
+}
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
