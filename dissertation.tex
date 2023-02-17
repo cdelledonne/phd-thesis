@@ -8,7 +8,10 @@
 \PassOptionsToPackage{inline}{enumitem}
 
 % Suppress vertical gap between glossary groups (entries are grouped by their first letter).
-\PassOptionsToPackage{nogroupskip}{glossaries}
+% \PassOptionsToPackage{nogroupskip}{glossaries}
+
+% Remove dot after entry description in glossary. 
+\PassOptionsToPackage{nopostdot}{glossaries}
 
 \documentclass[
     % print,
@@ -69,6 +72,11 @@
 % (https://github.com/tectonic-typesetting/tectonic/issues/704).
 \makenoidxglossaries
 \loadglsentries[main]{glossary}
+
+% Customize style of glossary. 
+\setglossarystyle{super}
+\renewcommand*{\glsgroupskip}{\medskip}
+\renewcommand*{\glsnamefont}[1]{\textbf{#1}}
 
 % Disable hyperlinks from acronyms to glossary entries.
 \glsdisablehyper
