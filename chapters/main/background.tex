@@ -12,7 +12,8 @@ background knowledge on quantum networking and recaps the primary challenges the
 \end{abstract}
 
 \note{To be precise, this chapter is extracted from sections 1 (Introduction), 2 (Background on
-Quantum Networking) and 3.1 (Challenges) from the QNodeOS paper. There aren't any major additions.}
+Quantum Networking) and 3.1 (Challenges) from the \acrshort{qnodeos} paper. There aren't any major
+additions.}
 
 \blfootnote{
     This chapter is based on the preprint \citetitle{delledonne_2023_qnodeos} by
@@ -34,7 +35,7 @@ internet~\cite{kimble_2008_quantum, wehner_2018_stages} aims to connect quantum 
 \emph{end nodes}~\cite{wehner_2018_stages} --- over large distances, in order provide new internet
 functionality that is impossible to achieve using solely classical communication. Examples of
 applications~\cite{wehner_2018_stages} running on end nodes include security-enhancing protocols
-such as quantum key distribution (QKD)~\cite{ekert_1991_e91, bennett_2014_bb84}, improved clock
+such as \acrfull{qkd}~\cite{ekert_1991_e91, bennett_2014_bb84}, improved clock
 synchronization~\cite{komar_2014_clocks}, support for distributed
 sensing~\cite{gottesman_2012_telescope} and distributed systems~\cite{benor_2005_byzantine}, as well
 as secure quantum computing in the cloud~\cite{broadbent_2009_ubqc, childs_2005_secure_qc}.
@@ -61,8 +62,9 @@ require local classical processing, as well as classical communication between t
     \end{center}
     \caption{
         A quantum networking application consists of separate programs running at two or more end
-        nodes that communicate via classical message passing and quantum entanglement. Local operations
-        include quantum operations (gates and measurements) as well as classical processing.
+        nodes that communicate via classical message passing and quantum entanglement. Local
+        operations include quantum operations (gates and measurements) as well as classical
+        processing.
     }
     \label{fig:quantum-internet}
 \end{figure}
@@ -88,26 +90,27 @@ the entire quantum execution in a single batch.
     \includegraphics[width=\linewidth]{figures/app-struct.pdf}
     \caption{
         Structure of a typical quantum network application (blind quantum
-        computation~\cite{broadbent_2009_ubqc, childs_2005_secure_qc}), which consists of interleaved
-        quantum processing blocks and classical processing blocks. Quantum processing blocks include
-        local quantum operations (gates and measurements, yellow boxes) and network operations
-        (entanglement generation, blue boxes). The execution of some classical and quantum blocks might
-        be conditional on classical and quantum data coming from previous blocks. Qubit states in
-        quantum blocks may have to persist (``Persist qubits'') to be used in later quantum blocks
-        (``Use qubits''), e.g. following the reception of classical messages from the remote node.
+        computation~\cite{broadbent_2009_ubqc, childs_2005_secure_qc}), which consists of
+        interleaved quantum processing blocks and classical processing blocks. Quantum processing
+        blocks include local quantum operations (gates and measurements, yellow boxes) and network
+        operations (entanglement generation, blue boxes). The execution of some classical and
+        quantum blocks might be conditional on classical and quantum data coming from previous
+        blocks. Qubit states in quantum blocks may have to persist (``Persist qubits'') to be used
+        in later quantum blocks (``Use qubits''), e.g. following the reception of classical messages
+        from the remote node.
     }
     \label{fig:app-struct}
 \end{figure}
 
-Up to now, demonstrations of quantum networking beyond QKD focused on hardware realizations.
-Different types of end node quantum hardware have been realized, ranging from simple photonic
-devices on which the only operation is a measurement~\cite{vallone_2015_satellite,
+Up to now, demonstrations of quantum networking beyond \acrshort{qkd} focused on hardware
+realizations. Different types of end node quantum hardware have been realized, ranging from simple
+photonic devices on which the only operation is a measurement~\cite{vallone_2015_satellite,
 yin_2017_satellite}, to fully-fledged quantum processors with a network
 interface~\cite{bernien_2013_heralded, humphreys_2018_delivery, pompili_2021_multinode,
 moehring_2007_ion_traps, reiserer_2015_neutral_atoms}. The largest quantum network linking quantum
 processors to date connects three nodes~\cite{pompili_2021_multinode} based on nitrogen-vacancy
-centers in diamond (NV centers) at the physical layer. Demonstrations of quantum networking
-applications beyond QKD have been performed using several photonic
+centers in diamond (\acrshort{nv} centers) at the physical layer. Demonstrations of quantum
+networking applications beyond \acrshort{qkd} have been performed using several photonic
 devices~\cite{barz_2012_demonstration, thalacker_2019_anonymous, bozzio_2020_coin,
 ng_2012_noisystorage}. Central to all these demonstrations is that the software to control the
 hardware was specific to the experiment setup, written to perform one single task (the experiment
@@ -159,23 +162,23 @@ these qubits have an optical interface to the outside world. Other types of qubi
 as \emph{storage qubits} --- are instead more suited for storing quantum states for longer times (up
 to seconds in some cases~\cite{abobeih_2018_one_sec, bradley_2019_one_min}). Often, storage qubits
 can also be used to process quantum information directly. On some quantum devices instead, for
-instance nitrogen-vacancy centers in diamond (NV centers), communication qubits are also the main
-gateway for local quantum gates, meaning that most processing operations need to step though these
-qubits, and thus their usage needs to be shared between local quantum computation and entanglement
-generation. What operations can be performed on what types of qubits depends on the specific quantum
-device. We remark that, at this stage of technological development, qubits, as well as any quantum
-operations applied on them, are not perfect. In fact, their quality even depends on the specific
-device sample being used.
+instance \acrlong{nv} centers in diamond (\acrshort{nv} centers), communication qubits are also the
+main gateway for local quantum gates, meaning that most processing operations need to step though
+these qubits, and thus their usage needs to be shared between local quantum computation and
+entanglement generation. What operations can be performed on what types of qubits depends on the
+specific quantum device. We remark that, at this stage of technological development, qubits, as well
+as any quantum operations applied on them, are not perfect. In fact, their quality even depends on
+the specific device sample being used.
 
 \subsection{Timing constraints}
 
 Quantum devices are generally controlled using a variety of classical signal generators, depending
-on the quantum device itself. For instance, in NV centers, the quantum device is controlled using
-microwave as well as laser pulses. The device-level control must satisfy hard real-time constraints
-and timing precision --- nanosecond precision with sub-nanosecond jitter --- and is realized using
-waveform generators, lasers, and custom electronics assisted by a dedicated microcontroller.
-Entanglement generation between two nodes connected by an optical fiber also requires the same scale
-of timing synchronization between the two devices~\cite{dahlberg_2019_egp,
+on the quantum device itself. For instance, in \acrshort{nv} centers, the quantum device is
+controlled using microwave as well as laser pulses. The device-level control must satisfy hard
+real-time constraints and timing precision --- nanosecond precision with sub-nanosecond jitter ---
+and is realized using waveform generators, lasers, and custom electronics assisted by a dedicated
+microcontroller. Entanglement generation between two nodes connected by an optical fiber also
+requires the same scale of timing synchronization between the two devices~\cite{dahlberg_2019_egp,
 pompili_2022_experimental}. The low-level control of other quantum platforms is realized
 similarly~\cite{moehring_2007_ion_traps, reiserer_2015_neutral_atoms}. On top of those constraints,
 qubits have a limited lifetime --- the states they hold must be processed before they become
