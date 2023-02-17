@@ -44,7 +44,7 @@ into a stack of layers. Each layer in such a stack is characterized by a specifi
 provides to the high layers, reducing complexity for the higher layers, which can subsequently rely
 on this service. Moreover, the higher layers need no knowledge of the specific protocol and physical
 realization that a lower layer uses to realize the specified service. An example from classical
-networking is the \acrshort{tcpip} stack used on the present day Internet. In this stack, the link
+networking is the \acrshort{tcpip} stack used on the present day internet. In this stack, the link
 layer enables reliable transmission of data between two network nodes that are directly connected by
 an unreliable physical medium such as fiber or radio. Higher layers can rely on errors being
 detected by the link layer, and are agnostic about whether the underlying link layer protocol is
@@ -62,12 +62,12 @@ intuitively, such metadata is similar to passing only references to an address i
 up and down the stack (similar to what happens in many implementations of the \acrshort{tcpip} stack
 in practice), while in the classical case data may of course also be copied up and down layers.
 
-We also note that the Quantum Internet, and the associated quantum network stack, do not aim to
-replace the classical Internet --- they will likely coexist, as the Quantum Internet cannot operate
+We also note that the quantum internet, and the associated quantum network stack, do not aim to
+replace the classical internet --- they will likely coexist, as the quantum internet cannot operate
 without classical communication in practice. In addition to classical information used to facilitate
 entanglement generation, we also expect classical communication at the level of the quantum
 application itself (e.g.~quantum key distribution), which would for practical reasons be performed
-using the classical Internet. Finally, in a quantum network, classical communication could also be
+using the classical internet. Finally, in a quantum network, classical communication could also be
 used to realize controllers like those at the core of \acrfull{sdn}~\cite{ferguson_2021_orion} to
 distribute information for resource scheduling and quality of service~\cite{skrzypczyk_2021_arch}.
 The proposed quantum network stack architecture, along with proposals for resource scheduling and
@@ -85,10 +85,10 @@ generated states and achieve remote state preparation --- a building block for b
 computation --- as well as measuring the latency of the entanglement generation service.
 
 To evaluate correct operation and performance of our system, we measure
-\begin{enumerate*}[label=(\alph*)]
+\begin{inlinelist}
     \item the fidelity of the generated states and
     \item the latency incurred by link layer and physical layer when generating entangled pairs.
-\end{enumerate*}
+\end{inlinelist}
 For both fidelity and latency, we find that our system performs with marginal overhead with respect
 to previous non-platform-independent experiments. We also identify the sources of the additional
 overhead incurred, and propose improvements for future realizations.
@@ -116,7 +116,7 @@ Remote entanglement generation constitutes a fundamental building block of quant
 However, for a user to be able to integrate it into more complex quantum networking applications and
 protocols, the entanglement generation service must also be:
 %
-\begin{enumerate*}[label=(\alph*)]
+\begin{inlinelist}
     \item robust, meaning that the user should not have to deal with entanglement failures and
           retries, and that an entanglement request should result in the delivery of an entangled
           pair;
@@ -124,7 +124,7 @@ protocols, the entanglement generation service must also be:
           without having to understand the inner workings of the underlying physical implementation;
     \item on-demand, such that the user can request and consume entanglement as part of a larger
           quantum communication application.
-\end{enumerate*}
+\end{inlinelist}
 Robust, platform-independent, on-demand entanglement generation must figure as one of the basic
 services offered by a system running on a quantum network node. In other words, establishing a
 reliable quantum link between two directly connected nodes is the task of the first layer above the
@@ -145,7 +145,7 @@ work, we implement a revised version of the link layer protocol proposed --- but
 in Ref.~\cite{dahlberg_2019_egp}, with the following service description. The interface exposed by
 the link layer should allow the higher layer to specify:
 %
-\begin{enumerate*}[label=(\alph*)]
+\begin{inlinelist}
     \item \emph{Remote node ID}, an identifier of the remote node to produce entanglement with (in
           case the requesting node has multiple neighbors);
     \item \emph{Number of entangled pairs}, to allow for the creation of several pairs with one
@@ -159,18 +159,18 @@ the link layer should allow the higher layer to specify:
     \item \emph{Measurement basis}, the basis to use when measuring \emph{M}- or \emph{R}-type
           entangled pairs;
     \item \emph{Request timeout}, to indicate a time limit for the processing of the request.
-\end{enumerate*}
+\end{inlinelist}
 After submitting an entanglement generation request, the user should expect the link layer to
 coordinate with the remote node and to handle entanglement generation attempts and retries until all
 the desired pairs are produced (or until the timeout has expired). When completing an entanglement
 generation request, the link layer should then report to the above layer the following:
 %
-\begin{enumerate*}[label=(\alph*)]
+\begin{inlinelist}
     \item \emph{Produced Bell state}, the result of entanglement generation;
     \item \emph{Measurement outcome}, in case of \emph{M}- or \emph{R}-type entanglement requests;
     \item \emph{Entanglement ID}, to uniquely identify an entangled pair consistently across source
           and destination of the request.
-\end{enumerate*}
+\end{inlinelist}
 
 \paragraph{Quantum link layer protocol}
 
@@ -344,7 +344,7 @@ Ref.~\cite{dahlberg_2019_egp} did not provide a specification of the interface t
 physical layer. We designed this interface such that the physical layer can accept \emph{commands}
 from the higher layer, specifically:
 %
-\begin{enumerate*}[label=(\alph*)]
+\begin{inlinelist}
     \item qubit initialization (\texttt{INI}),
     \item qubit measurement (\texttt{MSR}),
     \item single-qubit gate (\texttt{SQG}),
@@ -352,7 +352,7 @@ from the higher layer, specifically:
           requests),
     \item pre-measurement gates selection (\texttt{PMG}, to specify in which basis to measure the
           qubit for \emph{M}- or \emph{R}-type requests).
-\end{enumerate*}
+\end{inlinelist}
 For each command, the physical layer reports back an \emph{outcome}, which indicates whether the
 command was executed correctly, and can bear the result of a qubit measurement and the Bell state
 produced after a successful entanglement attempt. Our software stack also comprises a

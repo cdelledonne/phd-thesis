@@ -26,11 +26,16 @@
 % Units formatted using siunitx.
 \usepackage{siunitx}
 \sisetup{
+    group-separator={\ },
     per-mode=symbol,
 }
 
-% Math packages. 
+% Braket notation.
 \usepackage{braket}
+
+% Theorems with amsthm (need to undefine \openbox to avoid re-definition error).
+\let\openbox\relax
+\usepackage{amsthm}
 
 % Bibliography managed using BibLaTeX.
 \usepackage[
@@ -89,6 +94,17 @@
     partopsep=0ex,
     leftmargin=*
 }
+
+% Define style of inline lists.
+\newlist{inlinelist}{enumerate*}{1}
+\setlist[inlinelist]{label=(\arabic*)}
+
+% Define new type of table column.
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+
+% Define custom theorem environment for examples.
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
 
 % Redefine \paragraph command to reduce vertical and horizontal spacing and to add a period after
 % the heading. References:

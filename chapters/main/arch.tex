@@ -124,7 +124,7 @@ proposed in Ref.~\cite{kozlowski_2020_qnp}).
 To successfully produce entanglement, the network stack needs access to a communication qubit,
 resulting in two requirements for the rest of the system:
 %
-\begin{enumerate*}[label=(\arabic*)]
+\begin{inlinelist}
     \item A scheduler (see below) should take into account that generating entanglement at the
           physical layer between two nodes directly connected by a physical communication medium
           requires that the two nodes apply a series of physical operations with very precise timing
@@ -141,7 +141,7 @@ resulting in two requirements for the rest of the system:
           to allow qubit ownership transfer between applications and the network stack. A typical
           use case of such ownership transfer would occur when the network stack claims the
           communication qubit for entanglement generation, and then yields it to an application.
-\end{enumerate*}
+\end{inlinelist}
 
 \subsection{Scheduler}
 
@@ -167,7 +167,7 @@ Practically, the scheduler in question should allocate the underlying physical r
 importantly, the available qubits --- based on a set of well-defined constraints, the fundamental
 ones being:
 %
-\begin{enumerate*}[label=(\arabic*)]
+\begin{inlinelist}
     \item \emph{Synchronized network schedule}: due to the bilateral nature of entanglement, each
           node will have its quantum networking activity synchronized with its neighbors, thus
           missing a synchronization window on one node results in a waste of resources on remote
@@ -181,13 +181,13 @@ ones being:
     \item \emph{Multitasking}: for a node to be shared by multiple users, the scheduler should not
           allocate all the available resources to a single application indefinitely, and instead it
           should be aware of the presence of multiple applications.
-\end{enumerate*}
+\end{inlinelist}
 
 Additionally, scheduling at any level could optionally process another set of input variables, where
 we generally assume that the programmer or compiler provide aggregate advice based on these input
 variables to the \acrshort{os}:
 %
-\begin{enumerate*}[label=(\arabic*)]
+\begin{inlinelist}
     \item \emph{Duration of operations}: local quantum operations typically take a fixed amount of
           time and always succeed. Entanglement, on the other hand, is a probabilistic process, and
           generating an entangled pair can take an indefinite (and large) number of attempts.
@@ -197,7 +197,7 @@ variables to the \acrshort{os}:
           operations applied on such qubits. An advanced scheduler could use knowledge of qubit
           lifetimes and elapsed time to dynamically re-prioritize application demands based on the
           advice of the compiler.
-\end{enumerate*}
+\end{inlinelist}
 
 \paragraph{Scheduling of applications}
 
@@ -357,12 +357,12 @@ installed on each \acrshort{qnodeos} node.
 
 A \acrshort{qnodeos} process can be in any of the following states:
 %
-\begin{enumerate*}[label=(\arabic*)]
+\begin{inlinelist}
     \item \emph{idle}: when it exists but it is not active;
     \item \emph{ready}: when it is active and ready to issue instructions;
     \item \emph{running}: when it is running on \acrshort{qnodeos};
     \item \emph{waiting}: when it is waiting for some event to occur.
-\end{enumerate*}
+\end{inlinelist}
 User processes enter the waiting state when they need one or more entangled pairs to proceed, and
 then become ready again once all the requested pairs are delivered by the network process.
 
@@ -469,11 +469,11 @@ The \acrshort{qnodeos} process manager keeps track of existing user and kernel p
 execution context. Upon activation, processes are added to a scheduling queue. When selected by the
 scheduler, a process is assigned to the \acrshort{qnodeos} processor, which
 %
-\begin{enumerate*}[label=(\arabic*)]
+\begin{inlinelist}
     \item executes classical control-flow instructions directly,
     \item offloads local quantum computation to the \acrshort{qdevice}, and
     \item registers entanglement requests with the quantum network stack.
-\end{enumerate*}
+\end{inlinelist}
 
 \paragraph{Quantum network stack}
 
