@@ -21,8 +21,7 @@ quantum networks.
 \note{This chapter is extracted from the npj paper. No major additions.}
 
 \blfootnote{
-    This chapter is based on the paper \citetitle{pompili_2022_experimental} by
-    \textcite{pompili_2022_experimental}.
+    This chapter is based on \fullcite{pompili_2022_experimental_noprint}.
 }
 
 \newpage
@@ -365,9 +364,19 @@ the device controller.
 Designing a full-blown centralized request scheduler is a challenge in and of its own, outside the
 scope of this work. Instead of implementing such a scheduler, we compute static \acrshort{tdma}
 network schedules~\cite{skrzypczyk_2021_arch} and install them manually on the two network nodes
-upon initialization. \acrshort{tdma} schedules for our simple single-link experiments are quite
-trivial (see Supplementary Material ??), as the network resources of a node are not contended by
-multiple links.
+upon initialization. \acrshort{tdma} network schedules are redundant in a one-link network.
+Time-binning network activity also forces nodes to only process entanglement requests at the
+beginning of a time division, thus introducing latency and idle time. Particularly, longer time bins
+potentially result in entanglement requests to wait longer to be processed. However, an application
+asking for multiple entangled pairs with just one request would experience smaller average
+latencies, as all pairs—but the first one—would be generated in close succession.
+
+\acrshort{tdma} schedules for our simple single-link experiments are quite trivial, as the network
+resources of a node are not contended by multiple links. In particular, schedules are just a
+constant division of \qty{20}{\ms} time bins, each of which is reserved to the only application
+running. We chose the duration of the time-bin --- somewhat arbitrarily, given the small effect on
+our experiments --- to be equal to \num{1000} communication cycles between the device controller and
+the network controller ($\qty{20}{\ms} = \num{1000} × \qty{20}{\us}$).
 
 \paragraph{Entanglement attempts}
 
@@ -429,18 +438,17 @@ quantum hardware is not available, etc.), the physical layer should notify the l
 issue without interrupting its service.
 
 Our quantum network is composed of two independent nodes based on diamond \acrshort{nv} centers
-physically separated by \qty{\approx 2}{m} (see \cref{fig:netnode} for the architecture of one node,
-and Supplementary Material ?? for details on the connections between the two nodes). We will refer
-to the two nodes as \emph{client} and \emph{server}, noting that this is only a logical separation
-useful to describe the case studies --- the two nodes have the exact same capabilities. On each
-node, we implement the logic of the physical layer in a state-machine-based algorithm deployed on a
-time-deterministic microcontroller, the \emph{device controller} (J\"ager ADwin Pro II, based on
-Zynq-7000 SoC, dual-core ARM Cortex-A9, clocked at \qty{1}{\GHz}). Additionally, each node uses an
-arbitrary waveform generator (\acrshort{awg}, Zurich Instruments HDAWG8, \qty{2.4}{GSa/s},
-\qty{300}{\MHz} sequencer) for nanosecond-resolution tasks, such as fast optical and electrical
-pulses; the use of such a user-programmable \acrshort{fpga}-based \acrshort{awg}, as opposed to a
-more traditional upload-and-play instrument (such as the ones used in
-Ref.~\cite{pompili_2021_multinode}), enables the real-time control of our quantum device.
+physically separated by \qty{\approx 2}{m} (see \cref{fig:netnode} for the architecture of one
+node). We will refer to the two nodes as \emph{client} and \emph{server}, noting that this is only a
+logical separation useful to describe the case studies --- the two nodes have the exact same
+capabilities. On each node, we implement the logic of the physical layer in a state-machine-based
+algorithm deployed on a time-deterministic microcontroller, the \emph{device controller} (J\"ager
+ADwin Pro II, based on Zynq-7000 SoC, dual-core ARM Cortex-A9, clocked at \qty{1}{\GHz}).
+Additionally, each node uses an arbitrary waveform generator (\acrshort{awg}, Zurich Instruments
+HDAWG8, \qty{2.4}{GSa/s}, \qty{300}{\MHz} sequencer) for nanosecond-resolution tasks, such as fast
+optical and electrical pulses; the use of such a user-programmable \acrshort{fpga}-based
+\acrshort{awg}, as opposed to a more traditional upload-and-play instrument (such as the ones used
+in Ref.~\cite{pompili_2021_multinode}), enables the real-time control of our quantum device.
 
 \paragraph{Single node operation}
 
@@ -465,7 +473,7 @@ the \acrshort{awg} (duration \qty{\approx100}{\ns}), which is then multiplied to
 (\qty{\approx2}{\GHz}), amplified and finally delivered to the quantum device. The link layer can
 request rotations in steps of $\pi/16$ around the X, Y or Z axis of the Bloch sphere (here we
 implement only X and Y rotations, Z rotations will be implemented in the near future, see
-Supplementary Material ??). When a new gate is requested by the link layer, the device controller at
+\cref{sec:app:phys:sqg}). When a new gate is requested by the link layer, the device controller at
 the physical layer informs the \acrshort{awg} of the gate request via a parallel \num{32}-bit
 \acrshort{dio} interface. The \acrshort{awg} will then select one of the $64$ pre-compiled
 waveforms, play it, and notify the device controller that the gate has been executed. The device
@@ -513,16 +521,16 @@ the entanglement synchronization step, the device controllers proceed with an op
 stabilization cycle~\cite{pompili_2021_multinode}, and then the \acrshortpl{awg} are triggered to
 attempt entanglement generation. In our implementation, one device controller (the server's)
 triggers both \acrshortpl{awg} to achieve sub-nanosecond jitter between the two \acrshortpl{awg}
-(see Supplementary Material ?? for a discussion on longer distance implementation). Each
+(see \cref{sec:app:phys:longdist} for a discussion on longer distance implementation). Each
 entanglement attempt lasts \qty{3.8}{\us}, and includes fast qubit initialization,
 communication-qubit to flying-qubit entanglement, and probabilistic entanglement swapping of the
 flying qubits~\cite{pompili_2021_multinode}. The \acrshortpl{awg} attempt entanglement up to
 \num{1000} times before timing out and reporting an {entanglement failure} (\texttt{ENT\_FAIL}).
 Longer batches of entanglement attempts would increase the probability that one of the nodes goes
-into the unwanted charge state (and therefore cannot produce entanglement, see Supplementary
-Material ??). While in principle possible, we did not implement, in this first realization, the
-charge stabilization mechanism proposed in Ref.~\cite{humphreys_2018_delivery} that would allow for
-significantly longer batches of entanglement attempts.
+into the unwanted charge state (and therefore cannot produce entanglement, see
+\cref{sec:app:phys:resonance}). While in principle possible, we did not implement, in this first
+realization, the charge stabilization mechanism proposed in Ref.~\cite{humphreys_2018_delivery} that
+would allow for significantly longer batches of entanglement attempts.
 
 If an entanglement generation attempt is successful (probability \num{\approx 5e-5}), the
 communication qubits of the two nodes will be projected into an entangled state (either
@@ -559,10 +567,9 @@ generate entanglement. In fact, this will be used later in the remote state prep
         \texttt{ENT\_FAIL}: failed the batch of entanglement attempts, \texttt{PSI\_PLUS}:
         successful entanglement attempt with generated state $\Psi^+$, \texttt{SQG}: single-qubit
         gate, \texttt{X180}: \ang{180} rotation around X axis, \texttt{MSR}: qubit measurement,
-        \texttt{0/1}: qubit measurement outcome. See \cref{tab:link_possible_outcomes} for a
-        complete list of commands. Note that the client's link layer protocol requests a
-        \texttt{X180} gate after entanglement generation to deliver the $\ket{\Phi^+}$ Bell state to
-        the higher layer.
+        \texttt{0/1}: qubit measurement outcome. Note that the client's link layer protocol requests
+        a \texttt{X180} gate after entanglement generation to deliver the $\ket{\Phi^+}$ Bell state
+        to the higher layer.
         %
         (b) Example time trace of (a) for the client. Several batches of entanglement attempts are
         required before an entangled state is heralded. On the right, a zoomed-in part of the trace
@@ -574,8 +581,8 @@ generate entanglement. In fact, this will be used later in the remote state prep
         %
         (d) Total number of delivered states over time. The occasional pauses in entanglement
         delivery (plateaus) are due to the client's \acrshort{nv} center becoming off-resonant with
-        the relevant lasers (see \cref{sec:link_suppl_off_resonant}). Differences in slope are due
-        to changes in resonance conditions that increase the time necessary to pass the
+        the relevant lasers (see \cref{sec:app:phys:resonance}). Differences in slope are due to
+        changes in resonance conditions that increase the time necessary to pass the
         \acrlong{crcheck}.
     }
     \label{fig:fstomography}
@@ -593,8 +600,7 @@ Additionally, we use the second application to assess the latency incurred by ou
 compare it to the overall entanglement generation latency, including that of the physical layer.
 Crucially, the three applications are executed back-to-back on the quantum network, without any
 software or hardware changes to the system --- the only difference being the
-quantum-platform-independent application sent to the instruction processor (see Supplementary
-Material ??).
+quantum-platform-independent application sent to the instruction processor.
 
 The sequence diagram in \cref{fig:fstomography}a exemplifies the general flow between system
 components during the execution of an application. At first, the instruction processor issues a
@@ -618,6 +624,9 @@ paths. However, in our single-link network, the duration of time bins only influ
 at which new entanglement requests are processed. Our time bin duration accommodates up to four
 batches of \num{1000} entanglement attempts.
 
+\note{Perhaps we could open-source the NetQASM application scripts for this evaluation and add a
+link to the repository here.}
+
 \paragraph{Full quantum state tomography}
 
 The first application consists in generating entangled states at the highest \emph{minimum fidelity}
@@ -626,8 +635,7 @@ varying bases to learn their joint quantum state. We measure all \num{9} two-nod
 ($\braket{\mathrm{XX}}, \braket{\mathrm{XY}}$, ...,~$\braket{\mathrm{ZZ}}$) as well as all their
 $\pm$ variations ($\braket{\mathrm{+X+X}}, \braket{\mathrm{+X-X}}$, etc.) to minimize the bias due
 to measurement errors. For each of the $9 \times 4 = 36$ combinations, we measure \num{125} data
-points, for a total of \num{4500} entangled states generated and measured. The Supplementary
-Material ?? contains a pseudocode description of the application.
+points, for a total of \num{4500} entangled states generated and measured.
 
 The collected measurement outcomes are then analyzed using QInfer~\cite{granade_2017_qinfer}, in
 particular the Monte Carlo method described in Ref.~\cite{granade_2016_practical} for Bayesian
@@ -663,10 +671,12 @@ what measured in Ref.~\cite{pompili_2021_multinode} without the use of the \acrs
 abstraction (and the whole network controller where \acrshort{qegp} runs). This discrepancy could be
 due to the additional physical-layer decoupling sequences required for real-time operation
 (\qty{\approx 300}{\us}) and the additional single-qubit gate issued by the link layer to always
-deliver $\ket{\Phi^+}$ (see Supplementary Material ??).
+deliver $\ket{\Phi^+}$ (the physical layer can produce either $\ket{\Psi^+} = (\ket{01} +
+    \ket{10})/\sqrt{2}$ or $\ket{\Psi^-} = (\ket{01} - \ket{1})/ \sqrt{2}$, see
+Refs.~\cite{humphreys_2018_delivery, pompili_2021_multinode}).
 
-It is to be noted that, in order to obtain the most faithful estimate of the generated state (see
-Supplementary Material ?? for details), the measured expectation values are corrected, in
+It is to be noted that, in order to obtain the most faithful estimate of the generated state
+(see \cref{sec:netstack:corrections} for details), the measured expectation values are corrected, in
 post-processing, to remove known tomography errors of both client and
 server~\cite{nachman_2020_unfolding}, and events in which at least one physical device was in the
 incorrect charge state.
@@ -674,9 +684,9 @@ incorrect charge state.
 Finally, we show, in \cref{fig:fstomography}d, that our system can sustain a fairly stable
 entanglement delivery rate over \qty{\approx 30}{min} of data acquisition --- plateaus and changes
 in slope can be attributed to varying conditions of resonance between the \acrshort{nv} centers and
-the relevant lasers (see Supplementary Material ??).
+the relevant lasers (see \cref{sec:app:phys:resonance}).
 
-\paragraph{Latency vs fidelity}
+\paragraph{Latency VS fidelity}
 
 The \acrshort{qegp} interface allows its user to request entangled pairs at various minimum
 fidelities. For physical reasons, higher fidelities will result in lower entanglement generation
@@ -690,9 +700,9 @@ various fidelities in a single application by measuring the $\braket{\mathrm{XX}
 $\braket{\mathrm{YY}}$ and $\braket{\mathrm{ZZ}}$ correlators (and their $\pm$ variations, as we did
 above, for a total of $3 \times 4 = 12$ correlators) for seven different target fidelities,
 (\num{0.50}, \num{0.55}, \num{0.60}, \num{0.65}, \num{0.70}, \num{0.75}, \num{0.80}). We generate
-\num{1500} entangled states per fidelity, for a total of \num{10500} delivered states (see
-Supplementary Material ??). With this case study, we analyze both the resulting fidelity and the
-system's latency for different requested fidelities.
+\num{1500} entangled states per fidelity, for a total of \num{10500} delivered states. With this
+case study, we analyze both the resulting fidelity and the system's latency for different requested
+fidelities.
 
 \begin{figure}
     \centering
@@ -703,8 +713,8 @@ system's latency for different requested fidelities.
         (a) Measured fidelity of the states delivered by the link layer for varying requested
         fidelity. Targeted fidelity at the physical layer is 0.03 higher than the link layer
         protocol's \emph{minimum fidelity} request. When not correcting for wrong charge state
-        events, fidelity is reduced by a few percents (see \cref{sec:link_suppl_m_corr}). Error bars
-        represent \num{1} s.d.
+        events, fidelity is reduced by a few percents (see \cref{sec:netstack:corrections}). Error
+        bars represent \num{1} s.d.
         %
         (b) Average latency of the entanglement delivery per requested fidelity, broken down into
         sources of latency. Entanglement generation and \acrlong{crcheck} at the physical layer are
@@ -745,32 +755,30 @@ request to the link layer, until the successful entanglement outcome reported by
 \Cref{fig:latencyvsfid}b shows the measured average latency, grouped by requested fidelity and
 broken down into the various sources of latency. When calculating the average latencies, we have
 ignored entanglement requests that required more than \qty{10}{s} to be fulfilled. These
-high-latency requests correspond to the horizontal plateaus of \cref{fig:fstomography}d (see
-Supplementary Material ?? for details). The main contribution to the total latency comes from the
-entanglement generation process at the physical layer, followed by the \acrshort{nv} center
-preparation time (\acrshort{crcheck}). Both latency values are consistent with the expected number
-of entanglement attempts required by the single-photon entanglement protocol employed at the
-physical layer~\cite{humphreys_2018_delivery}. The link layer protocol adds, on average,
-\qty{\approx 10}{\ms} of extra latency to all requests, regardless of their fidelity. This is due
-partly to the synchronization of the \texttt{CREATE} request between the two nodes (i.e.~a simple
-\acrshort{tcp} message), but mostly to the nodes having to wait for the next time bin in the network
-schedule to start (the larger the time bins, the larger the worst-case waiting time, see
-Supplementary Material ??). We remark that, by requesting multiple entangled states in a single
-\texttt{CREATE}, one can distribute this overhead over many generated pairs, to the point where it
-becomes negligible. While our applications did not issue multi-pair \texttt{CREATE} requests, this
-would be the more natural choice for real applications, and would result in better utilization of
-the allocated time bins. Finally, the overhead incurred by the interface between microcontrollers is
-rather small (barely visible in \cref{fig:latencyvsfid}b), but could however be further reduced by
-integrating device controller and network controller into a single device. It is worth mentioning
-that, in our simple scenario in which each entanglement request is only submitted to \acrshort{qegp}
-after the previous one completes, and thus the request queue never grows larger than one element,
-throughput happens to be almost exactly the same as the inverse of latency, and hence it is not
-reported here.
+high-latency requests correspond to the horizontal plateaus of \cref{fig:fstomography}d. The main
+contribution to the total latency comes from the entanglement generation process at the physical
+layer, followed by the \acrshort{nv} center preparation time (\acrshort{crcheck}). Both latency
+values are consistent with the expected number of entanglement attempts required by the
+single-photon entanglement protocol employed at the physical layer~\cite{humphreys_2018_delivery}.
+The link layer protocol adds, on average, \qty{\approx 10}{\ms} of extra latency to all requests,
+regardless of their fidelity. This is due partly to the synchronization of the \texttt{CREATE}
+request between the two nodes (i.e.~a simple \acrshort{tcp} message), but mostly to the nodes having
+to wait for the next time bin in the network schedule to start. We remark that, by requesting
+multiple entangled states in a single \texttt{CREATE}, one can distribute this overhead over many
+generated pairs, to the point where it becomes negligible. While our applications did not issue
+multi-pair \texttt{CREATE} requests, this would be the more natural choice for real applications,
+and would result in better utilization of the allocated time bins. Finally, the overhead incurred by
+the interface between microcontrollers is rather small (barely visible in \cref{fig:latencyvsfid}b),
+but could however be further reduced by integrating device controller and network controller into a
+single device. It is worth mentioning that, in our simple scenario in which each entanglement
+request is only submitted to \acrshort{qegp} after the previous one completes, and thus the request
+queue never grows larger than one element, throughput happens to be almost exactly the same as the
+inverse of latency, and hence it is not reported here.
 
 Overall, we observe that the extra entanglement generation latency incurred when deploying an
 abstraction layer (\acrshort{qegp}) on top of the physical layer, while not too modest, is only a
 small part of the whole, particularly at higher fidelities. Nevertheless, optimizing the length of
-\acrshort{tdma} time bins could result in an even smaller overhead (see Supplementary Material ??).
+\acrshort{tdma} time bins could result in an even smaller overhead.
 
 \begin{figure}
     \centering
@@ -780,7 +788,7 @@ small part of the whole, particularly at higher fidelities. Nevertheless, optimi
         measurement axis of the client (X, Y, Z), and for each obtained measurement outcome at the
         client ($\ket{0}$, $\ket{1}$), a different state is prepared on the server. Plotted on the
         Bloch spheres are the results of the tomography on the server's qubit. Uncertainties on each
-        coordinate are \num{\approx 0.05} (see \cref{sec:link_suppl_m_corr}). We find an average
+        coordinate are \num{\approx 0.05} (see \cref{sec:netstack:corrections}). We find an average
         preparation fidelity of $F =$ \num{0.853(8)}.
     }
     \label{fig:rsprep}
@@ -803,8 +811,7 @@ qubit can be protected for later usage. An \emph{R}-type entanglement request re
 \texttt{ENM} command on the client and an \texttt{ENT} command on the server. For this type of
 requests (as well as for \emph{M}-type ones), since the local end of the pair is measured
 immediately, the client's \acrshort{qegp} can skip the Pauli correction used to always deliver
-$\ket{\Phi^+}$, and can instead apply a classical correction to the received measurement outcome
-(see Supplementary Material ??).
+$\ket{\Phi^+}$, and can instead apply a classical correction to the received measurement outcome.
 
 To showcase this feature of \acrshort{qegp} we use the client node to prepare the six cardinal
 states on the server ($\ket{\pm x}$, $\ket{\pm y}$, $\ket{0}$ and $\ket{1}$) by having the client
@@ -812,21 +819,163 @@ measure its share of the entangled state in the six cardinal bases. We then let 
 the prepared states --- again in the six cardinal bases --- to perform tomography. For each client
 measurement basis, and for each server tomography basis, we deliver \num{125} entangled states at a
 requested fidelity of \num{0.80}, for a total of $6 \times 6 \times 125 = 4500$ remote state
-preparations (see Supplementary Material ??). The results are presented in \cref{fig:rsprep}, which
-displays the tomography of the prepared states on the server, for the three different measurement
-axes of the client and the two possible measurement outcomes of the client. The prepared states are
-affected by the measurement error of the client ($F_0 =$ \num{0.928(3)}, $F_1 = $ \num{0.997(1)}):
-an error in the measurement of the client's qubit results in an incorrect identification of the
-state prepared on the server. By alternating between positive and negative readout orientations, we
-make sure that the errors affect all prepared states equally, instead of biasing the result. We note
-that we exclude, once again, events in which at least one of the two devices was in the wrong charge
-state, and we correct for the known tomography error on the server (results without corrections are
-in the Supplementary Material ??). Overall, we find an average remote state preparation fidelity of
+preparations. The results are presented in \cref{fig:rsprep}, which displays the tomography of the
+prepared states on the server, for the three different measurement axes of the client and the two
+possible measurement outcomes of the client. The prepared states are affected by the measurement
+error of the client ($F_0 =$ \num{0.928(3)}, $F_1 = $ \num{0.997(1)}): an error in the measurement
+of the client's qubit results in an incorrect identification of the state prepared on the server. By
+alternating between positive and negative readout orientations, we make sure that the errors affect
+all prepared states equally, instead of biasing the result. We note that we exclude, once again,
+events in which at least one of the two devices was in the wrong charge state, and we correct for
+the known tomography error on the server (results without corrections are in
+\cref{sec:netstack:corrections}). Overall, we find an average remote state preparation fidelity of
 $F =$ \num{0.853(8)}. The asymmetry in the fidelity of the $\ket{0}$ and $\ket{1}$ states is caused
 by the asymmetry in the populations $\braket{01|\ \rho\ |01}$ vs $\braket{10|\ \rho\ |10}$ of the
 delivered entangled state, which in turn is due to the double $\ket{0}$ occupancy error of the
 single-photon protocol used to generate entanglement~\cite{humphreys_2018_delivery,
 pompili_2021_multinode}.
+
+\section{Results With and Without Corrections}
+\label{sec:netstack:corrections}
+
+The data presented in the main text is corrected for known measurement errors, and events in which
+at least one of the two devices was in the wrong charge state are removed (the \acrshort{crcheck}
+following the delivery of entanglement reports zero counts). While it is useful to correct for such
+errors in order to obtain the most faithful reconstruction of the delivered states, these errors
+cannot always be avoided in a real network scenario. For completeness, we report here the results
+first without any corrections applied, and then with only the measurement error correction applied.
+All the results, the raw datasets, and the software to analyze them, are available at
+Ref.~\cite{link_layer_data}.
+
+\paragraph{Full Quantum State Tomography}
+
+The events in which the two devices generated \num{0} photon counts in the following
+\acrshort{crcheck} were \num{37} for the client and \num{380} for the server (out of the \num{4500}
+total). When combined, (client or server in the wrong charge state), we obtain \num{417} events (in
+zero events both client and server were in the wrong charge state). Without any corrections
+(tomography errors or wrong charge state), we obtain the following density matrix (which has a
+fidelity with the target Bell state F=\num{0.681(16)}):
+\[
+    \mathrm{Re}[\rho] = \begin{pmatrix}
+        0.397(9)  & 0.011(9)   & 0.001(7)   & 0.256(14)  \\
+        0.011(9)  & 0.058(14)  & -0.005(13) & -0.007(9)  \\
+        0.001(7)  & -0.005(13) & 0.092(12)  & -0.027(13) \\
+        0.256(14) & -0.007(9)  & -0.027(13) & 0.452(9)   \\
+    \end{pmatrix},
+\]
+\[
+    \mathrm{Im}[\rho] = \begin{pmatrix}
+        0          & 0.000(18)  & -0.029(9) & 0.036(9)  \\
+        -0.000(18) & 0          & 0.010(12) & -0.002(8) \\
+        0.029(9)   & -0.010(12) & 0         & -0.000(8) \\
+        -0.036(9)  & 0.002(8)   & 0.000(8)  & 0         \\
+    \end{pmatrix}
+\]
+
+Only applying tomography error correction (but not removal of wrong charge state events) yields the
+following density matrix (fidelity F=\num{0.744(11)}):
+\[
+    \mathrm{Re}[\rho] = \begin{pmatrix}
+        0.421(7)  & -0.001(4) & -0.013(5) & 0.300(8)  \\
+        -0.001(4) & 0.022(8)  & -0.020(6) & -0.021(7) \\
+        -0.013(5) & -0.020(6) & 0.091(5)  & -0.015(5) \\
+        0.300(8)  & -0.021(7) & -0.015(5) & 0.466(5)  \\
+    \end{pmatrix}
+\]
+\[
+    \mathrm{Im}[\rho] = \begin{pmatrix}
+        0         & 0.004(4)  & -0.018(3) & 0.032(6) \\
+        -0.004(4) & 0         & 0.021(6)  & 0.002(5) \\
+        0.018(3)  & -0.021(6) & 0         & 0.002(5) \\
+        -0.032(6) & -0.002(5) & -0.002(5) & 0        \\
+    \end{pmatrix}
+\]
+
+
+\paragraph{Fidelity VS rate}
+
+The events in which the two devices generated \num{0} photon counts in the following
+\acrshort{crcheck} were \num{74} for the client and \num{709} for the server (out of the \num{10500}
+total). When combined, (client or server in the wrong charge state), we obtain \num{781} events
+(there were two events in which both client and server were in the wrong charge state). Without any
+corrections (tomography errors or wrong charge state), we obtain the following delivered fidelities:
+\num{0.454(18)}, \num{0.540(18)}, \num{0.548(17)}, \num{0.596(17)}, \num{0.640(16)},
+\num{0.674(16)}, \num{0.679(15)}. Only applying tomography error correction (but not removal of
+wrong charge state events) yields the following fidelities: \num{0.485(15)}, \num{0.591(14)},
+\num{0.592(14)}, \num{0. 652(13)}, \num{0.705(13)}, \num{0.741(12)}, \num{0.753(11)}.
+
+\paragraph{Remote state preparation}
+
+As mentioned in the main text, for the remote state preparation analysis, we only apply the
+tomography error correction for the server, while remove wrong charge state events of both the
+server and the client. The events in which the two devices generated \num{0} photon counts in the
+following \acrshort{crcheck} were \num{29} for the client and \num{365} for the server (out of the
+\num{4500} total). When combined, (client or server in the wrong charge state), we obtain \num{394}
+events (there were zero events in which both client and server were in the wrong charge state).
+Following are the numerical values that result in the plot in the main text (average fidelity
+F=\num{0.853(8)}):
+
+\begin{table}[H]
+    \centering
+    % with_m_error_correction_with_ionization_correction
+    \begin{tabular}{|p{2.5cm}|ccc|c|}
+        \hline
+        Client & \multicolumn{4}{c|}{Server}\\
+        & $\braket{\mathrm{X}}$ & $\braket{\mathrm{Y}}$ & $\braket{\mathrm{Z}}$ & Fidelity\\ \hline
+        Measured $\ket{+X}$ & \num{0.634(48)} & \num{-0.123(62)} & \num{-0.004(59)} & \num{0.817(24)}\\
+        Measured $\ket{+Y}$ & \num{-0.028(58)} & \num{-0.650(45)} & \num{0.005(61)} & \num{0.825(23)}\\
+        Measured $\ket{+Z}$ & \num{-0.081(65)} & \num{-0.083(66)} & \num{0.849(31)} & \num{0.924(16)}\\
+        Measured $\ket{-X}$ & \num{-0.645(43)} & \num{0.135(59)} & \num{0.030(63)} & \num{0.823(22)}\\
+        Measured $\ket{-Y}$ & \num{0.026(65)} & \num{0.719(40)} & \num{-0.013(61)} & \num{0.860(20)}\\
+        Measured $\ket{-Z}$ & \num{0.032(58)} & \num{-0.069(58)} & \num{-0.736(39)} & \num{0.868(19)}\\
+        \hline
+    \end{tabular}
+    %==========
+    %Avg F 0.853(8)
+\end{table}
+
+Without any corrections (tomography errors or wrong charge state), we obtain the following prepared
+states, with average fidelity F=\num{0.807(10)}:
+
+\begin{table}[H]
+    \centering
+    % without_m_error_correction_without_ionization_correction
+    \begin{tabular}{|p{2.5cm}|ccc|c|}
+        \hline
+        Client & \multicolumn{4}{c|}{Server}\\
+        & $\braket{\mathrm{X}}$ & $\braket{\mathrm{Y}}$ & $\braket{\mathrm{Z}}$ & Fidelity\\ \hline
+        Measured $\ket{x}$ & \num{0.534(55)} & \num{-0.090(62)} & \num{0.009(62)} & \num{0.767(27)}\\
+        Measured $\ket{y}$ & \num{0.024(60)} & \num{-0.582(51)} & \num{-0.013(62)} & \num{0.791(26)}\\
+        Measured $\ket{0}$ & \num{-0.073(69)} & \num{-0.072(69)} & \num{0.786(42)} & \num{0.893(21)}\\
+        Measured $\ket{-x}$ & \num{-0.552(49)} & \num{0.143(61)} & \num{0.055(63)} & \num{0.776(24)}\\
+        Measured $\ket{-y}$ & \num{0.052(64)} & \num{0.623(47)} & \num{-0.018(62)} & \num{0.811(23)}\\
+        Measured $\ket{1}$ & \num{0.030(57)} & \num{-0.028(55)} & \num{-0.606(46)} & \num{0.803(23)}\\
+        \hline
+    \end{tabular}
+    %==========
+    %Avg F 0.807(10)
+\end{table}
+
+When only applying tomography error correction, we find an average preparation fidelity F=\num{0.829(9)}:
+
+\begin{table}[H]
+    \centering
+    % with_m_error_correction_without_ionization_correction
+    \begin{tabular}{|p{2.5cm}|ccc|c|}
+        \hline
+        Client & \multicolumn{4}{c|}{Server}\\
+        & $\braket{\mathrm{X}}$ & $\braket{\mathrm{Y}}$ & $\braket{\mathrm{Z}}$ & Fidelity\\ \hline
+        Measured $\ket{x}$ & \num{0.573(49)} & \num{-0.096(59)} & \num{0.010(58)} & \num{0.786(24)}\\
+        Measured $\ket{y}$ & \num{0.025(56)} & \num{-0.624(45)} & \num{-0.014(59)} & \num{0.812(23)}\\
+        Measured $\ket{0}$ & \num{-0.078(64)} & \num{-0.077(65)} & \num{0.843(32)} & \num{0.921(16)}\\
+        Measured $\ket{-x}$ & \num{-0.592(44)} & \num{0.153(57)} & \num{0.059(59)} & \num{0.796(22)}\\
+        Measured $\ket{-y}$ & \num{0.056(61)} & \num{0.667(41)} & \num{-0.020(59)} & \num{0.834(20)}\\
+        Measured $\ket{1}$ & \num{0.032(54)} & \num{-0.030(53)} & \num{-0.650(40)} & \num{0.825(20)}\\
+        \hline
+    \end{tabular}
+    %==========
+    %Avg F 0.829(9)
+\end{table}
 
 \section{Discussion}
 
@@ -869,4 +1018,4 @@ dynamic network schedules, will enable demonstrations of the higher layers of th
 stack~\cite{kozlowski_2019_towards}, which in turn will open the door to end-to-end connectivity on
 a platform-independent quantum network.
 
-\printbibliography[heading=subbibintoc,title={References}]
+\printbibliography[heading=subbibintoc,title={References},notcategory=noprint]

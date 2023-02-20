@@ -1,0 +1,94 @@
+\chapter{Implementation of the Quantum Physical Layer}
+\label{app:phys}
+
+We provide here additional details concerning the implementation of the quantum physical layer used
+for our experiments.
+
+\section{Single Qubit Gates}
+\label{sec:app:phys:sqg}
+
+At the physical layer, we implement real-time rotations around the X and Y axes of the qubit Bloch
+sphere, using a resolution of $\pi/16=$\ang{11.25}. That is, the upper layer can request any
+rotation that is a multiple of $\pi/16$ around either the X or Y axis. The different rotations are
+performed using Hermite-shaped pulses (as described in Ref.~\cite{pompili_2021_multinode}) of
+calibrated amplitude. The choice of X(Y) rotation axis is implemented using the I(Q) channel of the
+microwave vector source.
+
+While supported on \acrshort{qnodeos}, our physical layer currently does not implement Z-axis
+rotations. Such rotations around the Z axis could be implemented by virtual rotations of the Bloch
+sphere: a $\pi$ pulse around the Z axis is equivalent to multiplying future I and Q voltages by
+$-1$. By keeping track of the accumulated Z rotations, and by adjusting I and Q mixing accordingly,
+one can perform effective Z rotations with very high resolution and virtually no infidelity. The
+\acrshortpl{awg} currently in use have the required capabilities, and the implementation of said Z
+gates is planned for the near future.
+
+\section{Clock Sharing and \acrshort{awg} Triggering Over Longer Distances}
+\label{sec:app:phys:longdist}
+
+One of the technical challenges of realizing a large scale quantum network is synchronizing
+equipment at the physical layer across nodes. The synchronization is required to generate
+entanglement --- the photons from the two nodes need to arrive at the same time at the heralding
+station (compared to their duration, \qty{12}{\ns} for \acrshort{nv} centers in bulk diamond
+samples); failing to do so would reduce (or even remove) their indistinguishability, which is
+required to establish long-distance entanglement~\cite{pompili_2021_multinode}. Our two nodes are
+located in a single laboratory, on the same optical table, approximately \qty{2}{\m} apart. This
+allows for some simplifications, for the purpose of demonstrating entanglement delivery using a
+network stack, which would not be possible over longer distances. Specifically:
+
+\begin{enumerate}
+    \item We use a single laser --- the client's --- to excite both nodes, as in
+          Ref.~\cite{pompili_2021_multinode}. Over longer distances, one would need to phase-lock
+          the excitation lasers at the two nodes to ensure phase-stability of the entangled states.
+    \item The Device Controllers (ADwin Pro II microcontroller) are triggered every \qty{1}{\us} by
+          the same signal generator, advancing the state machine algorithm that implements the
+          physical layer. This ensures that the two microcontrollers have a common shared clock.
+          Over longer distances, one could use existing protocols (and commercially-available
+          hardware) to obtain a shared clock~\cite{whiterabbit}, and use that to trigger the
+          microcontrollers.
+    \item The two \acrshortpl{awg} need to be triggered to play entanglement attempts. In our
+          implementation, one device controller --- the server's --- triggers both \acrshortpl{awg}.
+          This ensures that the triggering delay between the two \acrshortpl{awg} is constant, and
+          we can therefore calibrate it out. Triggering the \acrshortpl{awg} with two independent
+          microcontrollers would result in jitter (realistically on the order of nanoseconds). Over
+          larger distances, one could derive --- from the shared clock --- a periodic trigger signal
+          that is gated by the microcontroller at each node. In this way the microcontroller can
+          decide whether the \acrshort{awg} will be triggered on the next cycle, but the accuracy of
+          the trigger's timing will be derived from the shared clock between the nodes, rather than
+          from the microprocessor.
+    \item The phase stabilization scheme we use, developed in Ref.~\cite{pompili_2021_multinode}, is
+          designed to work at a single optical frequency (in our case, the \qty{637}{\nm} emission
+          frequency of the \acrshort{nv} center). Over longer distances, conversion of the
+          \acrshort{nv} center photons to the telecom band will be necessary to overcome photon
+          loss. The phase stabilization scheme will therefore need to be adapted to new optical
+          frequencies used.
+\end{enumerate}
+
+For reference, our client (server) is based on node Charlie (Bob) of the multi-node quantum network
+presented in Ref.~\cite{pompili_2021_multinode}.
+
+\section{\acrshort{nv} Center Resonance Control}
+\label{sec:app:phys:resonance}
+
+The two quantum network nodes use different techniques to control the resonance of their
+\acrshort{nv} centers (see Ref.~\cite{pompili_2021_multinode} for implementations details). The
+server uses an off-resonant charge randomization strategy: when its \acrshort{nv} center is not on
+resonance (it does not pass the charge and resonance check), it can apply an off-resonant (green,
+\qty{515}{\nm}) laser pulse to shuffle the charge environment and probabilistically recover the
+correct charge and resonance state. The server cannot get \emph{stuck} in a non-resonance state: in
+a few tens of failed \acrshortpl{crcheck} and green laser pulses (overall less than \qty{1}{\ms})
+the \acrshort{nv} center will be in resonance again.
+
+The client, which needs to be tuned in resonance with the other node, uses a resonant strategy. When
+in the wrong charge state (zero counts during \acrshort{crcheck}), it applies a resonant laser pulse
+(yellow, \qty{575}{\nm}, \acrshort{nv}${}^0$ zero-phonon line) to go back to \acrshort{nv}${}^-$. To
+bring \acrshort{nv}${}^-$ in resonance with the necessary lasers, it adjusts a biasing voltage
+applied to the diamond sample, which shifts the resonance frequencies. This process is mostly
+automated. However, occasional human intervention is still required when the resonance frequencies
+of the \acrshort{nv} center shift too far --- for example due to a charge in the vicinity of the
+\acrshort{nv} center changing position in the lattice --- for the automatic mechanism to find its
+way back. Periods of inactivity in entanglement generation are due to the jumps in the client's
+\acrshort{nv} optical transitions, which then require manual optimization of the laser frequencies
+and/or the diamond biasing voltage --- depending on the magnitude of the frequency shift, it
+requires tens of seconds to a few minutes to recover the optimal resonance condition.
+
+\printbibliography[heading=subbibintoc,title={References}]
