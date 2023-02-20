@@ -18,8 +18,8 @@ proposes a proof-of-principle architecture for such an \acrshort{os}.
 additions.}
 
 \blfootnote{
-    This chapter is based on the preprint \citetitle{delledonne_2023_qnodeos} by
-    \textcite{delledonne_2023_qnodeos}, submitted for peer review.
+    This chapter is based on the preprint \fullcite{delledonne_2023_qnodeos_noprint}. \note{Add
+    proper link to arXiv}
 }
 
 \newpage
@@ -283,11 +283,11 @@ actual quantum operations.
 
 The architecture of a quantum network node is depicted in \cref{fig:quantum-node}. An alternative
 architecture of the end node of a quantum network could merge host and \acrshort{qnodeos} into the
-same system, potentially enabling some performance optimizations, at the cost of a higher system
+same system, potentially enabling some performance optimizations, at the cost of higher system
 complexity. We also note that the host, \acrshort{qnodeos} and the classical control modules of the
 \acrshort{qdevice} can be deployed on distinct physical devices, or combined in some way. For
 simplicity, we implemented each component (host, \acrshort{qnodeos}, \acrshort{qdevice}) on a
-separate device (refer to \cref{sec:implementation} for details).
+separate device (as outlined in \cref{chp:qnodeos}).
 
 \subsection{Processes}
 
@@ -503,4 +503,4 @@ The current \acrshort{qmmu} is rather simple due to the fact that our current qu
 only have a few qubits each. Features like decoherence tracking and topology-based allocation can be
 part of a later version of the \acrshort{qmmu}.
 
-\printbibliography[heading=subbibintoc,title={References}]
+\printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
