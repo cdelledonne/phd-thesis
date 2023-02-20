@@ -41,11 +41,11 @@ sensing~\cite{gottesman_2012_telescope} and distributed systems~\cite{benor_2005
 as secure quantum computing in the cloud~\cite{broadbent_2009_ubqc, childs_2005_secure_qc}.
 
 To run a general quantum networking application, the end nodes' hardware-software system needs to be
-capable of performing certain actions, as summarized in \cref{fig:quantum-internet}. First, the end
-nodes must be able to establish a quantum connection by generating quantum \emph{entanglement}
-between them. Entanglement is a special property of at least two quantum bits --- or \emph{qubits}
---- one held by each end node. The entangled qubits are often measured directly by the application,
-or may be used to transmit data qubits from one end node to the other through
+capable of performing certain actions, as summarized in \cref{fig:quantum-internet}. First, nodes
+must be able to establish a quantum connection by generating quantum \emph{entanglement} between
+them. Entanglement is a special property of at least two quantum bits --- or \emph{qubits} --- one
+held by each end node. The entangled qubits are often measured directly by the application, or may
+be used to transmit data qubits from one end node to the other through
 teleportation~\cite{bennett_1993_teleportation}. Alongside entanglement, end nodes must be capable
 of executing local quantum operations on the qubits held by an end node, that is, quantum
 \emph{gates} and quantum \emph{measurements}. For simple quantum applications such as secure
@@ -56,10 +56,9 @@ operations can include the execution of quantum gates and in fact full quantum c
 quantum processor. Finally, next to such quantum actions, most quantum applications known to date
 require local classical processing, as well as classical communication between the end nodes.
 
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[width=0.6\linewidth]{figures/quantum-internet.pdf}
-    \end{center}
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/quantum-internet.pdf}
     \caption{
         A quantum networking application consists of separate programs running at two or more end
         nodes that communicate via classical message passing and quantum entanglement. Local
@@ -85,7 +84,7 @@ alive, for example such that future quantum instructions can be executed dependi
 remote end nodes. This is in sharp contrast to quantum computing applications, where one can process
 the entire quantum execution in a single batch.
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{figures/app-struct.pdf}
     \caption{

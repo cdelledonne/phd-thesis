@@ -81,7 +81,8 @@ determined by performing estimates independently of the program execution itself
 operating system could itself engage in such estimates when idling in order to update its knowledge
 of the capabilities of the quantum hardware.
 
-\section{Key \acrshort{os} Components} \label{sec:arch:components}
+\section{Key \acrshort{os} Components}
+\label{sec:arch:components}
 
 We now describe the essential components we envision any operating system for quantum network nodes
 to have.
@@ -114,12 +115,12 @@ The \acrshort{os} should include the capability for quantum communication with r
 network, typically the generation of entanglement. We thus assume that the \acrshort{os} realizes a
 quantum network stack that can be relied upon to enable entanglement generation, where we refer to
 Ref.~\cite{dahlberg_2019_egp} for design considerations of quantum network stacks themselves. The
-\acrshort{os}'s network stack allows an application to request a certain number or rate of entangled
-pairs to be produced with remote nodes with a specified quality (i.e. fidelity) of entanglement. The
-stack is responsible for ensuring the delivery of the entanglement. One possible quantum network
-stack can be found in Ref.~\cite{dahlberg_2019_egp} including the first link layer protocol now
-realized on quantum hardware~\cite{pompili_2022_experimental}, and a network layer protocol (as
-proposed in Ref.~\cite{kozlowski_2020_qnp}).
+network stack allows an application to request a certain number or rate of entangled pairs to be
+produced with remote nodes with a specified quality (i.e. fidelity) of entanglement. The stack is
+responsible for ensuring the delivery of the entanglement. One possible quantum network stack can be
+found in Ref.~\cite{dahlberg_2019_egp} including the first link layer protocol now realized on
+quantum hardware~\cite{pompili_2022_experimental}, and a network layer protocol (as proposed in
+Ref.~\cite{kozlowski_2020_qnp}).
 
 To successfully produce entanglement, the network stack needs access to a communication qubit,
 resulting in two requirements for the rest of the system:
@@ -169,18 +170,18 @@ ones being:
 %
 \begin{inlinelist}
     \item \emph{Synchronized network schedule}: due to the bilateral nature of entanglement, each
-          node will have its quantum networking activity synchronized with its neighbors, thus
-          missing a synchronization window on one node results in a waste of resources on remote
+          node will have its quantum networking activity synchronized with its neighbors, meaning
+          that a missed synchronization window on one node results in a waste of resources on remote
           nodes too.
     \item \emph{Local quantum computation}: in addition to quantum networking, a node's resources
-          must also be reserved for local quantum gates, which are integral parts of quantum network
-          applications.
+          must also be reserved for local quantum gates, which are integral parts of quantum
+          networking applications.
     \item \emph{Inter-block dependencies}: quantum and classical processing blocks of an application
           may depend on results originating from other blocks, and thus cannot be scheduled
           independently.
     \item \emph{Multitasking}: for a node to be shared by multiple users, the scheduler should not
           allocate all the available resources to a single application indefinitely, and instead it
-          should be aware of the presence of multiple applications.
+          should be aware of the presence of multiple applications and multiple users.
 \end{inlinelist}
 
 Additionally, scheduling at any level could optionally process another set of input variables, where
@@ -234,12 +235,13 @@ Finally, scheduling can be performed at two levels of operations: First, one can
 problem of scheduling local versus networked instructions, where one simple way of realizing a
 schedule that respects the constraints inherent in such a schedule (see above) is presented in
 \cref{sec:arch:design}. Second, one can consider scheduling any form of operation on the underlying
-quantum processor. While our current realization of \acrshort{qnodeos} now achieves this by
-populating an instruction queue in software, we envision that this form of scheduling would later be
-moved from \acrshort{qnodeos} to control hardware in a microarchitecture for quantum nodes as e.g.
-in the work by \textcite{fu_2017_microarch}.
+quantum processor. While our current realization of \acrshort{qnodeos} achieves this by populating
+an instruction queue in software, we envision that this form of scheduling would later be moved from
+\acrshort{qnodeos} to a hardware module in a microarchitecture for quantum networking nodes, as for
+instance in the work by \textcite{fu_2017_microarch}.
 
-\section{\acrshort{qnodeos} Design} \label{sec:arch:design}
+\section{\acrshort{qnodeos} Design}
+\label{sec:arch:design}
 
 \acrshort{qnodeos} is an operating system for quantum network nodes, designed to address the
 challenges described in \cref{chp:background}. It includes all the identified key components, plus
@@ -289,19 +291,7 @@ complexity. We also note that the host, \acrshort{qnodeos} and the classical con
 simplicity, we implemented each component (host, \acrshort{qnodeos}, \acrshort{qdevice}) on a
 separate device (as outlined in \cref{chp:qnodeos}).
 
-\subsection{Processes}
-
-A quantum network application starts on the host --- there, the host environment compiles it into
-classical and quantum code blocks, and creates a new process associated with the application. The
-host then registers the application with \acrshort{qnodeos} (through \acrshort{qnodeos}'s end-node
-\acrshort{api}), which, in turn, creates its own process associated with the registered application.
-The process on the host is a standard \acrshort{os} process, which executes the classical code
-blocks and interacts with the counterpart process on \acrshort{qnodeos} (by means of a shared
-memory, as defined in NetQASM~\cite{dahlberg_2022_netqasm}). On \acrshort{qnodeos}, a process
-encapsulates the execution of quantum code blocks of an application with associated context
-information, such as process owner, ID, process state and priority.
-
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/quantum-node.pdf}
     \caption{
@@ -319,6 +309,18 @@ information, such as process owner, ID, process state and priority.
     }
     \label{fig:quantum-node}
 \end{figure}
+
+\subsection{Processes}
+
+A quantum network application starts on the host --- there, the host environment compiles it into
+classical and quantum code blocks, and creates a new process associated with the application. The
+host then registers the application with \acrshort{qnodeos} (through \acrshort{qnodeos}'s end-node
+\acrshort{api}), which, in turn, creates its own process associated with the registered application.
+The process on the host is a standard \acrshort{os} process, which executes the classical code
+blocks and interacts with the counterpart process on \acrshort{qnodeos} (by means of a shared
+memory, as defined in NetQASM~\cite{dahlberg_2022_netqasm}). On \acrshort{qnodeos}, a process
+encapsulates the execution of quantum code blocks of an application with associated context
+information, such as process owner, ID, process state and priority.
 
 The execution time of an application is typically dominated by that of quantum blocks, as
 entanglement generation is a time-consuming operation, and its duration grows exponentially with the
@@ -385,19 +387,19 @@ generation must be synchronized with the neighboring node (and possibly the rest
 network~\cite{skrzypczyk_2021_arch}). Additionally, separating user applications into user processes
 also allows \acrshort{qnodeos} to schedule several applications \emph{concurrently}.
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/process-flow.pdf}
     \caption{
         Flow of execution between a user process requesting entanglement and the network process
-        responsible for generating entanglement. The user process starts by asynchronously issuing
-        an entanglement request. Once issued, it is free to continue with other local operations or
+        responsible for generating entanglement. The user process starts by issuing an asynchronous
+        entanglement request. Once issued, it is free to continue with other local operations or
         classical processing. Once it reaches a point in its execution where entanglement is
-        required the process enters the waiting state. The network process is scheduled once the
-        appropriate time bin (as determined by the network schedule) starts. Once running, it
-        attempts entanglement generation until entanglement success (or until a set timeout). The
-        entangled qubit is then transferred to the user process. This unblocks the process which
-        consumes the entanglement and releases the qubit.
+        required the process enters the waiting state. The network process is then scheduled once
+        the appropriate time bin starts, as determined by the network schedule. Once it is running,
+        the network process attempts entanglement generation until entanglement success (or until a
+        set timeout). The entangled qubit is then transferred to the user process. This unblocks the
+        process which consumes the entanglement and releases the qubit.
     }
     \label{fig:process-flow}
 \end{figure}

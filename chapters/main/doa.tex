@@ -41,7 +41,8 @@ to coordinate quantum communication activities. These messages together form wha
 \emph{classical data plane} --- which lives alongside the \emph{quantum data plane}, where
 information encoded in the quantum system is transmitted.
 
-\begin{figure}
+\begin{figure}[b]
+    \centering
     \includegraphics[width=0.6\linewidth]{figures/functional-allocation.pdf}
     \caption{
         Functional allocation of layers in a quantum network stack, adapted from
@@ -69,7 +70,8 @@ message contents
 %
 This structure is illustrated in \cref{fig:mac-structure}.
 
-\begin{figure}
+\begin{figure}[t]
+    \centering
     \includegraphics[width=0.6\linewidth]{figures/mac-structure.pdf}
     \caption{
         General structure of a \acrfull{mac}, where sender and receiver have a shared key. The
@@ -87,7 +89,7 @@ short lifetimes, usually of the order of milliseconds, or at best of a few
 seconds~\cite{abobeih_2018_one_sec, bradley_2019_one_min}. Therefore, not only can high end-to-end
 latency affect the quality of the service offered by the network, but in some cases it may result in
 no service at all. Classical processing and communication overhead must, thus, be kept to a minimum,
-such that the generated entangled qubits can be used as quickly as possible.
+such that the entangled qubits can be used as quickly as possible.
 
 Inevitably, performing \acrshort{doa} on messages exchanged in the classical data plane would incur
 some computation and communication overhead. Such overhead is typically neglected when modeling,
@@ -125,10 +127,9 @@ attacker may:
 \begin{itemize}
     \item Disrupt the network in any number of ways, affecting its \emph{availability}.
     \item Interfere with data sent via the network, hampering the \emph{integrity} of quantum data.
-    \item Read out quantum data through the accompanying classical data, affecting
+    \item Read quantum data through the accompanying classical data, affecting
           \emph{confidentiality}.
 \end{itemize}
-
 Even though the confidentiality of quantum data itself is solely the responsibility of the
 application layer (\cref{fig:functional-allocation}), privacy concerns such as \emph{tracking} are
 still an issue if an attacker can read all classical communication.
@@ -242,15 +243,16 @@ Modify \texttt{TRACK} messages such that the end-nodes of a path do not receive 
 entanglement swap outcome, and thus apply the wrong corrections to their qubits.
 \end{example}
 
-\begin{figure}
+\begin{figure}[t]
+    \centering
     \includegraphics[width=0.6\linewidth]{figures/doa-examples.pdf}
     \caption{
-        A summary of example effects of tampering with control messages at each layer of the quantum
-        network stack through the lens of \acrfull{cia}. We take as examples concrete
-        implementations of quantum network protocols --- including \acrshort{qnp}, \acrshort{qegp}
-        and \acrshort{mhp}~\cite{kozlowski_2020_qnp, dahlberg_2019_egp} --- to highlight the
-        potential vulnerabilities at each layer of the stack. In this work, we do not focus on
-        confidentiality issues, as identified by \textcite{satoh_2020_attacking}.
+        Example effects of tampering with control messages at each layer of the quantum network
+        stack through the lens of \acrfull{cia}. We take as examples concrete implementations of
+        quantum network protocols --- including \acrshort{qnp}, \acrshort{qegp} and
+        \acrshort{mhp}~\cite{kozlowski_2020_qnp, dahlberg_2019_egp} --- to highlight the potential
+        vulnerabilities at each layer. In this work, we do not focus on confidentiality issues (see
+        Ref.~\cite{satoh_2020_attacking}).
     }
     \label{fig:doa-examples}
 \end{figure}
@@ -283,14 +285,14 @@ investigation, we focus on the performance of link and physical layer protocols 
     \item \acrshort{doa} overhead.
 \end{inlinelist}
 
-Instead of modeling transmission and authentication overhead analytically, we measure it
-experimentally by recording \acrfull{rtt} of sample control messages sent and authenticated through
-a full-blown data authentication proxy. The proxy tags classical messages using key material
-obtained from a \acrfull{mdiqkd} key server, based on the work by
-\textcite{berrevoets_2022_deployed}. We then inject the measured overhead into the simulation
-parameters, and then extract performance metrics as done in Ref.~\cite{dahlberg_2019_egp}. The
-process of measuring classical communication overhead is explained in \cref{sec:doa:latency}, while
-the simulation results are presented in \cref{sec:doa:results}.
+Instead of modeling communication overhead analytically, we measure it experimentally by recording
+\acrfull{rtt} of sample control messages sent and authenticated through a full-blown data
+authentication proxy. The proxy tags classical messages using key material obtained from a
+\acrfull{mdiqkd} key server, based on the work by \textcite{berrevoets_2022_deployed}. We then
+inject the measured overhead into the simulation parameters, and then extract performance metrics as
+done in Ref.~\cite{dahlberg_2019_egp}. The process of measuring classical communication overhead is
+explained in \cref{sec:doa:latency}, while the simulation results are presented in
+\cref{sec:doa:results}.
 
 \section{Measuring Classical Latency}
 \label{sec:doa:latency}
@@ -323,7 +325,8 @@ protocol~\cite{yu_2013_three} of the previous deployment. Second, there are now 
 fiber-optic cables for quantum and classical messages. In the original system these were combined,
 at the cost of reduced key rate.
 
-\begin{figure}
+\begin{figure}[t]
+    \centering
     \includegraphics[width=0.6\linewidth]{figures/mac-setup-diagram.pdf}
     \caption{
         Experimental setup used to measure the end-to-end delays of transmitting an
@@ -382,7 +385,8 @@ and the center node is \qty{22}{\km} in length. Thus, the \acrshort{rtt} we meas
 a total length of \qty{42}{\km}. The topology of Alice, Bob, and the center node of the
 \acrshort{mdiqkd} system is illustrated in \cref{fig:mac-setup-qkd-locations}.
 
-\begin{figure}
+\begin{figure}[t]
+    \centering
     \includegraphics[width=0.6\linewidth]{figures/mac-setup-qkd-locations-resized.png}
     \caption{
         Physical layout of Alice and Bob nodes. Alice is located in Groenekan, the Netherlands,
@@ -419,8 +423,21 @@ latency is dominated by two main factors:
     \item the packet processing performance of the proxy, which is approximately constant.
 \end{inlinelist}
 
+\section{Simulation Results}
+\label{sec:doa:results}
+
+We quantify the effects of using an authenticated classical channel for control messages exchanged
+at the quantum network stack level. In particular, we augment the model used by
+\textcite{dahlberg_2019_egp} to simulate the performance of physical (\acrshort{mhp}) and link
+(\acrshort{qegp}) layer protocols within the quantum network stack. As opposed to the original work,
+we model classical communication delays to also include transmission and authentication overhead,
+when using \acrshort{poly} to authenticate messages, measured as described in
+\cref{sec:doa:latency}. We report the \emph{throughput} of the quantum link, expressed as number of
+entangled pairs generated per second.
+
 \begin{table}
-    \begin{tabularx}{\linewidth}{@{} lYYYY @{}}
+    \centering
+    \begin{tabularx}{0.75\linewidth}{@{} lYYYY @{}}
         \toprule
         \textbf{Proxy}                     & \textbf{Tag size}          & \textbf{Payload} & \multicolumn{2}{c}{\textbf{\acrshort{rtt}} [\unit{\us}]}                 \\
         \cmidrule(l){4-5}
@@ -447,18 +464,6 @@ latency is dominated by two main factors:
     \label{tab:rtt}
 \end{table}
 
-\section{Simulation Results}
-\label{sec:doa:results}
-
-We quantify the effects of using an authenticated classical channel for control messages exchanged
-at the quantum network stack level. In particular, we augment the model used by
-\textcite{dahlberg_2019_egp} to simulate the performance of physical (\acrshort{mhp}) and link
-(\acrshort{qegp}) layer protocols within the quantum network stack. As opposed to the original work,
-we model classical communication delays to also include transmission and authentication overhead,
-when using \acrshort{poly} to authenticate messages, measured as described in
-\cref{sec:doa:latency}. We report the \emph{throughput} of the quantum link, expressed as number of
-entangled pairs generated per second.
-
 \paragraph*{Configurations.}
 
 We run our simulations for two types of configurations:
@@ -483,48 +488,32 @@ runs for each configuration with a confidence interval of \qty{95}{\percent}.
 
 \paragraph*{Results.}
 
-\begin{figure}
+\begin{figure}[t]
+    \centering
     \includegraphics[width=0.6\linewidth]{figures/throughput_FCFS.pdf}
-    \begin{tabularx}{\linewidth}{@{} lYYYYYYYY @{}}
+    \begin{tabularx}{0.6\linewidth}{@{} lYYYYYYYY @{}}
         \toprule%
-                        & \multicolumn{8}{c}{\textbf{Breakdown of distance A -- B [\unit{\km}]}}                                   \\%
+                        & \multicolumn{8}{c}{\textbf{Breakdown of distance A -- B [\unit{\km}]}} \\%
         \midrule%
-        \textbf{A -- M} & 1.5                                                                    & 3 & 6  & 9  & 15 & 22 & 30 & 45 \\%
-        \textbf{M -- B} & 1                                                                      & 2 & 4  & 6  & 10 & 20 & 20 & 30 \\%
+        \textbf{A -- M} & 1.5 & 3 & 6  & 9  & 15 & 22 & 30 & 45 \\%
+        \textbf{M -- B} & 1   & 2 & 4  & 6  & 10 & 20 & 20 & 30 \\%
         \midrule%
-        \textbf{Total}  & 2.5                                                                    & 5 & 10 & 15 & 25 & 42 & 50 & 75 \\%
-        \bottomrule               %
+        \textbf{Total}  & 2.5 & 5 & 10 & 15 & 25 & 42 & 50 & 75 \\%
+        \bottomrule%
     \end{tabularx}%
     \caption{
         Throughput (rate) of entangled pair generation for multiple distances between node A and B,
         with a single midpoint station in between and for a requested fidelity of
         $F_\text{min}=0.65$. Classical communication delays were modeled using latency measurements
-        collected as described in \cref{sec:doa:latency} (configuration ``\acrshort{poly}''), as well as
-        replicated from the original simulations of \acrshort{qegp} and
-        \acrshort{mhp}~\cite{dahlberg_2019_egp}. The table shows how distance is distributed
-        between A, B, and the midpoint station. The \qty{25}{\km} data point is equivalent to the
-        QL2020 hypothetical setup simulated in Ref.~\cite{dahlberg_2019_egp}. The solid line
-        represents mean throughput, the colored area around it depicts the \qty{95}{\percent}
-        confidence interval.
+        collected as described in \cref{sec:doa:latency} (configuration ``\acrshort{poly}''), as
+        well as replicated from the original simulations of \acrshort{qegp} and
+        \acrshort{mhp}~\cite{dahlberg_2019_egp}. The table shows how distance is distributed between
+        A, B, and the midpoint station. The \qty{25}{\km} data point is equivalent to the QL2020
+        hypothetical setup simulated in Ref.~\cite{dahlberg_2019_egp}. The solid line represents
+        mean throughput, the colored area around it depicts the \qty{95}{\percent} confidence
+        interval.
     }
     \label{fig:results-distance}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.6\linewidth]{figures/throughput_FCFS_mhp_150.pdf}
-    \caption{
-        Throughput (rate) of entangled pair generation for multiple requested fidelities, with
-        \qty{20}{\km} between node A and the midpoint station, and \qty{22}{\km} between the
-        midpoint station and node B, and for three configurations of the proxy as per
-        \cref{sec:doa:latency}: Bypass proxy, No \acrshort{mac}, and \acrshort{poly}. \acrshort{vmac}
-        results are omitted as packet drop rates are excessive. The solid line represents mean
-        throughput, the colored area around it depicts the \qty{95}{\percent} confidence interval.
-        \Acrfull{md} type requests are not as heavily affected as these are pipelined. \Acrfull{nl}
-        type requests are performed sequentially, and thus increases in classical delays have a more
-        profound impact on throughput.
-    }
-    \label{fig:results-fidelity}
 \end{figure}
 
 The results for throughput versus distance are illustrated in \cref{fig:results-distance}. For
@@ -556,6 +545,23 @@ attack surface for \acrlong{cia} of the quantum link and data. To address these 
 employ, among other things, \acrlong{doa} on the classical control messages exchanged at the quantum
 network stack level. We conclude that \acrlong{doa} is necessary to both uphold the integrity of
 quantum data and the availability of the quantum network itself.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/throughput_FCFS_mhp_150.pdf}
+    \caption{
+        Throughput (rate) of entangled pair generation for multiple requested fidelities, with
+        \qty{20}{\km} between node A and the midpoint station, and \qty{22}{\km} between the
+        midpoint station and node B, and for three configurations of the proxy as per
+        \cref{sec:doa:latency}: Bypass proxy, No \acrshort{mac}, and \acrshort{poly}. \acrshort{vmac}
+        results are omitted as packet drop rates are excessive. The solid line represents mean
+        throughput, the colored area around it depicts the \qty{95}{\percent} confidence interval.
+        \Acrfull{md} type requests are not as heavily affected as these are pipelined. \Acrfull{nl}
+        type requests are performed sequentially, and thus increases in classical delays have a more
+        profound impact on throughput.
+    }
+    \label{fig:results-fidelity}
+\end{figure}
 
 We have also simulated the performance of a hypothetical quantum link under the assumption that
 classical messages were being authenticated in some sort of way. Here, we modeled classical

@@ -37,6 +37,9 @@
 \let\openbox\relax
 \usepackage{amsthm}
 
+% Index-style glossary. 
+\usepackage{glossary-mcols}
+
 % Bibliography managed using BibLaTeX.
 \usepackage[
     giveninits=true,     % only given name initials and not the full given name
@@ -85,7 +88,9 @@
 \loadglsentries[main]{glossary}
 
 % Customize style of glossary. 
-\setglossarystyle{super}
+\setglossarystyle{mcolindex}
+\setlength\columnsep{1cm}
+\renewcommand*{\glstreeitem}{\par\raggedright}
 \renewcommand*{\glsgroupskip}{\medskip}
 \renewcommand*{\glsnamefont}[1]{\textbf{#1}}
 

@@ -92,7 +92,7 @@ For both fidelity and latency, we find that our system performs with marginal ov
 to previous non-platform-independent experiments. We also identify the sources of the additional
 overhead incurred, and propose improvements for future realizations.
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/netstack.pdf}
     \caption{
@@ -294,7 +294,7 @@ relation with the link layer entanglement request timeout parameter described in
 Ref.~\cite{dahlberg_2019_egp} --- although batches should be small enough for the link layer timeout
 to make sense.
 
-\begin{figure}
+\begin{figure}[!t]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/netnode.pdf}
     \caption{
@@ -554,7 +554,35 @@ generate entanglement. In fact, this will be used later in the remote state prep
 \section{Evaluation}
 \label{sec:netstack:eval}
 
-\begin{figure}
+To demonstrate and benchmark the capabilities of the link layer protocol, the physical layer, and of
+our system as a whole, we execute --- on our two-node network --- three quantum networking
+applications, all having a similar structure: the client asks for an entangled pair with the server,
+which \acrshort{qegp} delivers in the $\ket{\Phi^+}$ Bell state, and then both client and server
+measure their end of the pair in a certain basis. First, we perform full quantum state tomography of
+the delivered entangled states. Second, we request and characterize entangled states of varying
+fidelity. Third, we execute remote preparation of qubit states on the server by the client. For all
+three applications, we study the quality of the entangled pairs delivered by our system.
+Additionally, we use the second application to assess the latency incurred by our link layer, and to
+compare it to the overall entanglement generation latency, including that of the physical layer.
+Crucially, the three applications are executed back-to-back on the quantum network, without any
+software or hardware changes to the system --- the only difference being the
+quantum-platform-independent application sent to the instruction processor.
+
+The sequence diagram in \cref{fig:fstomography}a exemplifies the general flow between system
+components during the execution of an application. At first, the instruction processor issues a
+request to create entanglement to link layer (\texttt{CREATE}). Then, the client's link layer
+forwards the request with the server's counterpart (Forward \texttt{CREATE}). The request is
+processed as soon as the designated time bin in the \acrshort{tdma} schedule starts, at which point
+the first entanglement command (\texttt{ENT}) is fetched by physical layer. After an entangled state
+is produced successfully (\texttt{PSI\_PLUS}), the link layer of the client issues, if needed, a
+Pauli correction ($\pi$ rotation around the X axis, \texttt{SQG X180}) to deliver the pair in the
+$\ket{\Phi^+}$ state. Finally, the instruction processor issues a gate ($\pi/2$ rotation around the
+X axis, \texttt{SQG X90}) and a measurement (\texttt{MSR}) to read out the entangled qubit in a
+certain basis, and receives an outcome from the physical layer (\texttt{0}).
+\Cref{fig:fstomography}b illustrates the actual latencies between these interactions in one
+iteration of the full state tomography application.
+
+\begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{figures/fstomography.pdf}
     \caption{
@@ -588,34 +616,6 @@ generate entanglement. In fact, this will be used later in the remote state prep
     \label{fig:fstomography}
 \end{figure}
 
-To demonstrate and benchmark the capabilities of the link layer protocol, the physical layer, and of
-our system as a whole, we execute --- on our two-node network --- three quantum networking
-applications, all having a similar structure: the client asks for an entangled pair with the server,
-which \acrshort{qegp} delivers in the $\ket{\Phi^+}$ Bell state, and then both client and server
-measure their end of the pair in a certain basis. First, we perform full quantum state tomography of
-the delivered entangled states. Second, we request and characterize entangled states of varying
-fidelity. Third, we execute remote preparation of qubit states on the server by the client. For all
-three applications, we study the quality of the entangled pairs delivered by our system.
-Additionally, we use the second application to assess the latency incurred by our link layer, and to
-compare it to the overall entanglement generation latency, including that of the physical layer.
-Crucially, the three applications are executed back-to-back on the quantum network, without any
-software or hardware changes to the system --- the only difference being the
-quantum-platform-independent application sent to the instruction processor.
-
-The sequence diagram in \cref{fig:fstomography}a exemplifies the general flow between system
-components during the execution of an application. At first, the instruction processor issues a
-request to create entanglement to link layer (\texttt{CREATE}). Then, the client's link layer
-forwards the request with the server's counterpart (Forward \texttt{CREATE}). The request is
-processed as soon as the designated time bin in the \acrshort{tdma} schedule starts, at which point
-the first entanglement command (\texttt{ENT}) is fetched by physical layer. After an entangled state
-is produced successfully (\texttt{PSI\_PLUS}), the link layer of the client issues, if needed, a
-Pauli correction ($\pi$ rotation around the X axis, \texttt{SQG X180}) to deliver the pair in the
-$\ket{\Phi^+}$ state. Finally, the instruction processor issues a gate ($\pi/2$ rotation around the
-X axis, \texttt{SQG X90}) and a measurement (\texttt{MSR}) to read out the entangled qubit in a
-certain basis, and receives an outcome from the physical layer (\texttt{0}).
-\Cref{fig:fstomography}b illustrates the actual latencies between these interactions in one
-iteration of the full state tomography application.
-
 For all our experiments, we configured \acrshort{tdma} time bins to be of \qty{20}{\ms}. In a larger
 network, the duration of time bins should be calibrated according to the average time it takes, on a
 certain link, to produce an entangled pair of a certain fidelity~\cite{skrzypczyk_2021_arch}. By
@@ -640,8 +640,8 @@ points, for a total of \num{4500} entangled states generated and measured.
 The collected measurement outcomes are then analyzed using QInfer~\cite{granade_2017_qinfer}, in
 particular the Monte Carlo method described in Ref.~\cite{granade_2016_practical} for Bayesian
 estimation of density matrices from tomographic measurements. The reconstructed density matrix is
-displayed in \cref{fig:fstomography}c (only the real part is shown in the figure) and its values and
-uncertainties are
+displayed in \cref{fig:fstomography}c (only the real part is shown) and its values and uncertainties
+are
 %
 \begin{equation*}
     \mathrm{Re}[\rho] = \begin{pmatrix}
@@ -704,7 +704,7 @@ above, for a total of $3 \times 4 = 12$ correlators) for seven different target 
 case study, we analyze both the resulting fidelity and the system's latency for different requested
 fidelities.
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/latencyvsfid.pdf}
     \caption{
@@ -780,7 +780,7 @@ abstraction layer (\acrshort{qegp}) on top of the physical layer, while not too 
 small part of the whole, particularly at higher fidelities. Nevertheless, optimizing the length of
 \acrshort{tdma} time bins could result in an even smaller overhead.
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/rsprep.pdf}
     \caption{
@@ -789,18 +789,18 @@ small part of the whole, particularly at higher fidelities. Nevertheless, optimi
         client ($\ket{0}$, $\ket{1}$), a different state is prepared on the server. Plotted on the
         Bloch spheres are the results of the tomography on the server's qubit. Uncertainties on each
         coordinate are \num{\approx 0.05} (see \cref{sec:netstack:corrections}). We find an average
-        preparation fidelity of $F =$ \num{0.853(8)}.
+        fidelity of $F =$ \num{0.853(8)}.
     }
     \label{fig:rsprep}
 \end{figure}
 
 \paragraph{Remote state preparation}
 
-One of the use cases of the \acrshort{qegp} service is to prepare quantum states on a remote quantum
+One of the use cases of the \acrshort{qegp} service is to prepare quantum states on a remote
 server~\cite{dahlberg_2019_egp}. Remote state preparation is a fundamental step to execute a blind
 quantum computation application~\cite{broadbent_2009_ubqc}, whereby a client quantum computer with
-limited resources can run quantum applications on a powerful remote quantum server using the many
-qubits the server has, while keeping the performed computation private.
+limited resources can run applications on a powerful remote quantum server using the many qubits the
+server has, while keeping the performed computation private.
 
 Remote state preparation is different from the previous two cases in that the client can measure its
 end of the entangled pair as soon as the pair is generated, while the server has to keep its qubit
