@@ -10,30 +10,34 @@ that Mozilla had already dropped a quantum (?) browser~\cite{firefox_quantum}.
 
 However, quantum physics is not just an otherworldly theory from science fiction books, nor just a
 catchy name for 21st-century consumer electronics. Since the formulation of the theory of quantum
-mechanics in (YEAR, and CITATION), researchers and enthusiasts have been looking for how to make use
-of these physical properties, particularly in the fields of electronics, information processing and
-telecommunications. Today, we know of a handful of applications that exploit the axioms of quantum
-information theory to achieve something that was though to be very hard, sometimes even impossible.
-Some of the most well-known use cases include fast resolution of computational problems --- like
-integer factorization (CITE) and database searching (CITE) --- and efficient and secure
-communication schemes --- for instance quantum key distribution (CITE) and superdense coding (CITE).
+mechanics in the early decades of the 20th century, researchers and enthusiasts have been looking
+for how to make use of these physical properties, particularly in the fields of electronics,
+information processing and telecommunications. Today, we know of a handful of applications that
+exploit the axioms of quantum information theory to achieve something that was though to be very
+hard, sometimes even impossible. Some of the most well-known use cases include fast resolution of
+computational problems --- like integer factorization~\cite{shor_1994_algorithms} and database
+searching~\cite{grover_1996_search} --- and efficient and secure communication schemes --- for
+instance quantum key distribution~\cite{bennett_2014_bb84, ekert_1991_e91} and superdense
+coding~\cite{bennett_1992_communication}.
 
 \emph{Quantum networking}, a new paradigm of telecommunications, seeks to enhance --- not replace
 --- our current internet technology to provide new functionalities that are impossible to attain
 with purely classical communications. Novel applications include security-enhancing communication
-schemes such as \acrfull{qkd} (CITE), advanced clock synchronization routines (CITE), distributed
-consensus protocols (CITE), distributed sensing (CITE), distributed quantum computation (CITE), and
-secure cloud quantum computing (CITE). Even though quantum communications are an established
-reality, and their potential applications have garnered attention from industry and research
-institutes, the general public is still rather puzzled, on average, when someone tries to pitch
-their research on quantum networking. The above list of applications does not necessarily appeal to
-the masses, which are still sometimes stuck with the hope that quantum teleportation will instantly
-get them to the Bahamas~\cite{xkcd_teleportation}. Nonetheless, the community of quantum networking
-researchers is not discouraged by this mismatch in expectations, as it hopes that more applications
-will be devised once the technology becomes more widespread and available to more ``consumers''.
-After all, we were also not aware of all the possible uses of the classical internet when it was
-first developed. Yet, today the internet means instantaneous access to low-cost clothes, scenes of
-hilarious felines, and --- for some --- tapes of bare bodies engaging in intimate action on camera.
+schemes such as \acrfull{qkd}~\cite{bennett_2014_bb84, ekert_1991_e91}, advanced clock
+synchronization routines~\cite{komar_2014_clocks}, distributed consensus
+protocols~\cite{benor_2005_byzantine}, distributed sensing~\cite{gottesman_2012_telescope}, and
+secure cloud quantum computing~\cite{broadbent_2009_ubqc, childs_2005_secure_qc}. Even though
+quantum communications are an established reality, and their potential applications have garnered
+attention from industry and research institutes, the general public is still rather puzzled, on
+average, when someone tries to pitch their research on quantum networking. The above list of
+applications does not necessarily appeal to the masses, which are still sometimes stuck with the
+hope that quantum teleportation will instantly get them to the Bahamas~\cite{xkcd_teleportation}.
+Nonetheless, the community of quantum networking researchers is not discouraged by this mismatch in
+expectations, as it hopes that more applications will be devised once the technology becomes more
+widespread and available to more ``consumers''. After all, we were also not aware of all the
+possible uses of the classical internet when it was first developed. Yet, today the internet means
+instantaneous access to low-cost clothes, scenes of hilarious felines, and --- for some --- tapes of
+bare bodies engaging in intimate action on camera.
 
 One of the most frequently asked questions about quantum technology is: \emph{When can we use it?}
 If more people had access to quantum networks, they would perhaps come up with more ideas for useful
@@ -59,7 +63,7 @@ Digital communication networks have come a long way from the early days of the \
 one of the most important precursors of today's internet. Back in 1969, one of the most advanced
 networks of computers consisted of just \emph{four} nodes. As the global network grew larger,
 networking researchers standardized, in 1981, the \acrfull{ipv4}, which allowed up to \num{4}
-billion devices to have their own address on the public internet (CITE RFC791). Soon after, it
+billion devices to have their own address on the public internet~\cite{rfc_791}. Soon after, it
 became clear that the pool of available \acrshort{ipv4} addresses was going to be depleted sooner
 than later --- which happened in 2011~\cite{icann_2011}. In 2023, there are \num{3.6} devices
 connected to the internet per capita, as estimated by \citeauthor{cisco_2020} in
@@ -69,14 +73,13 @@ Scaling up from a four-node experiment to the massive networks of the 21st centu
 of course. This was made possible by advancements in various fields, including networking hardware,
 traffic engineering, and network programmability. You would most likely not be able to download a
 digital copy of this thesis in a fraction of a second if it were not for \unit{\tera\bit\per\second}
-network switches~\cite{broadcom_tomahawk, juniper_qfx5220}, a diverse spectrum of routing protocols
-(CITE), and \acrlong{sdn} (CITE). Nevertheless, classical networking was already appealing in its
-infant stages, for the simple reason that even a small network of nodes can accomplish tasks that
-would not be attainable without it --- in the case of the \textsc{arpanet}, sending simple pieces of
-text over large distances almost instantaneously. The applications of quantum networking are not
-dissimilar to their classical networking counterpart, in that some of them can be useful and
-effective on small quantum networks already, whilst other use cases require more powerful nodes and
-more complex networks~\cite{wehner_2018_stages}.
+network switches, a diverse spectrum of routing protocols, and \acrlong{sdn}. Nevertheless,
+classical networking was already appealing in its infant stages, for the simple reason that even a
+small network of nodes can accomplish tasks that would not be attainable without it --- in the case
+of the \textsc{arpanet}, sending simple pieces of text over large distances almost instantaneously.
+The applications of quantum networking are not dissimilar to their classical networking counterpart,
+in that some of them can be useful and effective on small quantum networks already, whilst other use
+cases require more powerful nodes and more complex networks~\cite{wehner_2018_stages}.
 
 Even though hardware and software advancements were essential to the betterment of the internet,
 there are a few basic design ingredients that have been there since the dawn of classical networking
