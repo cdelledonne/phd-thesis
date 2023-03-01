@@ -13,6 +13,7 @@ considerations that should drive the design of an \acrshort{os} for quantum netw
 proposes a proof-of-principle architecture for such an \acrshort{os}.
 \end{abstract}
 
+\noindent
 \note{To be precise, this chapter is extracted from sections 3 (Design Considerations, but excluding
 3.1) and 4 (\acrshort{qnodeos} Design) from the \acrshort{qnodeos} paper. There aren't any major
 additions.}
@@ -119,8 +120,8 @@ network stack allows an application to request a certain number or rate of entan
 produced with remote nodes with a specified quality (i.e. fidelity) of entanglement. The stack is
 responsible for ensuring the delivery of the entanglement. One possible quantum network stack can be
 found in Ref.~\cite{dahlberg_2019_egp} including the first link layer protocol now realized on
-quantum hardware~\cite{pompili_2022_experimental}, and a network layer protocol (as proposed in
-Ref.~\cite{kozlowski_2020_qnp}).
+quantum hardware~\cite{pompili_2022_experimental} (as described in \cref{chp:netstack}), and a
+network layer protocol (as proposed in Ref.~\cite{kozlowski_2020_qnp}).
 
 To successfully produce entanglement, the network stack needs access to a communication qubit,
 resulting in two requirements for the rest of the system:
@@ -157,16 +158,15 @@ another.
 A scheduler for quantum network nodes should be capable of managing the limited physical resources
 to achieve the desired performance. The performance of any form of scheduling method in the quantum
 domain is assessed not only by existing classical metrics --- like throughput and latency --- but
-also by quantum metrics (see \cref{chp:background}). At the level of the application, the latter can
-be measured in terms of the success probability of the quantum network application. At the level of
-an operation (or a block of operations) it may be measured by the quantum qualities (fidelity) of
-the states and operations performed. We remind that due to limited memory lifetimes, delays have
-always a direct impact on the quantum metrics of performance, resulting in general in trade-offs
-between classical and quantum performance metrics when assessing any scheduling procedure.
+also by quantum metrics (see \cref{chp:background}). At the level of the application, latency can be
+measured in terms of the success probability of the quantum network application. At the level of an
+operation (or a block of operations) it may be measured by the quality (fidelity) of the quantum
+states and operations performed. We remind that due to limited memory lifetimes, delays have always
+a direct impact on the quantum performance, resulting in general in trade-offs between classical and
+quantum performance metrics when assessing any scheduler.
 
 Practically, the scheduler in question should allocate the underlying physical resources --- most
-importantly, the available qubits --- based on a set of well-defined constraints, the fundamental
-ones being:
+importantly, the qubits --- based on a set of well-defined constraints, the fundamental ones being:
 %
 \begin{inlinelist}
     \item \emph{Synchronized network schedule}: due to the bilateral nature of entanglement, each
@@ -202,21 +202,21 @@ variables to the \acrshort{os}:
 
 \paragraph{Scheduling of applications}
 
-In an \acrshort{os} allowing the execution of multiple concurrent quantum network applications, the
-task of an application-level scheduler would be to decide which application to schedule next. We
-remark that a programmer (or compiler) aware of the underlying capabilities of the hardware system
-(e.g. memory lifetimes) can provide advice in the form of a deadline by which the network
-application must have completed in order to be successful. To allow for potentially time-consuming
-classical pre- and post-processing, it is natural to apply such deadlines not for the entirety of
-the application, but for the period between initializing the qubits and terminating the quantum part
-of the execution. This suggests in general using real-time schedulers for quantum network
-applications, taking inspiration from the extensive work on this topic in classical systems (see
-e.g. Ref.~\cite{liu_1973_scheduling}). While outside the scope of this work, we remark that this
-type of scheduling offers to inspire interesting new work in a form of ``quantum soft-real time''
+In an \acrshort{os} allowing the execution of concurrent quantum network applications, the task of
+an application-level scheduler would be to decide which application to schedule next. We remark that
+a programmer (or compiler) aware of the underlying capabilities of the hardware system (e.g. memory
+lifetimes) can provide advice in the form of a deadline by which the network application must have
+completed in order to be successful. To allow for potentially time-consuming classical pre- and
+post-processing, it is natural to apply such deadlines not for the entirety of the application, but
+for the period between initializing the qubits and terminating the quantum part of the execution.
+This suggests in general using real-time schedulers for quantum network applications, taking
+inspiration from the extensive work on this topic in classical systems (see e.g.
+Ref.~\cite{liu_1973_scheduling}). While outside the scope of this work, we remark that this type of
+scheduling offers to inspire interesting new work in a form of ``quantum soft-real time''
 scheduling, where deadlines may occasionally be missed at the expense of reduced application
 performance (success probability), to maximize the overall performance of the system in which
 applications are typically executed repeatedly. A benchmark for the quantum performance of any
-application level scheduler is the quality of the quantum execution when the entire system (all
+application-level scheduler is the quality of the quantum execution when the entire system (all
 nodes) are reserved for only one application at the time.
 
 \paragraph{Scheduling of quantum blocks}
@@ -253,21 +253,20 @@ system for quantum networks, and to provide a minimum working system.
 
 As described in \cref{chp:background} and illustrated in \cref{fig:app-struct}, a quantum network
 application consists of programs running on different end nodes, composed of blocks of quantum code
-and blocks of fully-classical code. In fact, quantum code blocks may also contain lightweight
-classical logic --- like simple arithmetic and branching instructions --- used for flow control.
-These quantum code blocks do not have any dependencies on data originating from other nodes.
-Fully-classical code blocks --- which include local processing and communication with other end
-nodes --- mainly produce input data for the next quantum code blocks. That is, a classical code
-block typically precedes a quantum code block whose instructions depend on external data coming from
-a remote end node. In our system, quantum code blocks expressed in
-\emph{NetQASM}~\cite{dahlberg_2022_netqasm}. NetQASM is an open-source \acrfull{sdk} and instruction
-set for quantum applications~\cite{netqasm_sdk}. The NetQASM \acrshort{sdk} compiles a quantum
-network application, written in Python, into a series of classical and quantum code blocks. The
-instruction set used for the quantum code blocks is similar to other QASM
-languages~\cite{cross_2017_qasm, khammassi_2018_cqasm, fu_2019_eqasm}, but it is extended to include
-instructions for quantum networking. NetQASM is not a strict requirement of \acrshort{qnodeos}, but
-it does impose certain conventions (described in Ref.~\cite{dahlberg_2022_netqasm}) on a particular
-implementation of the system.
+and blocks of fully-classical code. In fact, quantum code blocks may also contain simple classical
+logic --- like simple arithmetic and branching instructions --- used for flow control. These blocks
+do not have any dependencies on data originating from other nodes. Fully-classical code blocks ---
+which include local processing and communication with other end nodes --- mainly produce input data
+for the next quantum code blocks. That is, a classical code block typically precedes a quantum code
+block whose instructions depend on external data coming from a remote end node. In our system,
+quantum code blocks expressed in \emph{NetQASM}~\cite{dahlberg_2022_netqasm}. NetQASM is an
+open-source \acrfull{sdk} and instruction set for quantum applications~\cite{netqasm_sdk}. The
+NetQASM \acrshort{sdk} compiles a quantum network application, written in Python, into a series of
+classical and quantum code blocks. The instruction set used for the quantum code blocks is similar
+to other QASM languages~\cite{cross_2017_qasm, khammassi_2018_cqasm, fu_2019_eqasm}, but it is
+extended to include instructions for quantum networking. NetQASM is not a strict requirement of
+\acrshort{qnodeos}, but it does impose certain conventions (described in
+Ref.~\cite{dahlberg_2022_netqasm}) on a particular implementation of the system.
 
 In principle, classical and quantum code blocks can be run on a single system, provided that this
 has a connection to the quantum device to execute the actual quantum instructions. However, in the
@@ -284,12 +283,10 @@ relying on the underlying quantum device --- denoted as \emph{\acrshort{qdevice}
 actual quantum operations.
 
 The architecture of a quantum network node is depicted in \cref{fig:quantum-node}. An alternative
-architecture of the end node of a quantum network could merge host and \acrshort{qnodeos} into the
-same system, potentially enabling some performance optimizations, at the cost of higher system
-complexity. We also note that the host, \acrshort{qnodeos} and the classical control modules of the
-\acrshort{qdevice} can be deployed on distinct physical devices, or combined in some way. For
-simplicity, we implemented each component (host, \acrshort{qnodeos}, \acrshort{qdevice}) on a
-separate device (as outlined in \cref{chp:qnodeos}).
+architecture could merge host and \acrshort{qnodeos} into the same system, potentially enabling some
+performance optimizations, at the cost of a higher system complexity. We also note that the host,
+\acrshort{qnodeos} and the classical control modules of the \acrshort{qdevice} can be deployed on
+distinct physical devices, or combined in some way.
 
 \begin{figure}[t]
     \centering
@@ -324,20 +321,20 @@ information, such as process owner, ID, process state and priority.
 
 The execution time of an application is typically dominated by that of quantum blocks, as
 entanglement generation is a time-consuming operation, and its duration grows exponentially with the
-distance between the nodes. For this reason, in this paper we focus on the scheduling of quantum
+distance between the nodes. For this reason, in this work we focus on the scheduling of quantum
 blocks only, and thus we only discuss \acrshort{qnodeos} processes from this point onward. Again,
 this does not exclude that, in a future iteration of the design, host and \acrshort{qnodeos} could
 be merged into one system, and therefore classical and quantum blocks would be scheduled jointly.
 
 \paragraph{\acrshort{qnodeos} user processes}
 
-\acrshort{qnodeos} allocates a new \emph{user process} for each quantum network application
+\acrshort{qnodeos} allocates a new \emph{user process} to each quantum network application
 registered by the host. A user process becomes active (ready to be scheduled) as soon as
 \acrshort{qnodeos} receives a quantum code block from the host. Multiple user processes --- relative
 to different host applications --- can be concurrently active on \acrshort{qnodeos}, but only one
-can be running at any time. A running user process executes its quantum code block instructions
-directly, except for entanglement requests, which are instead submitted to the quantum network stack
-and executed asynchronously.
+can be running at any time. A running user process executes its quantum code block directly, except
+for entanglement requests, which are instead submitted to the quantum network stack and executed
+asynchronously.
 
 \paragraph{\acrshort{qnodeos} network process}
 
@@ -366,7 +363,7 @@ A \acrshort{qnodeos} process can be in any of the following states:
     \item \emph{waiting}: when it is waiting for some event to occur.
 \end{inlinelist}
 User processes enter the waiting state when they need one or more entangled pairs to proceed, and
-then become ready again once all the requested pairs are delivered by the network process.
+become ready again once all the requested pairs are delivered by the network process.
 
 \paragraph{Inter-process communication}
 
@@ -382,8 +379,8 @@ The strict separation between local quantum processing and quantum networking is
 decision in \acrshort{qnodeos}, as it helps us address the scheduling challenge described in
 \cref{chp:background}. A user process can continue executing local instructions even after it has
 requested entanglement. Conversely, networking instructions can execute asynchronously of local
-quantum instructions. This is rather important in a quantum network, since all entanglement
-generation must be synchronized with the neighboring node (and possibly the rest of the
+quantum instructions. This is rather important in a quantum network, since entanglement generation
+must be synchronized with the neighboring node (and possibly the rest of the
 network~\cite{skrzypczyk_2021_arch}). Additionally, separating user applications into user processes
 also allows \acrshort{qnodeos} to schedule several applications \emph{concurrently}.
 
@@ -487,8 +484,8 @@ returns the entangled pair(s) described by an identifier and the generated Bell 
 network stack owns the network process, whose activation is dictated by a network-wide entanglement
 schedule. The quantum network stack in \acrshort{qnodeos} is based on the model outlined by
 \textcite{dahlberg_2019_egp}, and features a \emph{link layer protocol} --- presented in the same
-work, and recently evaluated on hardware~\cite{pompili_2022_experimental} --- and a \emph{network
-layer protocol} --- as designed by \textcite{kozlowski_2020_qnp}.
+work, and recently evaluated on hardware~\cite{pompili_2022_experimental} (\cref{chp:netstack}) ---
+and a \emph{network layer protocol} --- as designed by \textcite{kozlowski_2020_qnp}.
 
 \paragraph{Quantum memory management unit}
 

@@ -18,6 +18,7 @@ communication systems, which will enable the development and testing of componen
 quantum networks.
 \end{abstract}
 
+\noindent
 \note{This chapter is extracted from the npj paper. No major additions.}
 
 \blfootnote{
@@ -473,8 +474,8 @@ the \acrshort{awg} (duration \qty{\approx100}{\ns}), which is then multiplied to
 (\qty{\approx2}{\GHz}), amplified and finally delivered to the quantum device. The link layer can
 request rotations in steps of $\pi/16$ around the X, Y or Z axis of the Bloch sphere (here we
 implement only X and Y rotations, Z rotations will be implemented in the near future, see
-\cref{sec:app:phys:sqg}). When a new gate is requested by the link layer, the device controller at
-the physical layer informs the \acrshort{awg} of the gate request via a parallel \num{32}-bit
+\cref{app:phys}). When a new gate is requested by the link layer, the device controller at the
+physical layer informs the \acrshort{awg} of the gate request via a parallel \num{32}-bit
 \acrshort{dio} interface. The \acrshort{awg} will then select one of the $64$ pre-compiled
 waveforms, play it, and notify the device controller that the gate has been executed. The device
 controller will in turn notify the network controller of the successful operation.
@@ -521,16 +522,16 @@ the entanglement synchronization step, the device controllers proceed with an op
 stabilization cycle~\cite{pompili_2021_multinode}, and then the \acrshortpl{awg} are triggered to
 attempt entanglement generation. In our implementation, one device controller (the server's)
 triggers both \acrshortpl{awg} to achieve sub-nanosecond jitter between the two \acrshortpl{awg}
-(see \cref{sec:app:phys:longdist} for a discussion on longer distance implementation). Each
-entanglement attempt lasts \qty{3.8}{\us}, and includes fast qubit initialization,
-communication-qubit to flying-qubit entanglement, and probabilistic entanglement swapping of the
-flying qubits~\cite{pompili_2021_multinode}. The \acrshortpl{awg} attempt entanglement up to
-\num{1000} times before timing out and reporting an {entanglement failure} (\texttt{ENT\_FAIL}).
-Longer batches of entanglement attempts would increase the probability that one of the nodes goes
-into the unwanted charge state (and therefore cannot produce entanglement, see
-\cref{sec:app:phys:resonance}). While in principle possible, we did not implement, in this first
-realization, the charge stabilization mechanism proposed in Ref.~\cite{humphreys_2018_delivery} that
-would allow for significantly longer batches of entanglement attempts.
+(see \cref{app:phys} for a discussion on longer distance implementation). Each entanglement attempt
+lasts \qty{3.8}{\us}, and includes fast qubit initialization, communication-qubit to flying-qubit
+entanglement, and probabilistic entanglement swapping of the flying
+qubits~\cite{pompili_2021_multinode}. The \acrshortpl{awg} attempt entanglement up to \num{1000}
+times before timing out and reporting an {entanglement failure} (\texttt{ENT\_FAIL}). Longer batches
+of entanglement attempts would increase the probability that one of the nodes goes into the unwanted
+charge state (and therefore cannot produce entanglement, see \cref{app:phys}). While in principle
+possible, we did not implement, in this first realization, the charge stabilization mechanism
+proposed in Ref.~\cite{humphreys_2018_delivery} that would allow for significantly longer batches of
+entanglement attempts.
 
 If an entanglement generation attempt is successful (probability \num{\approx 5e-5}), the
 communication qubits of the two nodes will be projected into an entangled state (either
@@ -609,9 +610,8 @@ iteration of the full state tomography application.
         %
         (d) Total number of delivered states over time. The occasional pauses in entanglement
         delivery (plateaus) are due to the client's \acrshort{nv} center becoming off-resonant with
-        the relevant lasers (see \cref{sec:app:phys:resonance}). Differences in slope are due to
-        changes in resonance conditions that increase the time necessary to pass the
-        \acrlong{crcheck}.
+        the relevant lasers (see \cref{app:phys}). Differences in slope are due to changes in
+        resonance conditions that increase the time necessary to pass the \acrlong{crcheck}.
     }
     \label{fig:fstomography}
 \end{figure}
@@ -684,7 +684,7 @@ incorrect charge state.
 Finally, we show, in \cref{fig:fstomography}d, that our system can sustain a fairly stable
 entanglement delivery rate over \qty{\approx 30}{min} of data acquisition --- plateaus and changes
 in slope can be attributed to varying conditions of resonance between the \acrshort{nv} centers and
-the relevant lasers (see \cref{sec:app:phys:resonance}).
+the relevant lasers (see \cref{app:phys}).
 
 \paragraph{Latency VS fidelity}
 

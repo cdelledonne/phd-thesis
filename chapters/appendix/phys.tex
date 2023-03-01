@@ -4,8 +4,7 @@
 We provide here additional details concerning the implementation of the quantum physical layer used
 for our experiments.
 
-\section{Single Qubit Gates}
-\label{sec:app:phys:sqg}
+\paragraph{Single qubit gates}
 
 At the physical layer, we implement real-time rotations around the X and Y axes of the qubit Bloch
 sphere, using a resolution of $\pi/16=$\ang{11.25}. That is, the upper layer can request any
@@ -22,8 +21,7 @@ one can perform effective Z rotations with very high resolution and virtually no
 \acrshortpl{awg} currently in use have the required capabilities, and the implementation of said Z
 gates is planned for the near future.
 
-\section{Clock Sharing and \acrshort{awg} Triggering Over Longer Distances}
-\label{sec:app:phys:longdist}
+\paragraph{Clock sharing and \acrshort{awg} triggering over longer distances}
 
 One of the technical challenges of realizing a large scale quantum network is synchronizing
 equipment at the physical layer across nodes. The synchronization is required to generate
@@ -66,8 +64,7 @@ network stack, which would not be possible over longer distances. Specifically:
 For reference, our client (server) is based on node Charlie (Bob) of the multi-node quantum network
 presented in Ref.~\cite{pompili_2021_multinode}.
 
-\section{\acrshort{nv} Center Resonance Control}
-\label{sec:app:phys:resonance}
+\paragraph{\acrshort{nv} center resonance control}
 
 The two quantum network nodes use different techniques to control the resonance of their
 \acrshort{nv} centers (see Ref.~\cite{pompili_2021_multinode} for implementations details). The

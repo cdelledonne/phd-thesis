@@ -1,0 +1,268 @@
+\chapter{\acrshort{qdevice} Interface} \label{app:qdevice}
+
+The implementation of a \acrshort{qdevice} depends on a number of factors. Most importantly, the
+physical signals that are fed to the quantum processing and networking device, and those that are
+output from the device, are specific to the nature of the device itself. Different qubit
+realizations require different digital and analog control. For instance, manipulating the state of a
+spin-based qubit (e.g., in a nitrogen-vacancy center processor) and that of an ultracold atom qubit
+(e.g., in a trapped ion processor) are two physical processes that vastly differ in a number of
+complicated ways.
+
+For \acrshort{qnodeos} to be portable to a diverse set of quantum physical platforms, there needs to
+be a common \emph{\acrshort{qdevice} interface} that \acrshort{qnodeos} can rely on, and that each
+\acrshort{qdevice} instance can implement as it is most convenient for the underlying quantum
+device. This interface need be quite general, to be able to express all quantum operations that
+different quantum devices might be capable of performing, and rather abstract, so that two different
+implementations of a well-defined qubit manipulation operation can be expressed with the same
+instruction on \acrshort{qnodeos}. Nevertheless, an interface that is too general could result in a
+high implementation complexity on the \acrshort{qdevice}, as it might have to transform high-level
+instructions in a series of native operations on the fly. Other than complexity of implementation, a
+very high-level set of \acrshort{qdevice} instructions might compromise the compiler's ability to
+optimize an application for a certain physical platform, as reported by
+\textcite{murali_2019_fullstack}.
+
+Defining a set of instructions to express abstract quantum operations as close as possible to what
+different quantum physical platforms can natively perform is, to some extent, an open problem. While
+this is outside the scope of this work, we have made an effort to specify an interface which is a
+good compromise between generality and expressiveness. The \acrshort{qdevice} interface is
+essentially a set of instructions that \acrshort{qnodeos} expects a \acrshort{qdevice} to implement.
+To be precise, a \acrshort{qdevice} might implement a subset of the interface, according to what
+native physical operations it can perform. The Host compiler must then have knowledge about the set
+of instructions implemented by the underlying \acrshort{qdevice}, so that it can decompose
+instructions that are not natively supported.
+
+Even though this interface does not impose any formal timing constraints, it is important to note
+that a \acrshort{qdevice} implementation that tries to guarantee more or less deterministic
+instruction processing latencies can prove more beneficial to the real-time requirements of
+\acrshort{qnodeos}. Particularly, it would be advisable to time-bound the processing time of
+operations whose duration is by nature probabilistic --- most notably, those involving entanglement
+generation. Creating an entangled pair may involve a varying number of attempts. Sometimes, if the
+remote node becomes unresponsive for a period of time, the number of necessary attempts can increase
+by a large amount. Capping the number of attempts could, for instance, provide a more deterministic
+maximum processing latency for entanglement instructions, which in turn might help
+\acrshort{qnodeos} react more timely to temporary failures or downtime periods of remote nodes. Not
+to mention that unbounded entanglement attempts affect the state of other qubits in memory, because
+of both passive decoherence and cross-qubit noise.
+
+\begin{table}[t]
+    \centering
+    \begin{tabularx}{0.75\linewidth}{>{\ttfamily}l l}
+        \toprule
+        \normalfont{Instruction} & Description                                  \\
+        \midrule
+        INI                      & Initialize a qubit to default state          \\
+        SQG                      & Perform a single-qubit gate                  \\
+        TQG                      & Perform a two-qubit gate                     \\
+        AQG                      & Perform a gate on all qubits                 \\
+        MSR                      & Measure a qubit in a specified basis         \\
+        ENT                      & Attempt entanglement generation              \\
+        ENM                      & Attempt entanglement and measure qubit       \\
+        MOV                      & Move qubit state to another qubit            \\
+        SWP                      & Swap the state of two qubits                 \\
+        ESW                      & Swap qubits belonging to two entangled pairs \\
+        PMG                      & Set pre-measurement gates                    \\
+        \bottomrule
+    \end{tabularx}
+    \caption{
+        Summary of \acrshort{qdevice} instructions defined in the \acrshort{qdevice} interface. A
+        specific \acrshort{qdevice} might implement a subset of these, depending on the underlying
+        quantum physical device and on other design constraints.
+    }
+    \label{tab:qdevice-instructions}
+\end{table}
+
+\Cref{tab:qdevice-instructions} lists the complete set of instructions defined in the
+\acrshort{qdevice} interface. Instructions can have operands, whose range of valid values depends on
+the underlying \acrshort{qdevice}. For instance, an operand that specifies which qubit to apply an
+operation to can only have as many valid values as there are physical qubits in memory. Details for
+each instruction and its operands are given below.
+
+\paragraph{Qubit initialization (\texttt{INI})}
+
+The \texttt{INI} instruction brings a qubit to the $\ket{0}$ state. On some physical platforms,
+single-qubit initialization is not possible, thus this instruction initializes all qubits to the
+$\ket{0}$ state.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                                                         \\
+    \midrule
+    qubit                & Physical address of the qubit to initialize, ignored on platforms where single-qubit initialization is not possible \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Single-qubit gate (\texttt{SQG})}
+
+The \texttt{SQG} instruction manipulates the state of one qubit. The gate is expressed as a rotation
+in the Bloch sphere.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                  \\
+    \midrule
+    qubit                & Physical address of the qubit to manipulate                                  \\
+    axis                 & Rotation axis, can be X, Y, Z or H (support is \acrshort{qdevice}-dependent) \\
+    angle                & Rotation angle (granularity and range are \acrshort{qdevice}-dependent)      \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Two-qubit gate (\texttt{TQG})}
+
+The \texttt{TQG} instruction manipulates the state of two qubits. The gate is expressed as a
+controlled rotation, with one qubit being the control and the other one being the target.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                  \\
+    \midrule
+    qub\_c               & Physical address of the control qubit                                        \\
+    qub\_t               & Physical address of the target qubit                                         \\
+    axis                 & Rotation axis, can be X, Y, Z or H (support is \acrshort{qdevice}-dependent) \\
+    angle                & Rotation angle (granularity and range are \acrshort{qdevice}-dependent)      \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{All-qubit gate (\texttt{AQG})}
+
+The \texttt{AQG} instruction manipulates the state of all available qubits. The gate is expressed as
+a rotation in the Bloch sphere.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                  \\
+    \midrule
+    axis                 & Rotation axis, can be X, Y, Z or H (support is \acrshort{qdevice}-dependent) \\
+    angle                & Rotation angle (granularity and range are \acrshort{qdevice}-dependent)      \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Qubit measurement (\texttt{MSR})}
+
+The \texttt{MSR} instruction measures the state of one qubit in a specified basis. A qubit
+measurement is destructive --- that is --- the qubit has to be reinitialized before it can be used
+again.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                    \\
+    \midrule
+    qubit                & Physical address of the qubit to measure                                       \\
+    basis                & Measurement basis, can be X, Y, Z, H (support is \acrshort{qdevice}-dependent) \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Entanglement generation (\texttt{ENT})}
+
+The \texttt{ENT} instruction performs a series of entanglement generation attempts, until one
+succeeds, or until a maximum number of attempts is reached (the behavior is
+\acrshort{qdevice}-dependent).
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                                               \\
+    \midrule
+    nghbr                & Neighboring node to attempt entanglement with, if the local \acrshort{qdevice} has multiple quantum links \\
+    fid                  & Target entanglement fidelity (granularity and range are \acrshort{qdevice}-dependent)                     \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Entanglement generation with qubit measurement (\texttt{ENM})}
+
+The \texttt{ENM} instruction performs a series of entanglement generation attempts followed by an
+immediate measurement of the local qubit, until one succeeds, or until a maximum number of attempts
+is reached (the behavior is \acrshort{qdevice}-dependent).
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                                               \\
+    \midrule
+    nghbr                & Neighboring node to attempt entanglement with, if the local \acrshort{qdevice} has multiple quantum links \\
+    fid                  & Target entanglement fidelity (granularity and range are \acrshort{qdevice}-dependent)                     \\
+    basis                & Measurement basis, can be X, Y, Z, H (support is \acrshort{qdevice}-dependent)                            \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Qubit move (\texttt{MOV})}
+
+The \texttt{MOV} instruction moves the state of one qubit to another qubit. A qubit move renders the
+state of the source qubit undefined, and the qubit has to be reinitialized before it can be used
+again.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                               \\
+    \midrule
+    qub\_s               & Physical address of the source qubit      \\
+    qub\_d               & Physical address of the destination qubit \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Qubit swap (\texttt{SWP})}
+
+The \texttt{SWP} instruction swaps the state of two qubits.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                          \\
+    \midrule
+    qub\_1               & Physical address of the first qubit  \\
+    qub\_2               & Physical address of the second qubit \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Entanglement swap (\texttt{ESW})}
+
+The \texttt{ESW} instruction results in two qubits belonging to two entangled pairs to have their
+roles swapped.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                          \\
+    \midrule
+    qub\_1               & Physical address of the first qubit  \\
+    qub\_2               & Physical address of the second qubit \\
+    \bottomrule
+\end{tabularx}
+\medskip
+
+\paragraph{Pre-measurement gates setting (\texttt{PMG})}
+
+The \texttt{PMG} instruction allows for a set of (up to) 3 rotations to be performed before a qubit
+measurement (\texttt{MSR} or \texttt{ENM}). If the axis of the second rotation is orthogonal to the
+axis of the first and the third rotation, these gates can be used to perform a qubit measurement in
+an arbitrary basis, given that most likely a \acrshort{qdevice} can natively measure in a limited
+set of bases.
+
+\smallskip\noindent
+\begin{tabularx}{\linewidth}{>{\ttfamily}l X}
+    \toprule
+    \normalfont{Operand} & Description                                                                                                                                             \\
+    \midrule
+    axes                 & Combination of orthogonal axes to use for the three successive rotations, can be X--Y--X, Y--Z--Y and Z--X--Z (support is \acrshort{qdevice}-dependent) \\
+    ang\_1               & Rotation angle of the first gate, relative to the first axis in \texttt{axes} (granularity and range are \acrshort{qdevice}-dependent)                  \\
+    ang\_2               & Rotation angle of the second gate, relative to the second axis in \texttt{axes} (granularity and range are \acrshort{qdevice}-dependent)                \\
+    ang\_3               & Rotation angle of the third gate, relative to the third axis in \texttt{axes} (granularity
+    and range are \acrshort{qdevice}-dependent)                                                                                                                                    \\
+    \bottomrule
+\end{tabularx}
+
+\printbibliography[heading=subbibintoc,title={References}]

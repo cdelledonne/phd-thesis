@@ -15,6 +15,7 @@ much more pronounced effect on entanglement requests that require storing the en
 memory, and thus must be carried out sequentially.
 \end{abstract}
 
+\noindent
 \note{This chapter is extracted from the data origin authentication paper. There aren't any major
 additions.}
 
@@ -139,8 +140,8 @@ classical communication to coordinate quantum communication and
 entanglement~\cite{van_meter_2013_repeaters, schoute_2016_shortcuts, joshi_2020_trusted,
 pirker_2019_quantum, kozlowski_2019_towards, dahlberg_2019_egp, kozlowski_2020_qnp}. We investigate
 one such proposal for a quantum network stack, the one put forth by \textcite{dahlberg_2019_egp},
-which has been evaluated in simulation, as well as on hardware~\cite{pompili_2022_experimental}, and
-extended by \textcite{kozlowski_2020_qnp}.
+which has been evaluated in simulation, as well as on hardware~\cite{pompili_2022_experimental}
+(\cref{chp:netstack}), and extended by \textcite{kozlowski_2020_qnp}.
 
 The proposed protocol stack for quantum networks includes physical, link, network, transport, and
 application layers, as illustrated in \cref{fig:functional-allocation}. The physical layer protocol,
@@ -307,12 +308,13 @@ the receiving end before delivering the message to the destination node. The exp
 depicted in \cref{fig:mac-setup-diagram}.
 
 Ping messages are exchanged between two real-time classical network nodes similar to those used in
-the experimental validation of \acrshort{qegp}~\cite{pompili_2022_experimental} --- MicroZed
-boards~\cite{microzed} running a FreeRTOS~\cite{freertos} application --- connected to the proxy via
-a Gigabit Ethernet interface. The source node records the \acrshort{rtt} of the message, and
-computes various statistics on these timestamps, most notably average and standard deviation. We use
-these statistics to extrapolate the expected classical communication latency for the various
-simulation scenarios presented in \cref{sec:doa:results}.
+the experimental validation of \acrshort{qegp}~\cite{pompili_2022_experimental}
+(\cref{chp:netstack, chp:qnodeos}) --- MicroZed boards~\cite{microzed} running a
+FreeRTOS~\cite{freertos} application --- connected to the proxy via a Gigabit Ethernet interface.
+The source node records the \acrshort{rtt} of the message, and computes various statistics on these
+timestamps, most notably average and standard deviation. We use these statistics to extrapolate the
+expected classical communication latency for the various simulation scenarios presented in
+\cref{sec:doa:results}.
 
 The \acrfull{mac} on both ends retrieves authentication keys from a local key server, which contains
 key material identical to its counterpart at the other end. Key material is produced by an

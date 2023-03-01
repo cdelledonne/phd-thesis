@@ -11,6 +11,7 @@ What makes them special, and at the same time challenging to manage? This chapte
 background knowledge on quantum networking and recaps the primary challenges thereof.
 \end{abstract}
 
+\noindent
 \note{To be precise, this chapter is extracted from sections 1 (Introduction), 2 (Background on
 Quantum Networking) and 3.1 (Challenges) from the \acrshort{qnodeos} paper. There aren't any major
 additions.}
@@ -22,21 +23,13 @@ additions.}
 
 \newpage
 
-% * Quantum networking basics, state of the art, ad-hoc experiments, and (lack of) sophisticated
-%   control systems above the physical layer.
-% * Recap of what exists for classical networking, including communication protocols, network OSes,
-%   SDNs, and what we can learn from these for quantum networking.
-% * Limitations of quantum theory and hardware that need addressing when designing abstractions, and
-%   generic requirements for such abstractions.
-
 \lettrine{U}{biquitous} internet connectivity has already unlocked a plethora of applications that
 were not even conceived just years ago. Similarly, a future quantum
 internet~\cite{kimble_2008_quantum, wehner_2018_stages} aims to connect quantum devices --- the
-\emph{end nodes}~\cite{wehner_2018_stages} --- over large distances, in order provide new internet
-functionality that is impossible to achieve using solely classical communication. Examples of
-applications~\cite{wehner_2018_stages} running on end nodes include security-enhancing protocols
-such as \acrfull{qkd}~\cite{ekert_1991_e91, bennett_2014_bb84}, improved clock
-synchronization~\cite{komar_2014_clocks}, support for distributed
+\emph{end nodes} --- over large distances, in order provide new internet functionality that is
+impossible to achieve using solely classical communication. Examples of applications running on end
+nodes include security-enhancing protocols such as \acrfull{qkd}~\cite{ekert_1991_e91,
+bennett_2014_bb84}, improved clock synchronization~\cite{komar_2014_clocks}, support for distributed
 sensing~\cite{gottesman_2012_telescope} and distributed systems~\cite{benor_2005_byzantine}, as well
 as secure quantum computing in the cloud~\cite{broadbent_2009_ubqc, childs_2005_secure_qc}.
 
@@ -68,17 +61,17 @@ require local classical processing, as well as classical communication between t
     \label{fig:quantum-internet}
 \end{figure}
 
-Abstractly, a quantum networking application consists of multiple programs, each running at one of
+Abstractly, a quantum networking application consists of multiple programs, each running on one of
 the end nodes. The distinct programs only interact with one another by means of entanglement
 generation and classical communication. This allows a programmer to realize security sensitive
 applications just as in the classical domain, but prohibits a global orchestration of the quantum
 execution as one might do in quantum computing. The case of secure quantum computing in the
-cloud~\cite{broadbent_2009_ubqc, childs_2005_secure_qc} provides a simple illustrative use case of a
-quantum networking application, schematically depicted in \cref{fig:app-struct}. In blind quantum
-computing, a client node wants to perform a computation on a remote server node, the latter being a
-powerful quantum computer, without the server learning anything about the computation. Blind quantum
-computing illustrates the need for a continuing interaction between the classical and quantum parts
-of the execution, such as waiting for a message from a remote client before continuing the quantum
+cloud~\cite{broadbent_2009_ubqc, childs_2005_secure_qc} is an example of a quantum networking
+application, schematically depicted in \cref{fig:app-struct}. In blind quantum computing, a client
+node wants to perform a computation on a remote server node, the latter being a powerful quantum
+computer, without the server learning anything about the computation. Blind quantum computing
+illustrates the need for a continuing interaction between the classical and quantum parts of the
+execution, such as waiting for a message from a remote client before continuing the quantum
 execution at the server. It also highlights the need for both classical and quantum state to be kept
 alive, for example such that future quantum instructions can be executed depending on messages from
 remote end nodes. This is in sharp contrast to quantum computing applications, where one can process
@@ -108,32 +101,32 @@ yin_2017_satellite}, to fully-fledged quantum processors with a network
 interface~\cite{bernien_2013_heralded, humphreys_2018_delivery, pompili_2021_multinode,
 moehring_2007_ion_traps, reiserer_2015_neutral_atoms}. The largest quantum network linking quantum
 processors to date connects three nodes~\cite{pompili_2021_multinode} based on nitrogen-vacancy
-centers in diamond (\acrshort{nv} centers) at the physical layer. Demonstrations of quantum
-networking applications beyond \acrshort{qkd} have been performed using several photonic
+centers in diamond (\acrshort{nv} centers) at the physical layer. Demonstrations of applications
+beyond \acrshort{qkd} have been performed using several photonic
 devices~\cite{barz_2012_demonstration, thalacker_2019_anonymous, bozzio_2020_coin,
 ng_2012_noisystorage}. Central to all these demonstrations is that the software to control the
 hardware was specific to the experiment setup, written to perform one single task (the experiment
 itself) and programmed into low-level control devices. In fact, often applications were not even
-actually fully realized towards a user but quantum data was collected to show that the hardware is
-in principle good enough for that specific application~\cite{zhang_2022_diqkd,
+actually fully realized towards a user, and instead they were meant to show that the hardware is in
+principle good enough for that specific application~\cite{zhang_2022_diqkd,
 liu_2022_photonic_diqkd}.
 
-In order to advance quantum networks from a physics experiment to a fully-fledged quantum network
-system, we would need a combined software-hardware system that is built as a series of abstraction
-layers. These abstractions should expose a simple interface for the user to write applications in
-high-level, platform-independent software, and be able to interact with a variety of candidate
-platforms for future quantum network hardware. When designing such a system, many challenges arise
-(refer to \cref{sec:background:challenges} for details), which can be roughly classified into three
-areas. First, there exist \emph{fundamental differences} between classical and quantum
-communication. A example of this is the concept of heralded entanglement generation, which requires
-coordinated actions by both nodes involved --- that is, the operations to produce entanglement need
-to be scheduled at both nodes at the same time. Second, the \emph{technological limitations} of
-near-term quantum devices impose stringent demands on the performance of such a system. One example
-is that the same quantum device is used for processing as well as networking, which implies that
-local operations cannot be scheduled independently of network operations --- which in turn depend on
-the remote node. Finally, we remark that, unlike in the study of classical operating systems, which
-take advantage of the existence of advanced computer architectures defining a specific interaction
-of software and hardware, there exists \emph{no general low-level quantum processor architecture}.
+In order to advance quantum networks from a physics experiment to fully-fledged systems, we need a
+combined software-hardware system that is built as a series of abstraction layers. These
+abstractions should expose a simple interface for the user to write applications in high-level,
+platform-independent software, and be able to interact with a variety of candidate platforms for
+future quantum network hardware. When designing such a system, many challenges arise (refer to
+\cref{sec:background:challenges} for details), which can be roughly classified into three areas.
+First, there exist \emph{fundamental differences} between classical and quantum communication. A
+example of this is the concept of heralded entanglement generation, which requires coordinated
+actions by both nodes involved --- that is, the operations to produce entanglement need to be
+scheduled at both nodes at the same time. Second, the \emph{technological limitations} of near-term
+quantum devices impose stringent demands on the performance of such a system. One example is that
+the same quantum device is used for processing as well as networking, which implies that local
+operations cannot be scheduled independently of network operations --- which in turn depend on the
+remote node. Finally, we remark that, unlike in the study of classical operating systems, which take
+advantage of the existence of advanced computer architectures defining a specific interaction of
+software and hardware, there exists \emph{no general low-level quantum processor architecture}.
 Ideally, our system should be able to operate under the stringent constraints imposed by current
 technological limitations, but should also not be tailored to near-term quantum devices only.
 
@@ -184,7 +177,7 @@ qubits have a limited lifetime --- the states they hold must be processed before
 invalid. On some devices, qubit lifetimes have been shown to exceed one
 second~\cite{abobeih_2018_one_sec}. Nevertheless, the quality of a qubit state is not constant
 throughout its lifetime, but it \emph{decoheres} (becomes worse) at a certain rate. Qubit lifetimes
-and decoherence, however, are a technological limitation, rather than a fundamental one, and are
+and decoherence, however, are technological limitations, rather than fundamental ones, and are
 expected to become more tractable in the future.
 
 \subsection{Performance metrics}
