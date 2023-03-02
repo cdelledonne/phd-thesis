@@ -2,7 +2,7 @@
 \label{chp:netstack}
 
 \begin{abstract}
-Entanglement generation has already been demonstrated a few times today, at various node-to-node
+Entanglement generation has already been demonstrated a few times by now, at various node-to-node
 distances, on several quantum physical platforms, and mostly on small-scale quantum networks.
 Scaling current quantum communication demonstrations to a large-scale quantum network will require
 not only advancements in quantum hardware capabilities, but also robust control of such devices to
@@ -213,7 +213,7 @@ physical device sends the flying qubit. The heralding station can thus verify th
 fetched by the two \acrshort{mhp} peers are consistent and correspond to the same \acrshort{qegp}
 request.
 
-\paragraph{\acrshort{qegp} challenges}
+\paragraph{QEGP challenges}
 
 We identify three main challenges that would be faced when deploying \acrshort{qegp} on a
 large-scale quantum network, while suggesting an alternative solution for each of these.
@@ -272,7 +272,7 @@ entangled states. While reserving time bins may be redundant in a single-link ne
 centralized scheduling mechanism early on into the link layer protocol will facilitate future
 developments.
 
-\paragraph{\acrshort{mhp} synchronization and timeout}
+\paragraph{MHP synchronization and timeout}
 
 Although centralized request scheduling makes the synchronization of \acrshort{qegp} peers easier,
 precise triggering of entanglement attempts should still be entrusted to the component of the system
@@ -360,7 +360,7 @@ produced after a successful entanglement attempt. Our software stack also compri
 The \acrshort{hal} encodes and serializes commands and outcomes, and is thus used to interface with
 the device controller.
 
-\paragraph{\acrshort{tdma} network schedule}
+\paragraph{TDMA network schedule}
 
 Designing a full-blown centralized request scheduler is a challenge in and of its own, outside the
 scope of this work. Instead of implementing such a scheduler, we compute static \acrshort{tdma}
@@ -847,7 +847,7 @@ first without any corrections applied, and then with only the measurement error 
 All the results, the raw datasets, and the software to analyze them, are available at
 Ref.~\cite{link_layer_data}.
 
-\paragraph{Full Quantum State Tomography}
+\paragraph{Full quantum state tomography}
 
 The events in which the two devices generated \num{0} photon counts in the following
 \acrshort{crcheck} were \num{37} for the client and \num{380} for the server (out of the \num{4500}

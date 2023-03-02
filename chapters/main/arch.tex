@@ -82,7 +82,7 @@ determined by performing estimates independently of the program execution itself
 operating system could itself engage in such estimates when idling in order to update its knowledge
 of the capabilities of the quantum hardware.
 
-\section{Key \acrshort{os} Components}
+\section{Key OS Components}
 \label{sec:arch:components}
 
 We now describe the essential components we envision any operating system for quantum network nodes
@@ -240,7 +240,7 @@ an instruction queue in software, we envision that this form of scheduling would
 \acrshort{qnodeos} to a hardware module in a microarchitecture for quantum networking nodes, as for
 instance in the work by \textcite{fu_2017_microarch}.
 
-\section{\acrshort{qnodeos} Design}
+\section{QNodeOS Design}
 \label{sec:arch:design}
 
 \acrshort{qnodeos} is an operating system for quantum network nodes, designed to address the
@@ -326,7 +326,7 @@ blocks only, and thus we only discuss \acrshort{qnodeos} processes from this poi
 this does not exclude that, in a future iteration of the design, host and \acrshort{qnodeos} could
 be merged into one system, and therefore classical and quantum blocks would be scheduled jointly.
 
-\paragraph{\acrshort{qnodeos} user processes}
+\paragraph{QNodeOS user processes}
 
 \acrshort{qnodeos} allocates a new \emph{user process} to each quantum network application
 registered by the host. A user process becomes active (ready to be scheduled) as soon as
@@ -336,7 +336,7 @@ can be running at any time. A running user process executes its quantum code blo
 for entanglement requests, which are instead submitted to the quantum network stack and executed
 asynchronously.
 
-\paragraph{\acrshort{qnodeos} network process}
+\paragraph{QNodeOS network process}
 
 \acrshort{qnodeos} also defines \emph{kernel processes}, which are similar to user processes, but
 are created by default (on boot) and have different priority values. Currently, the only existing
@@ -352,7 +352,7 @@ design, the network process follows a \emph{time-division multiple access schedu
 centralized network controller (as originally proposed by \textcite{skrzypczyk_2021_arch}) and
 installed on each \acrshort{qnodeos} node.
 
-\paragraph{\acrshort{qnodeos} process states}
+\paragraph{QNodeOS process states}
 
 A \acrshort{qnodeos} process can be in any of the following states:
 %
@@ -438,7 +438,7 @@ run until it either completes all of its instructions or it blocks waiting for e
 Allowing process preemption would need a definition of critical section and could potentially impact
 the quality of the affected qubit states.
 
-\subsection{\acrshort{qnodeos} Architecture}
+\subsection{QNodeOS Architecture}
 
 \Cref{fig:quantum-node} illustrates the internals of \acrshort{qnodeos}, and outlines the
 interactions with the rest of the components of a quantum network node. At its top,
@@ -454,7 +454,7 @@ is fully software, including the instruction processor. In general, the system m
 entirely in software running on a classical \acrshort{cpu}, or parts of its functionality may be
 implemented in classical hardware (e.g.~\acrshort{fpga} or \acrshort{asic}).
 
-\paragraph{End-node \acrshort{api}}
+\paragraph{End-node API}
 
 Each user application is registered on \acrshort{qnodeos} by the host through the end-node
 \acrshort{api}. Using the same \acrshort{api}, the host can then send quantum code blocks and

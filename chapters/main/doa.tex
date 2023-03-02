@@ -163,7 +163,7 @@ We analyze the three service-level protocols \acrshort{mhp}, \acrshort{qegp}, an
 and illustrate why \acrfull{doa} is important for these protocols to function, mostly with regards
 to \emph{availability} of the network, and \emph{integrity} of quantum data.
 
-\section{Why \acrlong{doa}}
+\section{Why Data Origin Authentication}
 \label{sec:doa:why}
 
 We investigate the applicability of \acrlong{doa} to three system-level protocols for quantum
@@ -174,7 +174,7 @@ perform if they are allowed to forge or modify classical messages exchanged at t
 We mention whether each action affects the \emph{availability} of the link or network, or the
 \emph{integrity} of the quantum data sent via the network.
 
-\paragraph*{Physical layer.}
+\paragraph{Physical layer}
 
 \acrshort{mhp} operates at the physical layer. Hardware vulnerabilities of the physical entanglement
 generation process are outside the scope of this work.
@@ -198,7 +198,7 @@ Alice and Bob falsely conclude that a \acrshort{mhp} request belongs to the same
 request, thus hampering the integrity of quantum data due to cross-process interference.
 \end{example}
 
-\paragraph*{Link layer.}
+\paragraph{Link layer}
 
 \acrshort{qegp} operates at the link layer~\cite{dahlberg_2019_egp}. As proposed in
 Ref.~\cite{dahlberg_2019_egp}, it is used to synchronize entanglement requests, and to communicate
@@ -223,7 +223,7 @@ Change the qubit identifier of an entanglement generation request such that Alic
 the wrong data qubits, causing cross-path or process interference.
 \end{example}
 
-\paragraph*{Network layer.}
+\paragraph{Network layer}
 
 \acrshort{qnp} operates at the network layer. Conceptually, it allows non-adjacent nodes in a
 quantum network to coordinate entanglement generation. This is akin to the \acrfull{ip} in the
@@ -339,7 +339,7 @@ at the cost of reduced key rate.
     \label{fig:mac-setup-diagram}
 \end{figure}
 
-\paragraph*{Authentication proxy configuration.}
+\paragraph{Authentication proxy configuration}
 
 We collect classical communication latency measurements under four different configurations of the
 authentication proxy:
@@ -362,7 +362,7 @@ authentication proxy:
           \acrshort{vmac}, \acrshort{poly} can reuse the same key material for multiple messages.
 \end{enumerate}
 
-\paragraph*{Rate and size of messages.}
+\paragraph{Rate and size of messages}
 
 With the current implementation of the authentication proxy, one cannot transmit a classical message
 more than once every \qty{10}{\ms} without experiencing detrimental packet loss. This contrasts with
@@ -380,7 +380,7 @@ is small enough to be accommodated --- together with all protocol headers and th
     \item \num{1200}~bytes, which is close to the maximum allowed by the proxy.
 \end{inlinelist}
 
-\paragraph*{Network topology.}
+\paragraph{Network topology}
 
 The link connecting Alice to the center node runs for \qty{20}{\km}, whereas the link between Bob
 and the center node is \qty{22}{\km} in length. Thus, the \acrshort{rtt} we measure is for a link of
@@ -399,7 +399,7 @@ a total length of \qty{42}{\km}. The topology of Alice, Bob, and the center node
     \label{fig:mac-setup-qkd-locations}
 \end{figure}
 
-\paragraph*{Results.}
+\paragraph{Results}
 
 We record the \acrlong{rtt} of \num{360000} ping messages per configuration (proxy configuration and
 size of message). The computed mean and standard deviation of the results are reported in
@@ -466,7 +466,7 @@ entangled pairs generated per second.
     \label{tab:rtt}
 \end{table}
 
-\paragraph*{Configurations.}
+\paragraph{Configurations}
 
 We run our simulations for two types of configurations:
 %
@@ -488,7 +488,7 @@ For each of the above configurations, we perform \num{20} simulation runs, each 
 \num{20} minutes of continuous use of the link. We then calculate the average throughput over all
 runs for each configuration with a confidence interval of \qty{95}{\percent}.
 
-\paragraph*{Results.}
+\paragraph{Results}
 
 \begin{figure}[t]
     \centering
