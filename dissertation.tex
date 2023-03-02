@@ -21,10 +21,6 @@
     % nativefonts,
 ]{dissertation}
 
-% Large first letter of chapter using lettrine.
-\usepackage{lettrine}
-\renewcommand{\LettrineTextFont}{\scshape}
-
 % Units formatted using siunitx.
 \usepackage{siunitx}
 \sisetup{
@@ -78,6 +74,12 @@
 
 % Custom command: \todo{description}
 \newcommand{\todo}[1]{{\color{blue}[\textbf{TODO:} #1]}}
+
+% Small caps for lettrine word.
+\renewcommand*{\LettrineTextFont}{\scshape}
+
+% The default reference string "EFTZ" causes issues when one of the capitals in a chapter is "T".
+\renewcommand*{\LettrineTestString}{EFZ}
 
 % Custom hyphenation.
 \hyphenation{ADwin}    % Do not hyphenate ADwin
