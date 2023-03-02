@@ -32,7 +32,7 @@
     \RequirePackage[xetex]{geometry}
     %\RequirePackage[xetex]{graphicx}
     %\usepackage[bookmarks=false,hidelinks]{hyperref}
-    \RequirePackage[xetex,bookmarks=false,hidelinks]{hyperref}
+    \RequirePackage[xetex,bookmarks=true,hidelinks]{hyperref}
     \RequirePackage{fontspec}
     \RequirePackage{xltxtra}
     \defaultfontfeatures{Ligatures=TeX}
@@ -40,11 +40,11 @@
     \ifpdf
         \RequirePackage[pdftex]{geometry}
         %\RequirePackage[pdftex]{graphicx}
-        \RequirePackage[pdftex,bookmarks=false,hidelinks]{hyperref}
+        \RequirePackage[pdftex,bookmarks=true,hidelinks]{hyperref}
     \else
         \RequirePackage[dvips]{geometry}
         %\RequirePackage[dvips]{graphicx}
-        \RequirePackage[hypertex,bookmarks=false,hidelinks]{hyperref}
+        \RequirePackage[hypertex,bookmarks=true,hidelinks]{hyperref}
         \fi
     \RequirePackage[utf8]{inputenc}
 \fi

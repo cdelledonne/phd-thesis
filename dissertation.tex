@@ -13,6 +13,8 @@
 % Remove dot after entry description in glossary. 
 \PassOptionsToPackage{nopostdot}{glossaries}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass[
     % print,
     % draft,
@@ -77,7 +79,7 @@
 % Custom command: \todo{description}
 \newcommand{\todo}[1]{{\color{blue}[\textbf{TODO:} #1]}}
 
-% Custom hyphenation
+% Custom hyphenation.
 \hyphenation{ADwin}    % Do not hyphenate ADwin
 \hyphenation{QNodeOS}  % Do not hyphenate QNodeOS
 \hyphenation{QDevice}  % Do not hyphenate QDevice
@@ -94,6 +96,9 @@
 \renewcommand*{\glstreeitem}{\par\raggedright}
 \renewcommand*{\glsgroupskip}{\medskip}
 \renewcommand*{\glsnamefont}[1]{\textbf{#1}}
+
+% Show section numbers next to PDF outline bookmarks.
+\hypersetup{bookmarksnumbered=true}
 
 % Disable hyperlinks from acronyms to glossary entries.
 \glsdisablehyper
