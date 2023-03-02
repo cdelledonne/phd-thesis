@@ -2,13 +2,24 @@
 \label{chp:qnodeos}
 
 \begin{abstract}
-Chapter abstract.
+An \acrfull{os} for quantum network nodes should provide more than just networking functionalities.
+Ultimately, it should enable quantum networking applications to be written in high-level,
+platform independent software, and should be able to manage the resources of the underlying
+device when deployed in a multi-node and multi-user quantum network. This chapter briefly
+discusses our implementation of \acrshort{qnodeos}, an \acrshort{os} for quantum network nodes,
+which includes a quantum network stack for entanglement generation, as well as resource
+management and scheduling features that allow the concurrent execution of multiple applications.
+We also validate our implementation on state-of-the-art quantum network hardware based on
+\acrlong{nv} centers in diamond, and discuss general design considerations for any such quantum
+network \acrshort{os}. Our work sets a baseline for running applications on quantum networks
+of the future, and serves as a hands-on study to understand and define computer-science
+challenges in building quantum network \acrshortpl{os}.
 \end{abstract}
 
 \noindent
 \note{To be precise, this chapter is extracted from sections 5 (Implementation), 6 (Evaluation), 7
-(Related Work) and 8 (Discussion) from the \acrshort{qnodeos} paper. In addition, the description of
-the test applications was expanded to add more context.}
+(Related Work) and 8 (Discussion) from the \acrshort{qnodeos} paper. There aren't any major
+additions.}
 
 \blfootnote{
     This chapter is based on the preprint \fullcite{delledonne_2023_qnodeos_noprint}. \note{Add
@@ -17,9 +28,21 @@ the test applications was expanded to add more context.}
 
 \newpage
 
-% \lettrine{T}{...}
-
-Some information and context about evaluation strategy and goals.
+The preliminary experiments conducted in \cref{chp:netstack} showcased elementary
+quantum networking functionalities through a platform-independent control system --- mainly, the
+quantum networking stack embedded in \acrshort{qnodeos}. Nevertheless, entanglement generation is
+just one of the blocks constituting fully-fledged quantum communications applications, which also
+include local quantum processing and classical communication and processing, as shown in
+\cref{fig:app-struct}. With \acrshort{qnodeos}, we aim to take the state of the art of quantum
+networking experiments one step further, and demonstrate the execution of complete applications,
+some of which comprise quantum and classical processing and communication. We also include one case
+study that serves as a proof-of-concept demonstration of the usefulness of a multitasking-ready
+\acrshort{os}, to be expanded on when investigating multi-user quantum networks more in depth. In
+this chapter we report on and discuss the results of these experiments. Prior to that, we also give
+a brief overview of the implementation of \acrshort{qnodeos} and the underlying \acrshort{qdevice}.
+Refer to \cref{app:qnodeos} for additional details on the implementation of the components of
+\acrshort{qnodeos} and their interfaces, and to \cref{app:qdevice} for the specification of the
+interface to the \acrshort{qdevice}.
 
 \section{Implementation}
 \label{sec:qnodeos:implementation}
@@ -46,10 +69,7 @@ runtime executing on a general-purpose 4-core desktop machine running Linux. The
 connects to \acrshort{qnodeos} via \acrshort{tcp} over the same Gigabit Ethernet interface that
 \acrshort{qnodeos} uses to connect to its peers (average ping \acrshort{rtt} of \qty{0.1}{\ms}), and
 sends application registration requests and quantum code blocks over this interface (\num{10} to
-\num{1000} bytes, depending on the length of the block). \Cref{app:qnodeos} provides additional
-details on the implementation of the components of \acrshort{qnodeos} and their interfaces.
-Moreover, the specification of the interface to the \acrshort{qdevice} is given in
-\cref{app:qdevice}. 
+\num{1000} bytes, depending on the length of the block).
 
 We implemented \acrshort{qnodeos} on top of FreeRTOS to avoid re-implementing standard \acrshort{os}
 primitives like threads and network communication. FreeRTOS provides basic \acrshort{os}
@@ -89,7 +109,7 @@ functionality) are under active development in research and industry~\cite{kong_
 deltaflow_os}. Furthermore, extensive work exists on developing quantum computing
 architectures~\cite{fu_2017_microarch, murali_2019_fullstack, bourassa_2021_blueprint}. In this
 work, we have addressed new problems that arise specifically from the inclusion of quantum
-networking which has not been considered at all in the aforementioned \acrshort{os}es and
+networking which has not been considered at all in the aforementioned \acrshortpl{os} and
 publications.
 
 Nevertheless, systems research in quantum networking has been growing as a field as well. In
