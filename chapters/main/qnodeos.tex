@@ -55,13 +55,13 @@ cores, of which only one is used, clocked at \qty{667}{\MHz}. \acrshort{qnodeos}
 \acrshort{qnodeos} systems via \acrshort{tcp} over a Gigabit Ethernet interface. For the
 \acrshort{qdevice}, we replicated the setup used for \cref{chp:netstack}, which mainly consists of:
 %
-\begin{enumerate*}[label=(\arabic*)]
+\begin{inlinelist}
     \item an ADwin-Pro II~\cite{adwin} acting as the main orchestrator of the setup;
     \item a series of subordinate devices responsible for qubit control, including laser pulse
           generators and optical readout circuits;
     \item the quantum physical device, based on \acrshort{nv} centers, counting one single
           (communication) qubit for each node.
-\end{enumerate*}
+\end{inlinelist}
 The \acrshort{qdevice} is where the time-critical qubit control lies. \acrshort{qnodeos} interfaces
 with the \acrshort{qdevice}'s ADwin-Pro II through a \qty{12.5}{\MHz} \acrshort{spi} interface, used
 to exchange 4-byte control messages at a rate of \qty{50}{kHz}. Finally, the host layer is a Python
@@ -90,15 +90,183 @@ the scheduling of quantum code blocks based on the status of the quantum resourc
     \label{fig:node-deployment}
 \end{figure}
 
-\section{Target Applications and Evaluation Goals}
+\section{Evaluation}
+\label{sec:qnodeos:evaluation}
 
-First part of the ``Evaluation'' section from the \acrshort{qnodeos} paper, with a more extensive
-explanation of the target applications (including multitasking), and an explanation of how each of
-the apps, whilst conceptually simple, tests most functionalities of the \acrshort{os}.
+We verify the functioning of \acrshort{qnodeos} by means of four case studies, aimed at validating
+\begin{inlinelist}
+    \item single-node execution, including qubit initialization, gates, and measurements,
+    \item entanglement generation,
+    \item delegated quantum computation, and
+    \item multitasking.
+\end{inlinelist}
 
-\section{Results and Takeaways}
+\subsection{Local Qubit State Tomography}
 
-Second part of the ``Evaluation'' section from the \acrshort{qnodeos} paper.
+Our first case study is a simple local application where a certain qubit state is prepared and then
+immediately measured. This translates to one or more single-qubit gates and one qubit measurement.
+The application is run several times to assess the quality of the prepared state, and various qubit
+states are analyzed. This local qubit state tomography is the simplest application
+\acrshort{qnodeos} can run --- there is a single user process running, and the network process is
+not even activated, given that entanglement is never requested.
+
+\paragraph{Results}
+
+This application prepares the six cardinal states $\ket{+X}$, $\ket{+Y}$, $\ket{+Z}$, $\ket{-X}$,
+$\ket{-Y}$, and $\ket{-Z}$, in sequence. Each state is measured in all six cardinal bases. This
+application is run \num{1000} times for each combination of target state and readout basis. The
+measured state fidelity, reported in \cref{fig:local-tomo}, is in line with what the quantum
+hardware is capable of delivering, showing that basic interactions among the components of
+\acrshort{qnodeos} and with the \acrshort{qdevice} work.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/local-tomography.pdf}
+    \caption{
+        Average fidelity of the prepared cardinal states $\ket{+X}$, $\ket{+Y}$, $\ket{+Z}$,
+        $\ket{-X}$, $\ket{-Y}$, and $\ket{-Z}$ in the local qubit state tomography application.
+    }
+    \label{fig:local-tomo}
+\end{figure}
+
+\subsection{Entanglement Generation}
+
+The second test case is an application that generates an entangled pair between the two nodes and
+measures the generated state right away. This is a distributed application, where both nodes are
+active --- they engage in entanglement generation, and they both measure their end of the entangled
+pair. As the user can specify the requested fidelity of the entangled pairs, this application is run
+for various target fidelities. This time, all \acrshort{qnodeos} components are at work. Since
+entanglement is requested, the quantum network stack is triggered, and thus the network process
+becomes active, competing for resources with the user process. The \acrshort{qmmu} is also invoked
+by the network process to transfer ownership of the entangled qubit to the user process (the
+inter-process communication primitive of \acrshort{qnodeos}).
+
+\paragraph{Results}
+
+Entanglement generation is run for a range or target fidelities \numlist{0.50; 0.55; 0.60; 0.65;
+0.70; 0.75; 0.80}, and entangled pairs are read out in various bases to measure their correlators
+$\braket{\mathrm{XX}}$, $\braket{\mathrm{YY}}$ and $\braket{\mathrm{ZZ}}$ (and their $\pm$
+variations, for a total of $12$ correlators). The application is run \num{125} times for each
+combination of target fidelity and correlator, for a total of \num{10500} entangled pairs. The
+results for measured fidelity versus requested fidelity are shown in \cref{fig:ent-gen}. The
+measured fidelities are --- within measurement uncertainty --- always matching or exceeding the
+requested minimum ones (the dashed gray line in \cref{fig:ent-gen} is the $y=x$ diagonal). It is to
+be noted that measurement outcomes are post-processed to eliminate tomography errors and events in
+which the physical devices were in the incorrect charge state.
+\note{Retake this experiment, fidelities have gotten worse on setup. Also report on fidelities
+without correction.}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/ent-gen.pdf}
+    \caption{
+        Measured fidelity of the entangled states generated and read out via \acrshort{qnodeos}.
+        Measurements are corrected to eliminate tomography errors and events in which the physical
+        devices were in the incorrect charge state. Error bars represent 1 s.d. The dashed gray line
+        is the $y=x$ diagonal.
+    }
+    \label{fig:ent-gen}
+\end{figure}
+
+\subsection{Delegated Computation}
+
+With this case study we aim to showcase a more complex quantum network application, schematically
+depicted in \cref{fig:del-comp}. Here, one node acts as the client, and the other as the server. The
+client's goal is to delegate a certain quantum computation on some data qubit to the server, while
+keeping the server agnostic to the computation. To perform the desired computation, described by a
+parameter $\alpha$, the two nodes follow these steps:
+%
+\begin{inlinelist}
+    \item the two node establish an entangled state,
+    \item the client ``encodes'' its qubit by means of a series of local gates, described by a
+          parameter $\theta$,
+    \item the client measures its end of the entangled pair and stores the classical outcome
+          $m_\text{c}$
+    \item the client communicates the delegated computation parameter, which is a function of
+          $\alpha$, $\theta$ and $m_\text{c}$,
+    \item the server performs the computation,
+    \item the server measures its end of the entangled pair and sends the classical outcome
+          $m_\text{s}$ back to the client.
+\end{inlinelist}
+In this scheme, the client application consists of a single quantum code block and an additional
+classical code block that communicates the computation parameter to the server. More interestingly,
+the server application comprises two quantum code blocks --- the first is the establishment of the
+entangled pair, and the second is the delegated computation --- interleaved by a classical code
+block that receives the computation parameter from the client. This is the first example of an
+interactive application, where the execution (on the server) spans more than one quantum code block,
+and thus the quantum state generated in one block has to persist and remain valid for the other
+block too.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/del-comp.pdf}
+    \caption{
+        Schematic of delegated computation application. The client wishes to have the server perform
+        a quantum computation on a certain data qubit. To do so, the two nodes establish
+        entanglement, then the client processes and measures its end of the entangled pair, sends
+        the computation parameter to the server, which finally executes the delegated computation.
+        Blue boxes represent quantum code blocks. The client's application is composed of a single
+        block, while the server's consists of one block for entanglement and one block for the
+        quantum computation, interleaved by a classical code block (the reception of the computation
+        parameter).
+    }
+    \label{fig:del-comp}
+\end{figure}
+
+\paragraph{Results}
+
+\note{Refine when data is available.}
+The delegated computation is run for various values of $\alpha$ ($\pi$, $\pi/2$) and $\theta$
+($\pi$, $\pi/2$, $\pi/4$). The application is run \num{500} times for each combination of $\alpha$
+and $\theta$. We report the measured fidelity of the qubit state after the delegated computation for
+each of the computation values. We also report a breakdown of the average application latency, to
+give an indication of where time is spent during execution. [...] The abstractions provided by
+\acrshort{qnodeos} allow for the execution of more complex quantum network applications. Distributed
+applications may result in idle time on some nodes, which \acrshort{qnodeos} can allocate to other
+pending applications.
+
+\subsection{Multitasking}
+
+One of the core features of modern \acrshortpl{os} is the ability to run several applications
+concurrently, a key aspect in multi-user networks and nodes. \acrshort{qnodeos} is designed with
+multitasking capabilities --- not only can it multiplex a user process and the network process, but
+it also allows for multiple user processes to run at the same time. This means that multiple users
+can submit their applications simultaneously, and \acrshort{qnodeos} will service all pending user
+processes based on resource availability, in order to increase the utilization of the
+\acrshort{qdevice} and to limit idle time and average application latency. One drawback of
+multitasking on a quantum network node is the trade-off between concurrency and fidelity:
+applications that have active data in the quantum memory, and that are waiting to be scheduled while
+other applications are in progress, may experience lower-quality qubit states, given that such
+quality degrades due to the passing of time and to noise induces by operations on other qubits.
+
+We aim to demonstrate the multitasking capabilities of \acrshort{qnodeos} by having multiple users
+run independent applications concurrently. In our case study, a pool of users runs the delegated
+computation application, while the rest of the users runs the local qubit state tomography
+application. We evaluate multitasking on the client node, while the server just runs its part of the
+delegated computation application. The idle time resulting from running the delegated computation
+application on the client is a perfect candidate for scheduling other pending applications. We
+evaluate the multitasking performance of \acrshort{qnodeos} under various system load conditions,
+which essentially depend on the number of users utilizing \acrshort{qnodeos} at the same time. We
+note that, even though a higher degree of concurrency should in principle results in better device
+utilization, this is limited by the scarce physical resources available on the underlying
+\acrshort{qdevice}.
+
+\paragraph{Results}
+
+\note{Refine when data is available.}
+We measure device utilization and average application latency on the client, for various
+configurations of users and applications: $N$ users, with $N \in \{2, 3, 5, 10\}$, half of which
+running the local tomography application, and the remaining half running the delegated computation
+application. To measure the performance benefit of multitasking, we also run the same set of
+applications with multitasking disabled --- on \acrshort{qnodeos}, this means that a user process
+can only be scheduled if no other user processes are either running or waiting for entanglement
+generation. We report device utilization and average application latency, for the various usage
+patters, resulting from a continuous execution of each usage pattern over \qty{\approx 30}{min}.
+[...] The scheduler of \acrshort{qnodeos}, in combination with the \acrshort{qmmu}, can dynamically
+re-prioritize outstanding processes based on resource availability. \acrshort{qnodeos} can thus
+support multi-user quantum network nodes, and can take advantage of network idle times to improve
+device utilization and average application latency. Impact of multitasking on fidelity not visible
+with a single qubit.
 
 \section{Related Work}
 \label{sec:qnodeos:relwork}
