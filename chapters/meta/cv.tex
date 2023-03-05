@@ -2,12 +2,31 @@
 \addcontentsline{toc}{chapter}{Curriculum Vit\ae}
 \setheader{Curriculum Vit\ae}
 
-% Print the full name of the author.
 \makeatletter
+% Print the full name of the author.
 \authors{\@firstname\ {\titleshape\@lastname}}
+% Get value of title to use later.
+\def\thesistitle{\@title}
 \makeatother
 
+\setlength{\tabcolsep}{0cm}
 \noindent
-\begin{longtable}{p{.225\textwidth} p{.70\textwidth}}
-    1994/05/02 & Date of birth in Potenza, Italy
-\end{longtable}
+\begin{tabularx}{\linewidth}{p{2cm}X}
+    2018 -- 2023 & Ph.D. Quantum Computer Science \\
+                 & Delft University of Technology, The Netherlands \\
+                 & Thesis: \emph{\thesistitle} \\
+                 & Promotor: Prof.\ dr.\ S.\ D.\ C.\ Wehner \\
+                 & Copromotor: Dr.\ P.\ Pawełczak \\
+    \\
+    2016 -- 2018 & M.Sc. Embedded Systems \\
+                 & Delft University of Technology, The Netherlands \\
+                 & Thesis: \emph{Wake-up Alignment for Batteryless Sensors} \\
+                 & Advisor: Dr.\ P.\ Pawełczak \\
+    \\
+    2013 -- 2016 & B.Sc. Electronics and Telecommunications \\
+                 & University of Bologna, Italy \\
+                 & Thesis: \emph{Real-Time Data Streaming Using Bluetooth Low Energy} \\
+                 & Advisor: \note{Check name again} \\
+    \\
+    1994/05/02   & Born in Potenza, Italy \\
+\end{tabularx}
