@@ -1,18 +1,20 @@
 \chapter*{List of Publications}
 \addcontentsline{toc}{chapter}{List of Publications}
 \setheader{List of Publications}
-\label{publications}
 
-% We use the 'etaremune' environment (the reverse of 'enumerate') to get a numbered list of
-% publications in reverse chronological order. If the list of authors is long, it might be useful to
-% emphasize your own name with \textbf.
-\begin{etaremune}
-% {\small
-    \item[\faFileTextO~~1.] \textbf{Carlo Delle Donne}. Some paper title and related info.
-    \item[2.] \textbf{Carlo Delle Donne}. Some other paper title and related info.
-% }
-\end{etaremune}
+\def\ticon{{\footnotesize \faFileTextO}}
 
-\vspace{0.5cm}
+\begin{enumerate}[label={\ticon~~\arabic*.},itemsep=\baselineskip]
+    \item[\ticon~~6.] \fullcite{delledonne_2023_qnodeos_noprint}
+    \item[\ticon~~5.] \fullcite{abrahams_2023_doa_noprint}
+    \item[\ticon~~4.] \fullcite{pompili_2022_experimental_noprint}
+    \item[3.] \fullcite{dahlberg_2022_netqasm_noprint}
+    \item[2.] \fullcite{dewinkel_2020_reliable_noprint}
+    \item[1.] \fullcite{majid_2020_dynamic_noprint}
+\end{enumerate}
+
+\vspace{2\baselineskip}
 \noindent
-\faFileTextO~~Included in this thesis.
+\ticon~~Included in this thesis
+
+\printbibliography[heading=subbibintoc,title={References},notcategory=noprint]

@@ -53,13 +53,20 @@
 \addbibresource{references/online.bib}
 \addbibresource{references/proceedings.bib}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Define bibliography entries that won't be included in list of references.
 \DeclareBibliographyCategory{noprint}
 \addtocategory{noprint}{abrahams_2023_doa_noprint}
+\addtocategory{noprint}{dahlberg_2022_netqasm_noprint}
 \addtocategory{noprint}{delledonne_2023_qnodeos_noprint}
+\addtocategory{noprint}{dewinkel_2020_reliable_noprint}
+\addtocategory{noprint}{majid_2020_dynamic_noprint}
 \addtocategory{noprint}{pompili_2022_experimental_noprint}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make name of author bold if bibliography entry has "makebf" annotation for that author.
+\renewcommand*{\mkbibnamegiven}[1]{\ifitemannotation{makebf}{\textbf{#1}}{#1}}
+\renewcommand*{\mkbibnamefamily}[1]{\ifitemannotation{makebf}{\textbf{#1}}{#1}}
 
 % Not sure why this is defined.
 \newcommand{\sparkline}[1]{$\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$}
@@ -108,7 +115,7 @@
     itemsep=1ex,
     parsep=0ex,
     partopsep=0ex,
-    leftmargin=*
+    leftmargin=*,
 }
 
 % Define style of inline lists.
@@ -160,6 +167,9 @@
 
 \include{chapters/meta/summary}
 \include{chapters/meta/samenvatting}
+\include{chapters/meta/acks}
+\include{chapters/meta/cv}
+\include{chapters/meta/publications}
 
 % Use Arabic numerals for the page numbers of the chapters.
 \mainmatter
@@ -194,9 +204,5 @@
 \printnoidxglossary[type=\acronymtype,title={Glossary}]
 \addcontentsline{toc}{chapter}{Glossary}
 \setheader{Glossary}
-
-\include{chapters/meta/acks}
-\include{chapters/meta/cv}
-\include{chapters/meta/publications}
 
 \end{document}
