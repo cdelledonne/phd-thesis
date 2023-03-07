@@ -420,7 +420,34 @@ only discuss the scheduling of \acrshort{qnodeos} processes. At present, the \ac
 scheduler does not give any guarantees on when a process is scheduled --- for that, one would need
 to define concrete real-time constraints to feed to the scheduler. Instead, the current version of
 \acrshort{qnodeos} implements a best-effort scheduler, which selects processes on the basis of their
-priority, and does not allow preemption.
+priority, and does not allow preemption. The scheduling algorithm is represented in the flowchart in
+\cref{fig:scheduler}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/scheduler.pdf}
+    \caption[]{
+        Schematic representation of the scheduling algorithm employed by \acrshort{qnodeos}. The
+        scheduler is activated when a process $P$ transitions to a new state $S$. If $S$ is
+        \emph{idle} or \emph{waiting}, the process has (temporarily) terminated its execution, and
+        thus relinquished the processor, in which case the scheduler can proceed. If $S$ is
+        \emph{ready}, the process is added to the prioritized ready queue, and if the processor is
+        not already busy, the scheduler can proceed again. When the ready queue is not empty, the
+        scheduler looks for the next scheduling candidate as follows:
+        \begin{inlinelist}
+            \item if the communication qubit is available, the scheduler simply selects the
+                  highest-priority process in the ready queue;
+            \item otherwise, if the process owning the communication qubit is waiting in the ready
+                  queue, the scheduler selects this process as the scheduling candidate;
+            \item as a last resort, the scheduler searches the ready queue for a process that does
+                  not need the communication qubit.
+        \end{inlinelist}
+        At the moment, the scheduling algorithm is tuned to \acrshort{nv} center-based quantum
+        platforms, where the communication qubit plays a rather central role in both entanglement
+        generation and local quantum computation.
+    }
+    \label{fig:scheduler}
+\end{figure}
 
 \paragraph{Priority scheduling}
 
