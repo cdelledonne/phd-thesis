@@ -77,10 +77,19 @@ states. This topic was investigated in \cref{chp:doa}.
 \section{Future Work}
 
 We hope that our work and results open the door to further research on the topic of \acrshortpl{os}
-for quantum networking. On that regards, we have identified a few areas of this field that would
+for quantum networking. On that regard, we have identified a few areas of this field that would
 benefit from a deeper investigation, which we summarize here.
 
-\paragraph{Context-aware process scheduler}
+\paragraph{Quantum network node architecture}
+
+In our design, we have defined a certain architecture of a quantum network node the separation, and
+we have not investigated possible alternatives. In particular, the separation between host,
+\acrshort{qnodeos} and \acrshort{qdevice} determines which component is responsible for which task,
+and limits certain scheduling decisions to certain components. In the future, one might want to
+explore other solutions and examine scenarios in which, for instance, resource allocation and
+scheduling decisions are not only taken on \acrshort{qnodeos}.
+
+\paragraph{Scheduling of processes and applications}
 
 The rudimentary process scheduler embedded in \acrshort{qnodeos} is just good enough to guarantee
 concurrency and to prioritize what in general is deemed to have higher priority in quantum
@@ -89,8 +98,11 @@ might need to factor in more run-time data to take better scheduling decisions t
 context-dependent. For instance, one could well imagine a scheduler which is aware of the
 approximate duration of the tasks to be scheduled, as well as of the current level of decoherence of
 the quantum states in memory, and thus re-compute task priorities at run-time when needed.
+Additionally, as the responsibilities of \acrshort{qnodeos} and host might be redefined (see
+previous paragraph), one could design the host such that it takes part in making scheduling
+decisions, or at least supporting \acrshort{qnodeos} with application- and device-specific hints.
 
-\paragraph{Better integration with control plane}
+\paragraph{Integration with control plane}
 
 At the moment, the interactions of \acrshort{qnodeos} with the control plane of a quantum network
 are mostly one-sided --- the control plane installs network schedules on \acrshort{qnodeos}, mostly.

@@ -61,13 +61,12 @@ the rest of the thesis.
 
 Digital communication networks have come a long way from the early days of the \textsc{arpanet} ---
 one of the most important precursors of today's internet. Back in 1969, one of the most advanced
-networks of computers consisted of just \emph{four} nodes. As the global network grew larger,
-networking researchers standardized, in 1981, the \acrfull{ipv4}, which allowed up to \num{4}
-billion devices to have their own address on the public internet~\cite{rfc_791}. Soon after, it
-became clear that the pool of available \acrshort{ipv4} addresses was going to be depleted sooner
-than later --- which happened in 2011~\cite{icann_2011}. In 2023, there are \num{3.6} devices
-connected to the internet per capita, as estimated by \citeauthor{cisco_2020} in
-2020~\cite{cisco_2020}.
+networks of computers consisted of just \emph{four} nodes. In 1981, as the global network grew
+larger, networking researchers standardized the \acrfull{ipv4}, which allowed up to \num{4} billion
+devices to have their own address on the public internet~\cite{rfc_791}. Soon after, it became clear
+that the pool of available \acrshort{ipv4} addresses was going to be depleted sooner than later ---
+which happened in 2011~\cite{icann_2011}. In 2023, there are \num{3.6} devices connected to the
+internet per capita, as estimated by \citeauthor{cisco_2020} in 2020~\cite{cisco_2020}.
 
 Scaling up from a four-node experiment to the massive networks of the 21st century was no easy feat
 of course. This was made possible by advancements in various fields, including networking hardware,
@@ -136,10 +135,10 @@ field. In this thesis, we will discuss design considerations for such a framewor
 implement a rudimentary instance of it, and evaluate our design and implementation on a quantum
 network.
 
-This thesis's one-sentence goal is to provide a framework that facilitates the experimental
-investigation of quantum networking-related research questions, and that can help researchers learn
-about the behavior of quantum communication applications without having to delve into the complexity
-of running and managing the underlying network and the interaction of the nodes with it. We refer to
+The goal of this thesis is to provide a framework that facilitates the experimental investigation of
+quantum networking-related research questions, and that can help researchers learn about the
+behavior of quantum communication applications without having to delve into the complexity of
+running and managing the underlying network and the interaction of the nodes with it. We refer to
 this framework as an \emph{\acrlong{os}} (\acrshort{os}), as its goal is to abstract and manage
 quantum physical processes and resources to provide a user-friendly interface to the application.
 More specifically, we will address the following questions:
@@ -175,23 +174,23 @@ networking protocols and applications on real networks. Our implementation-drive
 intend to produce the best protocols and algorithms for the control of quantum network nodes ---
 rather, it wishes to establish a baseline for such a system, and a framework to study and test more
 advanced versions of its components. To demonstrate the applicability of our tool, we evaluate the
-\acrshort{os} on a small state-of-the-art quantum network based on \acrlong{nv} centers in diamond,
-deployed in a laboratory environment.
+\acrshort{os} on a small state-of-the-art quantum network based on \acrlong{nv} centers in
+diamond~\cite{pompili_2021_multinode}, deployed in a laboratory environment.
 
 \begin{table}[t]
     \centering
-    \begin{tabularx}{\linewidth}{ll}
+    \begin{tabularx}{\linewidth}{Xl}
         \toprule
         \textbf{Object}                                  & \textbf{Location}                                                                            \\
         \midrule
         Datasets for \cref{chp:netstack}                 & \href{https://doi.org/10.4121/16912522}{\textsc{doi}: \texttt{10.4121/16912522}}             \\
-        Datasets for \cref{chp:qnodeos}                  & \href{https://doi.org/xx.xxxx/xxxxxxxx}{\textsc{doi}: \texttt{xx.xxxx/xxxxxxxx}}             \\
-        Datasets for \cref{chp:doa}                      & \href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{yy.yyyy/yyyyyyyy}}             \\
+        Datasets for \cref{chp:qnodeos}                  & \href{https://doi.org/xx.xxxx/xxxxxxxx}{\textsc{doi}: \texttt{TBD}}                          \\
+        Datasets for \cref{chp:doa}                      & \href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{TBD}}                          \\
         Data analysis for \cref{chp:netstack}            & With data (\href{https://doi.org/10.4121/16912522}{\textsc{doi}: \texttt{10.4121/16912522}}) \\
-        Data analysis for \cref{chp:qnodeos}             & \url{https://gitlab.tudelft.nl/www/wwwwww}                                                   \\
-        Data analysis for \cref{chp:doa}                 & With data (\href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{yy.yyyy/yyyyyyyy}}) \\
+        Data analysis for \cref{chp:qnodeos}             & With data (\href{https://doi.org/xx.xxxx/xxxxxxxx}{\textsc{doi}: \texttt{TBD}})              \\
+        Data analysis for \cref{chp:doa}                 & With data (\href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{TBD}})              \\
         Application \acrshort{sdk} (NetQASM)             & \url{https://github.com/QuTech-Delft/netqasm}                                                \\
-        Applications for \cref{chp:netstack,chp:qnodeos} & \url{https://gitlab.tudelft.nl/zzz/zzzzzz}                                                   \\
+        Applications for \cref{chp:netstack,chp:qnodeos} & \url{https://gitlab.tudelft.nl/TBD/}                                                         \\
         \bottomrule
     \end{tabularx}
     \caption{
