@@ -12,9 +12,11 @@ However, quantum physics is not just an otherworldly theory from science fiction
 catchy name for 21st-century consumer products. Since the formulation of the theory of quantum
 mechanics in the early decades of the 20th century, researchers and enthusiasts have been looking
 into how to make use of these physical properties, particularly in the fields of electronics,
-information processing and telecommunications. Today, we know of a handful of applications that
+information processing and telecommunications. Integrated circuits, lasers, light-emitting diodes
+and magnetic resonance imaging devices are just a few example technologies that rely on the quantum
+theory to function. In the domain of computer science, we know of a handful of applications that
 exploit the axioms of quantum information theory to achieve something that was though to be very
-hard, sometimes even impossible. Some of the most well-known use cases include fast resolution of
+hard, or even impossible. Some of the most well-known use cases include fast resolution of
 computational problems --- like integer factorization~\cite{shor_1994_algorithms} and database
 searching~\cite{grover_1996_search} --- and efficient and secure communication schemes --- for
 instance quantum key distribution~\cite{bennett_2014_bb84, ekert_1991_e91} and superdense
@@ -43,7 +45,7 @@ quantum networking applications. Thus, what is missing before we can deploy quan
 consisting of a useful number of nodes? What are the main limitations we are facing? How can we
 overcome them? Not surprisingly, the answers to these questions are complicated. There is a cauldron
 of fundamental and theoretical limitations, technological hardware obstacles, and computer science
-puzzles that hinder the success of quantum networking. Fortunately, though, there is an increasing
+puzzles that hinder the success of quantum networking. Fortunately, though, there is a growing
 community of passionate researchers trying to study these limitations, build better hardware, and
 solve these puzzles. In this thesis, we will address some of the challenges arising when trying to
 manage the resources and the activity of a quantum network node, from an operating system's
@@ -70,24 +72,24 @@ Scaling up from a four-node experiment to the massive networks of the 21st centu
 of course. This was made possible by advancements in various fields, including networking hardware,
 traffic engineering, and network programmability. You would most likely not be able to download a
 digital copy of this thesis in a fraction of a second if it were not for \unit{\tera\bit\per\second}
-network switches, a diverse spectrum of routing protocols, and \acrlong{sdn}. Nevertheless,
-classical networking was already appealing in its infant stages, for the simple reason that even a
-small network of nodes can accomplish tasks that would not be attainable without it --- in the case
-of the \textsc{arpanet}, sending simple pieces of text over large distances almost instantaneously.
-The applications of quantum networking are not dissimilar to their classical networking counterpart,
-in that some of them can be useful and effective on small quantum networks already, whilst other use
-cases require more powerful nodes and more complex networks~\cite{wehner_2018_stages}.
+network switches~\cite{broadcom_tomahawk, juniper_qfx5220}, a diverse spectrum of routing
+protocols~\cite{rfc_2328, rfc_4271, iso_10589}, and \acrlong{sdn}~\cite{kreutz_2014_sdn}, among
+other things. Nevertheless, classical networking was already appealing in its infant stages, for the
+simple reason that even a small network of nodes can accomplish tasks that would not be attainable
+without it --- in the case of the \textsc{arpanet}, sending simple pieces of text over large
+distances almost instantaneously. The applications of quantum networking are not dissimilar to their
+classical networking counterpart, in that some of them can be useful and effective on small quantum
+networks already, whilst other use cases require more powerful nodes and more complex
+networks~\cite{wehner_2018_stages}.
 
 Even though hardware and software advancements were essential to the betterment of the internet,
 there are a few basic design ingredients that have been there since the dawn of classical networking
-and that have made these technological leaps even possible. For instance, it was immediately clear
-that data was to be grouped and transmitted according to the \emph{packet switching} model, to
-maximize network utilization and to allow for dynamic routing decisions. As another example,
-networking protocols have been organized in \emph{abstraction layers} since the very beginning of
-computer networks, so as to encapsulate network functionalities in services of increasing
-user-friendliness. When designing quantum networks and networking services, one should draw
-inspiration from classical networking principles and avoid monolithic designs and software
-architectures that would render the system hard to scale.
+and that have made these technological leaps even possible. Key architectural principles that guided
+the design of computer networks include the \emph{end-to-end principle}~\cite{saltzer_1984_end},
+\emph{encapsulation}~\cite{rfc_1122}, and the \emph{packet switching
+model}~\cite{roberts_1978_evolution}. When designing quantum networks and networking services, one
+should draw inspiration from classical networking principles and avoid monolithic designs and
+software architectures that would render the system rigid and hard to scale.
 
 Then, how similar are quantum networks and classical networks? Which are the challenges that they
 have in common, and which ones are exclusive to quantum networking? How much can we capitalize on
@@ -123,12 +125,17 @@ employment of a software-defined control plane?}
 
 Perhaps disappointingly, but unsurprisingly too, this thesis will not try to answer all the research
 questions from the previous section. The good news is that there are many ongoing efforts from
-various scientists that are looking into these questions. Most of the times, however, researchers
-have to validate their designs on a simulated quantum network, given that we do not yet have access
-to mid-scale testbeds consisting of more than a handful of nodes --- the most advanced of which
-features three interconnected devices~\cite{pompili_2021_multinode}. On the other hand, we need a
-framework to evaluate quantum networking protocols and applications on real quantum networks, to
-help us verify our assumptions and simulation results even in the early stages of this research
+various scientists that are looking into these questions, particularly focusing on networking
+protocols~\cite{van_meter_2013_repeaters, pirker_2019_quantum, dahlberg_2019_egp,
+kozlowski_2020_qnp, illiano_2022_quantum}, \acrshort{sdn}~\cite{aguado_2020_enabling,
+kozlowski_2020_p4}, network architectures~\cite{matsuo_2019_bootstrapping, li_2022_connectionless,
+diadamo_2022_packet, pouryousef_2022_overlay, gu_2023_fendi, mandil_2023_packet}, and node
+architectures~\cite{vardoyan_2022_netarch}, among other topics. Most of the times, however,
+researchers have to validate their designs on a simulated quantum network, given that we do not yet
+have access to mid-scale testbeds consisting of more than a handful of nodes --- the most advanced
+of which features three interconnected devices~\cite{pompili_2021_multinode}. On the other hand, we
+need a framework to evaluate quantum networking protocols and applications on real quantum networks,
+to help us verify our assumptions and simulation results even in the early stages of this research
 field. In this thesis, we will discuss design considerations for such a framework, design and
 implement a rudimentary instance of it, and evaluate our design and implementation on a quantum
 network.
