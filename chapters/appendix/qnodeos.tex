@@ -12,15 +12,13 @@ stack}, which, in turn, registers available entangled qubits with the \acrshort{
 \emph{\acrlong{qmmu}} (\acrshort{qmmu}) keeps track of used qubits, and transfers qubit ownership
 across processes when requested.
 
-\section{Process Manager}
+\paragraph{Process manager}
 
 The process manager owns \acrshort{qnodeos} processes and marshals accesses to those. Creating a
 process, adding a routine to it and accessing the process's data must be done through the process
 manager. Additionally, the process manager is used by other components to notify \emph{events} that
 occur inside \acrshort{qnodeos}, upon which the state of one of more processes is updated. Process
 state updates result in a notification to the scheduler.
-
-\paragraph{Interfaces}
 
 The process manager exposes interfaces for three services:
 \begin{itemize}
@@ -62,14 +60,12 @@ The process manager exposes interfaces for three services:
     \label{fig:qnodeos-core}
 \end{figure}
 
-\section{Scheduler}
+\paragraph{Scheduler}
 
 The \acrshort{qnodeos} scheduler registers processes that are ready to be scheduled, and assigns
 them to the \acrshort{qnodeos} processor when the latter is available. Ready processes are stored in
 a \emph{prioritized ready queue}, and processes of the same priority are scheduled with a
 first-come-first-served policy.
-
-\paragraph{Interfaces}
 
 The scheduler only exposes one interface for process state notifications (interface~\circled{4} in
 \cref{fig:qnodeos-core}), used by the process manager to signal when a process transitions to a new
@@ -77,7 +73,7 @@ state. When a \acrshort{qnodeos} process transitions to the ready state, it is d
 scheduler's prioritized ready queue. When a process becomes idle, or is waiting for an event to
 happen, the scheduler simply registers that the processor has become available.
 
-\section{Processor}
+\paragraph{Processor}
 
 The \acrshort{qnodeos} processor handles the execution of \acrshort{qnodeos} user and kernel
 processes, by running classical instructions locally and issuing quantum instructions to the
@@ -85,21 +81,17 @@ processes, by running classical instructions locally and issuing quantum instruc
 (reads and writes) its classical memory. The processor implements a specific instruction set
 architecture dictated by the QASM language of choice.
 
-\paragraph{Interfaces}
-
 The processor exposes one interface for processor assignment (interface~\circled{5} in
 \cref{fig:qnodeos-core}), used by the \acrshort{qnodeos} scheduler to activate the processor, when
 it is idling, and assign it to a \acrshort{qnodeos} process.
 
-\section{Entanglement Management Unit}
+\paragraph{Entanglement management unit}
 
 The \acrfull{emu} maintains a list of open \emph{EPR sockets} and a list of \emph{entanglement
 requests}, and keeps track of the \emph{entangled qubits} produced by the quantum network stack.
 Received entanglement requests are considered valid only if an EPR socket associated to such
 requests exists. Valid requests are forwarded to the quantum network stack. Entangled qubit
 generations are notified as events to the process manager.
-
-\paragraph{Interfaces}
 
 The \acrshort{emu} exposes interfaces for three services:
 \begin{itemize}
@@ -114,7 +106,7 @@ The \acrshort{emu} exposes interfaces for three services:
           and to link it to an existing entanglement request.
 \end{itemize}
 
-\section{Quantum Network Stack}
+\paragraph{Quantum network stack}
 
 The quantum network stack on \acrshort{qnodeos} follows the model presented in
 Ref.~\cite{dahlberg_2019_egp} which is based on the classical \acrshort{osi} network stack model for
@@ -128,8 +120,6 @@ created statically on \acrshort{qnodeos}. However, this process's routine is dyn
 instructions to be executed on the processor depend on the outstanding entanglement generation
 requests received from \acrshort{emu} and network peers.
 
-\paragraph{Interfaces}
-
 The quantum network stack exposes interfaces for two services:
 \begin{itemize}
     \item \emph{Entanglement request registration} (interface~\circled{9} in
@@ -142,7 +132,7 @@ The quantum network stack exposes interfaces for two services:
           peers.
 \end{itemize}
 
-\section{Quantum Memory Management Unit}
+\paragraph{Quantum memory management unit}
 
 The \acrfull{qmmu} receives requests for \emph{qubit allocations} from \acrshort{qnodeos} processes,
 and manages the subsequent usage of those. It also translates QASM \emph{virtual qubit addresses}
@@ -155,8 +145,6 @@ process's routine --- to accommodate an application's topology requirements whil
 qubits being used by other \acrshort{qnodeos} processes. Such a feature could prove crucial to
 increase the number of processes that can be using the quantum memory at the same time, and to
 enhance multitasking performances.
-
-\paragraph{Interfaces}
 
 The \acrshort{qmmu} exposes interfaces for three services:
 \begin{itemize}
