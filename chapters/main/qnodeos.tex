@@ -48,8 +48,8 @@ interface to the \acrshort{qdevice}.
 \label{sec:qnodeos:implementation}
 
 \Cref{fig:node-deployment} outlines software and hardware implementation of \acrshort{qnodeos} and
-the whole node system. \acrshort{qnodeos} is implemented in C++ on top of FreeRTOS, a tiny operating
-system for microcontrollers~\cite{freertos}. The stack runs on a dedicated MicroZed~\cite{microzed}
+the whole node system. \acrshort{qnodeos} is implemented in C++ on top of FreeRTOS~\cite{freertos},
+a tiny operating system for microcontrollers. The stack runs on a dedicated MicroZed~\cite{microzed}
 --- an off-the-shelf platform based on the Zynq-7000 SoC, which hosts two ARM Cortex-A9 processing
 cores, of which only one is used, clocked at \qty{667}{\MHz}. \acrshort{qnodeos} connects to peer
 \acrshort{qnodeos} systems via \acrshort{tcp} over a Gigabit Ethernet interface. For the
@@ -267,35 +267,6 @@ patters, resulting from a continuous execution of each usage pattern over \qty{\
 \acrshort{qnodeos} can thus support multi-user quantum network nodes, and can take advantage of
 network idle times to improve device utilization and average application latency. Impact of
 multitasking on fidelity not visible with a single qubit.
-
-\section{Related Work}
-\label{sec:qnodeos:relwork}
-
-Relative to quantum networking, a substantial amount of software and systems work happens in the
-field of quantum computing. For example, operating systems for quantum computers (without networking
-functionality) are under active development in research and industry~\cite{kong_2021_origin,
-deltaflow_os}. Furthermore, extensive work exists on developing quantum computing
-architectures~\cite{fu_2017_microarch, murali_2019_fullstack, bourassa_2021_blueprint}. In this
-work, we have addressed new problems that arise specifically from the inclusion of quantum
-networking which has not been considered at all in the aforementioned \acrshortpl{os} and
-publications.
-
-Nevertheless, systems research in quantum networking has been growing as a field as well. In
-particular, over the past several years there have been multiple proposals for quantum network
-protocol stacks~\cite{van_meter_2013_repeaters, pirker_2019_quantum, dahlberg_2019_egp,
-illiano_2022_quantum} and quantum network architectures~\cite{matsuo_2019_bootstrapping,
-aguado_2020_enabling, li_2022_connectionless, diadamo_2022_packet, pouryousef_2022_overlay,
-gu_2023_fendi, mandil_2023_packet}. One of the proposed network stacks has even been demonstrated
-experimentally on a state-of-the-art two-node network in a lab~\cite{pompili_2022_experimental} ---
-as detailed in \cref{chp:netstack} --- while the rest has only been validated in simulation.
-However, these works heavily focus on the network protocol aspects and whilst some of them
-acknowledge that the stacks will exist as a component in a bigger system, they do not tackle any of
-the related issues, such as resource management or task scheduling.
-
-Quantum network applications themselves have also been demonstrated on small networks in
-laboratories~\cite{barz_2012_demonstration}. However, such demonstrations have always been \emph{ad
-hoc}, and scripted through low-level experimental controls as their purpose was to demonstrate
-hardware technology milestones rather than develop general systems for multiple users.
 
 \section{Discussion}
 
