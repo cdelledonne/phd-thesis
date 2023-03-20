@@ -1,8 +1,8 @@
 \chapter{Implementation of the Quantum Physical Layer}
 \label{app:phys}
 
-We provide here additional details concerning the implementation of the quantum physical layer used
-for our experiments.
+We provide additional details concerning the implementation of the quantum physical layer used for
+our experiments.
 
 \paragraph{Single qubit gates}
 
@@ -37,12 +37,12 @@ network stack, which would not be possible over longer distances. Specifically:
     \item We use a single laser --- the client's --- to excite both nodes, as in
           Ref.~\cite{pompili_2021_multinode}. Over longer distances, one would need to phase-lock
           the excitation lasers at the two nodes to ensure phase-stability of the entangled states.
-    \item The Device Controllers (ADwin Pro II microcontroller) are triggered every \qty{1}{\us} by
-          the same signal generator, advancing the state machine algorithm that implements the
-          physical layer. This ensures that the two microcontrollers have a common shared clock.
-          Over longer distances, one could use existing protocols (and commercially-available
-          hardware) to obtain a shared clock~\cite{whiterabbit}, and use that to trigger the
-          microcontrollers.
+    \item The Device Controllers (ADwin Pro II microcontroller~\cite{adwin}) are triggered every
+          \qty{1}{\us} by the same signal generator, advancing the state machine algorithm that
+          implements the physical layer. This ensures that the two microcontrollers have a common
+          shared clock. Over longer distances, one could use existing protocols (and
+          commercially-available hardware) to obtain a shared clock~\cite{whiterabbit}, and use that
+          to trigger the microcontrollers.
     \item The two \acrshortpl{awg} need to be triggered to play entanglement attempts. In our
           implementation, one device controller --- the server's --- triggers both \acrshortpl{awg}.
           This ensures that the triggering delay between the two \acrshortpl{awg} is constant, and

@@ -11,8 +11,8 @@ future research seeking to continue on this path.
 \section{Summary of Results}
 
 The primary focus of this work was to design, build and experimentally validate \emph{software
-abstractions} for \emph{programmable} quantum network nodes, as the title of this dissertation reads
-out. Here we recap the main results of our investigation.
+abstractions} for \emph{programmable} quantum network nodes. Here we recap the main results of our
+investigation.
 
 \paragraph{Design considerations}
 
@@ -21,7 +21,8 @@ and why classical networking and \acrfull{os} research fall short of such challe
 laid out general design considerations to be addressed when thinking about abstractions for quantum
 network nodes. With respect to that, we have also put forward a shortlist of the main constituent
 parts of an \acrshort{os} for such nodes --- which include a network stack for quantum
-communications, a process scheduler, and a \acrlong{qmmu}. We have done so in \cref{chp:arch}.
+communications, a process scheduler, and a \acrlong{qmmu}. These design considerations were
+presented in \cref{chp:arch}.
 
 \paragraph{Design of an operating system for quantum network nodes}
 
@@ -46,9 +47,9 @@ As a first case study of \acrshort{qnodeos}, we tested its quantum networking ca
 of three simple applications centered around entanglement generation. We have implemented the
 quantum networking stack proposed in recent publications~\cite{dahlberg_2019_egp,
 kozlowski_2020_qnp}, integrated it into \acrshort{qnodeos}, and demonstrated its operation on a
-two-node state-of-the-art quantum network based on \acrlong{nv} center technology. With these
+two-node state-of-the-art quantum network based on \acrshort{nv} center technology. With these
 preliminary tests, we showed how \acrshort{os} abstractions can simplify the programming of quantum
-network nodes, at a minimal, almost negligible performance cost. We in fact found that, while the
+network nodes at a minimal, almost negligible, performance cost. We in fact found that, while the
 quantum networking stack introduces latency as compared to ``bare-metal'' entanglement generation at
 the physical layer, the application-level fidelity of the delivered states is not much affected by
 this overhead. These results were presented in \cref{chp:netstack}.
@@ -60,7 +61,7 @@ baseline for an \acrshort{os} for quantum network nodes, we took the experiments
 running fully-fledged quantum networking applications through \acrshort{qnodeos}. Primarily, we
 demonstrated the complete run of a delegated quantum computation protocol, as well as the concurrent
 execution of multiple applications, leveraging the multitasking capabilities of \acrshort{qnodeos}.
-The results, again obtained on a two-node quantum network based on \acrlong{nv} centers, asserted
+The results, again obtained on a two-node quantum network based on \acrshort{nv} centers, asserted
 the importance of a robust stack of abstraction layers for quantum networking. \note{Refine after
 \acrshort{qnodeos} experiments are done.} We presented these results in \cref{chp:qnodeos}.
 
@@ -78,16 +79,16 @@ states. This topic was investigated in \cref{chp:doa}.
 
 We hope that our work and results open the door to further research on the topic of \acrshortpl{os}
 for quantum networking. On that regard, we have identified a few areas of this field that would
-benefit from a deeper investigation, which we summarize here.
+benefit from a deeper investigation.
 
 \paragraph{Quantum network node architecture}
 
-In our design, we have defined a certain architecture of a quantum network node the separation, and
-we have not investigated possible alternatives. In particular, the separation between host,
-\acrshort{qnodeos} and \acrshort{qdevice} determines which component is responsible for which task,
-and limits certain scheduling decisions to certain components. In the future, one might want to
-explore other solutions and examine scenarios in which, for instance, resource allocation and
-scheduling decisions are not only taken on \acrshort{qnodeos}.
+In our design, we have defined a certain architecture of a quantum network node, and we have not
+investigated possible alternatives. In particular, the separation between host, \acrshort{qnodeos}
+and \acrshort{qdevice} determines which component is responsible for which task, and limits certain
+scheduling decisions to certain components. In the future, one might want to explore other solutions
+and examine scenarios in which, for instance, resource allocation and scheduling decisions are not
+only taken on \acrshort{qnodeos}.
 
 \paragraph{Scheduling of processes and applications}
 
@@ -115,10 +116,10 @@ schedule in real-time.
 
 The \acrfull{qmmu} implemented on the first version of \acrshort{qnodeos} is rather basic. As
 discussed in \cref{chp:arch}, a more advanced iteration of the \acrshort{qmmu} might feature smart
-mechanisms for tracking (estimating) qubit decoherence to offer better run-time scheduling support,
-as well as device-specific descriptions of the underlying quantum memory to improve allocation
-strategies that better cater to memory lifetime requirements and to the limitations of near-term
-quantum devices.
+mechanisms for tracking (estimating) qubit decoherence to offer better run-time scheduling support.
+Additionally, it could have access to device-specific descriptions of the underlying quantum memory
+to improve allocation strategies that better cater to memory lifetime requirements and to the
+limitations of near-term quantum devices.
 
 \paragraph{Large-scale experimental validation and benchmarking}
 

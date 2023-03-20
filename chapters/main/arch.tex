@@ -29,16 +29,17 @@ additions.}
 and marshals access to physical resources, abstracts low-level hardware functionalities into
 user-friendly services, and provides an interface to users to program and run applications on the
 system. Our goal here is to apply basic principles from classical \acrshort{os} design literature to
-our novel use case of programmable and scalable quantum networking nodes, and to hopefully create a
-framework where the challenges outlined in \cref{chp:background} can be studied and addressed. We
+our novel use case of programmable and scalable quantum networking nodes, and to (hopefully) create
+a framework where the challenges outlined in \cref{chp:background} can be studied and addressed. We
 thus investigate the general requirements that such a system should satisfy, illustrated with the
 example of a quantum processor based on \acrfull{nv} centers in diamond. This provides a guideline
-for future systems of this form. We also propose the first proof-of-principle architecture for an
-\acrlong{os} for quantum network nodes, which we call \acrshort{qnodeos}. Our system's capabilities
-include quantum memory management, scheduling different types of quantum operations on the device,
-as well as an interface to different drivers addressing several possible quantum hardware
-architectures. On the quantum networking front, \acrshort{qnodeos} adopts the quantum network stack
-and protocols proposed by \textcite{dahlberg_2019_egp} and by \textcite{kozlowski_2020_qnp}.
+for future systems of this form. We also propose the \emph{first proof-of-principle architecture for
+an \acrlong{os} for quantum network nodes}, which we call \acrshort{qnodeos}. Our system's
+capabilities include quantum memory management, scheduling different types of quantum operations on
+the device, as well as an interface to different drivers addressing several possible quantum
+hardware architectures. On the quantum networking front, \acrshort{qnodeos} adopts the quantum
+network stack and protocols proposed by \textcite{dahlberg_2019_egp} and by
+\textcite{kozlowski_2020_qnp}.
 
 \section{General Design Considerations}
 \label{sec:arch:considerations}
@@ -125,15 +126,15 @@ network layer protocol (as proposed in Ref.~\cite{kozlowski_2020_qnp}).
 
 To successfully produce entanglement, the network stack needs access to a communication qubit,
 resulting in two requirements for the rest of the system:
-%
-\begin{inlinelist}
-    \item A scheduler (see below) should take into account that generating entanglement at the
-          physical layer between two nodes directly connected by a physical communication medium
-          requires that the two nodes apply a series of physical operations with very precise timing
-          synchronization between them (nanosecond precision with sub-nanosecond jitter). Therefore,
-          entanglement generation across a link with an adjacent node must always be scheduled in a
-          synchronized manner between the two adjacent neighbors. Similarly, due to limited memory
-          lifetimes, generating entanglement with the help of an intermediary node at the network
+
+\begin{enumerate}
+    \item A scheduler should take into account that generating entanglement at the physical layer
+          between two nodes directly connected by a physical communication medium requires that the
+          two nodes apply a series of physical operations with very precise timing synchronization
+          between them (nanosecond precision with sub-nanosecond jitter). Therefore, entanglement
+          generation across a link with an adjacent node must always be scheduled in a synchronized
+          manner between the two adjacent neighbors. Similarly, due to limited memory lifetimes,
+          generating entanglement with the help of an intermediary node at the network
           layer~\cite{kozlowski_2020_qnp} requires specific operations (entanglement swapping) to be
           scheduled at all three nodes within a time window allowed by the memory lifetimes.
     \item On some quantum hardware systems (e.g. \acrshort{nv} in diamond), the communication qubit
@@ -143,7 +144,7 @@ resulting in two requirements for the rest of the system:
           to allow qubit ownership transfer between applications and the network stack. A typical
           use case of such ownership transfer would occur when the network stack claims the
           communication qubit for entanglement generation, and then yields it to an application.
-\end{inlinelist}
+\end{enumerate}
 
 \subsection{Scheduler}
 
@@ -167,8 +168,8 @@ quantum performance metrics when assessing any scheduler.
 
 Practically, the scheduler in question should allocate the underlying physical resources --- most
 importantly, the qubits --- based on a set of well-defined constraints, the fundamental ones being:
-%
-\begin{inlinelist}
+
+\begin{enumerate}
     \item \emph{Synchronized network schedule}: due to the bilateral nature of entanglement, each
           node will have its quantum networking activity synchronized with its neighbors, meaning
           that a missed synchronization window on one node results in a waste of resources on remote
@@ -182,13 +183,13 @@ importantly, the qubits --- based on a set of well-defined constraints, the fund
     \item \emph{Multitasking}: for a node to be shared by multiple users, the scheduler should not
           allocate all the available resources to a single application indefinitely, and instead it
           should be aware of the presence of multiple applications and multiple users.
-\end{inlinelist}
+\end{enumerate}
 
 Additionally, scheduling at any level could optionally process another set of input variables, where
 we generally assume that the programmer or compiler provide aggregate advice based on these input
 variables to the \acrshort{os}:
-%
-\begin{inlinelist}
+
+\begin{enumerate}
     \item \emph{Duration of operations}: local quantum operations typically take a fixed amount of
           time and always succeed. Entanglement, on the other hand, is a probabilistic process, and
           generating an entangled pair can take an indefinite (and large) number of attempts.
@@ -198,7 +199,7 @@ variables to the \acrshort{os}:
           operations applied on such qubits. An advanced scheduler could use knowledge of qubit
           lifetimes and elapsed time to dynamically re-prioritize application demands based on the
           advice of the compiler.
-\end{inlinelist}
+\end{enumerate}
 
 \paragraph{Scheduling of applications}
 
@@ -233,7 +234,7 @@ system than others (see e.g. \cref{sec:arch:design}).
 
 Finally, scheduling can be performed at two levels of operations: First, one can consider the
 problem of scheduling local versus networked instructions, where one simple way of realizing a
-schedule that respects the constraints inherent in such a schedule (see above) is presented in
+schedule that respects the constraints inherent in such a schedule is presented in
 \cref{sec:arch:design}. Second, one can consider scheduling any form of operation on the underlying
 quantum processor. While our current realization of \acrshort{qnodeos} achieves this by populating
 an instruction queue in software, we envision that this form of scheduling would later be moved from
@@ -467,8 +468,8 @@ the quality of the affected qubit states.
 
 \subsection{QNodeOS Architecture}
 
-\Cref{fig:quantum-node} illustrates the internals of \acrshort{qnodeos}, and outlines the
-interactions with the rest of the components of a quantum network node. At its top,
+We refer again to \cref{fig:quantum-node}, which illustrates the internals of \acrshort{qnodeos},
+and outlines the interactions with the rest of the components of a quantum network node. At its top,
 \acrshort{qnodeos} implements an \emph{end-node \acrshort{api} handler} to process requests from the
 host. Internally, \acrshort{qnodeos} features a \emph{quantum network stack}, a \emph{process
 manager}, a \emph{process scheduler}, a \emph{quantum memory management unit} (\acrshort{qmmu}), and
@@ -528,5 +529,14 @@ would cause degradation in fidelity due to hardware imperfections and additional
 The current \acrshort{qmmu} is rather simple due to the fact that our current quantum nodes have
 only have a few qubits each. Features like decoherence tracking and topology-based allocation can be
 part of a later version of the \acrshort{qmmu}.
+
+\section{Discussion}
+
+We have discussed general design considerations for an \acrshort{os} for quantum network nodes, and
+identified the fundamental components of such an \acrshort{os}. We have also presented a reference
+architecture that abides by these requirements. Whilst our architecture is a proof of concept, and
+is not meant to deliver optimal performance, we implement it and test it to run simple quantum
+networking applications. We will proceed to experimentally demonstrate the capabilities of
+\acrshort{qnodeos} in \cref{chp:netstack,chp:qnodeos}.
 
 \printbibliography[heading=subbibintoc,title={References},notcategory=noprint]

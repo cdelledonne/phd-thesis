@@ -9,7 +9,10 @@
 \def\thesistitle{\@title}
 \makeatother
 
+\newlength{\tabcolsepold}
+\setlength{\tabcolsepold}{\tabcolsep}
 \setlength{\tabcolsep}{0cm}
+
 \noindent
 \begin{tabularx}{\linewidth}{p{2cm}X}
     2018 -- 2023 & Ph.D. Quantum Computer Science \\
@@ -29,3 +32,5 @@
     \\
     1994/05/02   & Born in Potenza, Italy \\
 \end{tabularx}
+
+\setlength{\tabcolsep}{\tabcolsepold}

@@ -1,16 +1,16 @@
 \chapter{QNodeOS Components and Interfaces}
 \label{app:qnodeos}
 
-We provide here additional details on the components of the \acrshort{qnodeos} architecture and
-their intefaces. \Cref{fig:qnodeos-core} gives an overview of all the components of
-\acrshort{qnodeos}. The \emph{process manager} marshals accesses to all user and kernel processes.
-The \emph{scheduler} assigns ready processes to the \emph{processor}, which runs quantum
-instructions through the underlying \acrshort{qdevice}, processes classical QASM instructions
-locally, and registers entanglement requests with the \emph{\acrlong{emu}} (\acrshort{emu}). The
-\acrshort{emu} maintains a list of EPR sockets and entanglement requests, forwards the latter to the
-\emph{quantum network stack}, which, in turn, registers available entangled qubits with the
-\acrshort{emu}. Finally, the \emph{\acrlong{qmmu}} (\acrshort{qmmu}) keeps track of used qubits, and
-transfers qubit ownership across processes when requested.
+We provide additional details on the components of the \acrshort{qnodeos} architecture and their
+interfaces. \Cref{fig:qnodeos-core} gives an overview of all the components of \acrshort{qnodeos}.
+The \emph{process manager} marshals accesses to all user and kernel processes. The \emph{scheduler}
+assigns ready processes to the \emph{processor}, which runs quantum instructions through the
+underlying \acrshort{qdevice}, processes classical QASM instructions locally, and registers
+entanglement requests with the \emph{\acrlong{emu}} (\acrshort{emu}). The \acrshort{emu} maintains a
+list of EPR sockets and entanglement requests, forwards the latter to the \emph{quantum network
+stack}, which, in turn, registers available entangled qubits with the \acrshort{emu}. Finally, the
+\emph{\acrlong{qmmu}} (\acrshort{qmmu}) keeps track of used qubits, and transfers qubit ownership
+across processes when requested.
 
 \section{Process Manager}
 
@@ -24,19 +24,19 @@ state updates result in a notification to the scheduler.
 
 The process manager exposes interfaces for three services:
 \begin{itemize}
-    \item Process management (interface~\circled{1} in \cref{fig:qnodeos-core}): to create and
-          remove processes, and to add routines to them. When the user registers an application, the
-          \acrshort{qnodeos} \acrshort{api} Handler uses the process manager to create a
+    \item \emph{Process management} (interface~\circled{1} in \cref{fig:qnodeos-core}): to create
+          and remove processes, and to add routines to them. When the user registers an application,
+          the \acrshort{qnodeos} \acrshort{api} Handler uses the process manager to create a
           \acrshort{qnodeos} user process. The returned process ID can be later used to add a
           routine to that process, or to remove the process once all its routines are fully
           processed.
-    \item Event notification (interface~\circled{2} in \cref{fig:qnodeos-core}): to notify an event
-          occurred inside \acrshort{qnodeos}, including the addition of a routine, the completion of
-          a routine, the scheduling of the process, the hitting of a Wait condition, and the
-          generation of an entangled qubit destined to the process. Some events trigger follow-up
-          actions --- for instance, when a process that was waiting for an event becomes ready, it
-          gets added to the queue of ready processes maintained by the scheduler.
-    \item Process data access (interface~\circled{3} in \cref{fig:qnodeos-core}): to access a
+    \item \emph{Event notification} (interface~\circled{2} in \cref{fig:qnodeos-core}): to notify
+          that an event has occurred inside \acrshort{qnodeos}, including the addition of a routine,
+          the completion of a routine, the scheduling of the process, the hitting of a \emph{wait}
+          condition, and the generation of an entangled qubit destined to the process. Some events
+          trigger follow-up actions --- for instance, when a process that was waiting for an event
+          becomes ready, it gets added to the queue of ready processes maintained by the scheduler.
+    \item \emph{Process data access} (interface~\circled{3} in \cref{fig:qnodeos-core}): to access a
           process's routines and its classical memory space, mostly used while running the process
           (through the processor).
 \end{itemize}
@@ -103,15 +103,15 @@ generations are notified as events to the process manager.
 
 The \acrshort{emu} exposes interfaces for three services:
 \begin{itemize}
-    \item EPR socket registration (interface~\circled{6} in \cref{fig:qnodeos-core}): to register
-          and open EPR sockets belonging to an application, and to set up internal classical network
-          tables and to establish classical network connection.
-    \item Entanglement request registration (interface~\circled{7} in \cref{fig:qnodeos-core}): to
-          add entanglement requests to the list of existing ones, to be used when matching produced
-          entangled qubits with a process that requested them.
-    \item Entanglement notification (interface~\circled{8} in \cref{fig:qnodeos-core}): to register
-          the availability of an entangled qubit, produced by the quantum network stack, and to link
-          it to an existing entanglement request.
+    \item \emph{EPR socket registration} (interface~\circled{6} in \cref{fig:qnodeos-core}): to
+          register and open EPR sockets belonging to an application, and to set up internal
+          classical network tables and to establish classical network connection.
+    \item \emph{Entanglement request registration} (interface~\circled{7} in
+          \cref{fig:qnodeos-core}): to add entanglement requests to the list of existing ones, to be
+          used when matching produced entangled qubits with a process that requested them.
+    \item \emph{Entanglement notification} (interface~\circled{8} in \cref{fig:qnodeos-core}): to
+          register the availability of an entangled qubit, produced by the quantum network stack,
+          and to link it to an existing entanglement request.
 \end{itemize}
 
 \section{Quantum Network Stack}
@@ -132,13 +132,14 @@ requests received from \acrshort{emu} and network peers.
 
 The quantum network stack exposes interfaces for two services:
 \begin{itemize}
-    \item Entanglement request registration (interface~\circled{9} in \cref{fig:qnodeos-core}): to
-          add entanglement requests coming from the \acrshort{emu} to the list of existing ones,
-          which are used to fill in the quantum network stack process's routine with the correct
-          instructions to execute.
-    \item Entanglement request synchronization (interface~\circled{10} in \cref{fig:qnodeos-core}):
-          similar to the entanglement request registration interface, but to be used to synchronize
-          (send and receive) requests with \acrshort{qnodeos} network peers.
+    \item \emph{Entanglement request registration} (interface~\circled{9} in
+          \cref{fig:qnodeos-core}): to add entanglement requests coming from the \acrshort{emu} to
+          the list of existing ones, which are used to fill in the quantum network stack process's
+          routine with the correct instructions to execute.
+    \item \emph{Entanglement request synchronization} (interface~\circled{10} in
+          \cref{fig:qnodeos-core}): similar to the entanglement request registration interface, but
+          to be used to synchronize (send and receive) requests with \acrshort{qnodeos} network
+          peers.
 \end{itemize}
 
 \section{Quantum Memory Management Unit}
@@ -159,19 +160,19 @@ enhance multitasking performances.
 
 The \acrshort{qmmu} exposes interfaces for three services:
 \begin{itemize}
-    \item Qubit allocation and deallocation (interface~\circled{11} in \cref{fig:qnodeos-core}): a
-          running process can ask for one or more qubits, which, if available, are allocated by the
-          \acrshort{qmmu}, and their physical addresses are mapped to the virtual addresses provided
-          by the requesting process.
-    \item Virtual address translation (interface~\circled{12} in \cref{fig:qnodeos-core}): before
-          sending quantum instructions to the \acrshort{qdevice} driver, the processor uses virtual
-          qubit addresses specified in QASM to retrieve physical addresses from the \acrshort{qmmu},
-          and then replaces virtual addresses with physical addresses in the instructions for the
-          \acrshort{qdevice} driver.
-    \item Qubit ownership transfer (interface~\circled{13} in \cref{fig:qnodeos-core}): qubits are
-          only visible to the process that allocates them. However, in some cases, a process may
-          wish to transfer some if its qubits to another one. A notable example is the quantum
-          network process transferring an entangled qubit to the process that will use it.
+    \item \emph{Qubit allocation and deallocation} (interface~\circled{11} in
+          \cref{fig:qnodeos-core}): a running process can ask for one or more qubits, which, if
+          available, are allocated by the \acrshort{qmmu}, and their physical addresses are mapped
+          to the virtual addresses provided by the requesting process.
+    \item \emph{Virtual address translation} (interface~\circled{12} in \cref{fig:qnodeos-core}):
+          before sending quantum instructions to the \acrshort{qdevice} driver, the processor uses
+          virtual qubit addresses specified in QASM to retrieve physical addresses from the
+          \acrshort{qmmu}, and then replaces virtual addresses with physical addresses in the
+          instructions for the \acrshort{qdevice} driver.
+    \item \emph{Qubit ownership transfer} (interface~\circled{13} in \cref{fig:qnodeos-core}):
+          qubits are only visible to the process that allocates them. However, in some cases, a
+          process may wish to transfer some if its qubits to another one. A notable example is the
+          quantum network process transferring an entangled qubit to the process that will use it.
 \end{itemize}
 
 \printbibliography[heading=subbibintoc,title={References}]
