@@ -4,7 +4,7 @@
 \begin{abstract}
 An \acrfull{os} for quantum network nodes should provide more than just networking functionalities.
 Ultimately, it should enable quantum networking applications to be written in high-level,
-platform independent software, and should be able to manage the resources of the underlying
+platform-independent software, and should be able to manage the resources of the underlying
 device when deployed in a multi-node and multi-user quantum network. This chapter briefly
 discusses our implementation of \acrshort{qnodeos}, an \acrshort{os} for quantum network nodes,
 which includes a quantum network stack for entanglement generation, as well as resource
@@ -220,10 +220,10 @@ The delegated computation is run for various values of $\alpha$ ($\pi$, $\pi/2$)
 ($\pi$, $\pi/2$, $\pi/4$). The application is run \num{500} times for each combination of $\alpha$
 and $\theta$. We report the measured fidelity of the qubit state after the delegated computation for
 each of the computation values. We also report a breakdown of the average application latency, to
-give an indication of where time is spent during execution. [...] The abstractions provided by
-\acrshort{qnodeos} allow for the execution of more complex quantum network applications. Distributed
-applications may result in idle time on some nodes, which \acrshort{qnodeos} can allocate to other
-pending applications.
+give an indication of where time is spent during execution. \note{Plot and discuss data} The
+abstractions provided by \acrshort{qnodeos} allow for the execution of more complex quantum network
+applications. Distributed applications may result in idle time on some nodes, which
+\acrshort{qnodeos} can allocate to other pending applications.
 
 \subsection{Multitasking}
 
@@ -262,11 +262,11 @@ applications with multitasking disabled --- on \acrshort{qnodeos}, this means th
 can only be scheduled if no other user processes are either running or waiting for entanglement
 generation. We report device utilization and average application latency, for the various usage
 patters, resulting from a continuous execution of each usage pattern over \qty{\approx 30}{min}.
-[...] The scheduler of \acrshort{qnodeos}, in combination with the \acrshort{qmmu}, can dynamically
-re-prioritize outstanding processes based on resource availability. \acrshort{qnodeos} can thus
-support multi-user quantum network nodes, and can take advantage of network idle times to improve
-device utilization and average application latency. Impact of multitasking on fidelity not visible
-with a single qubit.
+\note{Plot and discuss data} The scheduler of \acrshort{qnodeos}, in combination with the
+\acrshort{qmmu}, can dynamically re-prioritize outstanding processes based on resource availability.
+\acrshort{qnodeos} can thus support multi-user quantum network nodes, and can take advantage of
+network idle times to improve device utilization and average application latency. Impact of
+multitasking on fidelity not visible with a single qubit.
 
 \section{Related Work}
 \label{sec:qnodeos:relwork}
@@ -302,4 +302,6 @@ hardware technology milestones rather than develop general systems for multiple 
 \noindent
 \note{Copy over from \acrshort{qnodeos} paper after experiments have been performed}
 
+\begin{xstretch}
 \printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
+\end{xstretch}

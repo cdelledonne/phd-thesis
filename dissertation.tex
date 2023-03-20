@@ -144,6 +144,10 @@
 }
 \makeatother
 
+% Increase maximum stretch for a certain paragraph (https://tex.stackexchange.com/q/84510), mostly
+% to be used to avoid overflow in list of references.
+\newenvironment{xstretch}{\par\emergencystretch=1em}{\par}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
