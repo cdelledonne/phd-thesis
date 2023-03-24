@@ -2,22 +2,22 @@
 \addcontentsline{toc}{chapter}{List of Publications}
 \setheader{List of Publications}
 
-\def\ticon{{\footnotesize \faFileTextO}}
+\def\ficon{\makebox[1.25em][l]{\footnotesize \faFileTextO}}
+\def\picon{\makebox[1.25em][l]{\footnotesize \faPencilSquareO}}
 
-\begin{enumerate}[label={\ticon~~\arabic*.},itemsep=\baselineskip]
-    \item[\ticon~~6.] \fullcite{delledonne_2023_qnodeos_noprint}
-    \item[\ticon~~5.] \fullcite{abrahams_2023_doa_noprint}
-    \item[\ticon~~4.] \fullcite{pompili_2022_experimental_noprint}
+\begin{enumerate}[label={\arabic*.},itemsep=0.7\baselineskip,parsep=0.3\baselineskip]
+    \item[6.] \fullcite{delledonne_2023_qnodeos_noprint}
+        \par\ficon This article is included in this thesis as \cref{chp:background,chp:arch,chp:qnodeos}.
+        \\ \picon This article is in preparation.
+    \item[5.] \fullcite{abrahams_2023_doa_noprint}
+        \par\ficon This article is included in this thesis as \cref{chp:doa}.
+        \\ \picon This article is in preparation.
+    \item[4.] \fullcite{pompili_2022_experimental_noprint}
+        \par\ficon This article is included in this thesis as \cref{chp:netstack}.
     \item[3.] \fullcite{dahlberg_2022_netqasm_noprint}
     \item[2.] \fullcite{dewinkel_2020_reliable_noprint}
     \item[1.] \fullcite{majid_2020_dynamic_noprint}
 \end{enumerate}
-
-\vspace{2\baselineskip}
-\noindent
-Publications marked with the symbol~~\ticon~~are included in this thesis. More specifically,
-publication 4 is included in \cref{chp:netstack}, publication 5 is included in \cref{chp:doa}, and
-publication 6 is spread over \cref{chp:background,chp:arch,chp:qnodeos}.
 
 \begin{xstretch}
 \printbibliography[heading=subbibintoc,title={References},notcategory=noprint]

@@ -10,14 +10,11 @@ classical messages through an authentication system that uses key material suppl
 \acrshort{mdiqkd} system. We use this information to simulate the performance of a quantum link
 whose protocol stack uses an authenticated classical channel, and compare that to existing
 simulations of the same protocol stack. We find that message authentication overhead is not
-detrimental to entanglement requests that end with an immediate measurement of the qubit, but has a
-much more pronounced effect on entanglement requests that require storing the entangled qubit in
-memory, and thus must be carried out sequentially.
+detrimental to entanglement requests and to the fidelity of the resulting entangled pairs.
 \end{abstract}
 
 \blfootnote{
-    This chapter is based on the preprint: \fullcite{abrahams_2023_doa_noprint}. \note{Add link to
-    arXiv when submitted}
+    This chapter is based on the article in preparation: \fullcite{abrahams_2023_doa_noprint}.
 }
 
 \newpage
@@ -565,14 +562,9 @@ We have also simulated the performance of a hypothetical quantum link under the 
 classical messages were being authenticated in some sort of way. Here, we modeled classical
 communication latency, including authentication overhead and transmission delay, using metrics
 collected from a classical link authenticated using key material sourced from an \acrshort{mdiqkd}
-system. If we disregard the large packet processing delays incurred by the authentication proxy used
-in this work, we observe that an authenticated classical channel introduces a negligible amount of
-extra classical overhead, provided that one uses an optimized \acrshort{mac}.
-
-However, we have also seen that propagation and transmission delays themselves have a noticeably
-negative effect on the performance of a quantum link, whether or not \acrlong{doa} is applied. While
-the quantum link remains functional, the entanglement generation rate drops by a significant amount
-for entanglement requests that do not end with an immediate measurement of the entangled qubit.
+system. We have observed that an authenticated classical channel does not result in degraded
+performance of the quantum link, and that the major source of overhead comes from the propagation
+and transmission delays themselves, whether or not \acrlong{doa} is applied.
 
 \begin{xstretch}
 \printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
