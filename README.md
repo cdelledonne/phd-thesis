@@ -33,7 +33,7 @@ To generate a PDF of the front side of the cover, run:
 cat cover.svg |
     sed '0,/viewBox.*/s//viewBox="180 0 170 240"/' |
     sed '0,/width.*/s//width="170mm"/' |
-    inkscape --pipe --export-type=pdf --export-filename=build/cover-front.pdf
+    inkscape --pipe --export-filename=build/cover-front.pdf
 ```
 
 To generate a PDF of the back side of the cover, run:
@@ -42,5 +42,5 @@ To generate a PDF of the back side of the cover, run:
 cat cover.svg |
     sed '0,/viewBox.*/s//viewBox="0 0 170 240"/' |
     sed '0,/width.*/s//width="170mm"/' |
-    inkscape --pipe --export-type=pdf --export-filename=build/cover-back.pdf
+    inkscape --pipe --export-filename=build/cover-back.pdf
 ```
