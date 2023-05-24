@@ -1,6 +1,7 @@
 defaultIndent: "    "
 noAdditionalIndent:
   abstract: 1
+  blfootnote: 1
   example: 1
   note: 1
   xstretch: 1
