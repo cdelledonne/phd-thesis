@@ -17,9 +17,9 @@ To generate a PDF of the propositions, compile the LaTeX document
 
 ## Cover
 
-The cover image is stored at `cover/` as an Inkscape SVG file. The following
-instructions require that you have Inkscape (and thus the `inkscape` command)
-installed.
+The cover image is stored inside the folder `cover/` as an Inkscape SVG file.
+The following instructions require that you have Inkscape (and thus the
+`inkscape` command) installed.
 
 To generate a PDF of the full cover, including back side, front side, spine,
 bookmark, and bleed margin of 2mm, run:
@@ -44,4 +44,13 @@ cat cover.svg |
     sed '0,/viewBox.*/s//viewBox="0 0 170 240"/' |
     sed '0,/width.*/s//width="170mm"/' |
     inkscape --pipe --export-filename=cover-back.pdf
+```
+
+To generate a PDF of the bookmark, run:
+
+```sh
+cat cover.svg |
+    sed '0,/viewBox.*/s//viewBox="355 0 60 240"/' |
+    sed '0,/width.*/s//width="60mm"/' |
+    inkscape --pipe --export-filename=bookmark.pdf
 ```

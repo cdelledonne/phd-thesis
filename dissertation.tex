@@ -38,6 +38,9 @@
 % Index-style glossary. 
 \usepackage{glossary-mcols}
 
+% To include PDF pages directly.
+\usepackage{pdfpages}
+
 % Bibliography managed using BibLaTeX.
 \usepackage[
     giveninits=true,     % only given name initials and not the full given name
@@ -153,6 +156,13 @@
 
 \begin{document}
 
+% Add front cover for non-print builds
+\makeatletter
+\unless\if@print
+\includepdf[pages=-]{cover/cover-front.pdf}
+\fi
+\makeatother
+
 % Specify the title and author of the thesis. This information will be used on the title page (in
 % chapters/meta/title.tex) and in the metadata of the final PDF.
 \title{Software Abstractions for Programmable Quantum Network Nodes}
@@ -212,5 +222,12 @@
 \printnoidxglossary[type=\acronymtype,title={Glossary}]
 \addcontentsline{toc}{chapter}{Glossary}
 \setheader{Glossary}
+
+% Add back cover for non-print builds
+\makeatletter
+\unless\if@print
+\includepdf[pages=-]{cover/cover-back.pdf}
+\fi
+\makeatother
 
 \end{document}
