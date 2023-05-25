@@ -264,12 +264,14 @@
 \colorlet{thumb}{anthracite}
 
 %% Set the paper size to 17 by 24 cm, approximately halfway between A4 and A5.
+% Carlo's edit: Redefine geometry according to requirements from printing company. Specifically, use
+% a paper size which is 2 mm larger than 170 x 240 on each side, thus 174 x 244 in total.
 \if@print
     \geometry{
-        papersize = {173mm,246mm},
-        layoutsize = {167mm,240mm},
-        layoutoffset = {3mm,11mm},
-        bindingoffset = 3mm
+        papersize = {174mm,244mm},
+        layoutsize = {166mm,240mm},
+        layoutoffset = {4mm,10mm},
+        bindingoffset = 4mm
     }
 \else
 \geometry{papersize = {170mm,240mm},
@@ -308,21 +310,22 @@
     \fi%
 }
 
+% Carlo's edit: crop marks are at 2mm from the margin instead of 3mm.
 \if@print%
     \newcommand*\cropmarks{%
         \ifodd\c@page%
             \begin{tikzpicture}[remember picture,overlay]
-                \draw ($(current page.north east)+(0mm,-3mm)$) -- ($(current page.north east)+(-2mm,-3mm)$);
-                \draw ($(current page.north east)+(-3mm,0mm)$) -- ($(current page.north east)+(-3mm,-2mm)$);
-                \draw ($(current page.south east)+(0mm,3mm)$) -- ($(current page.south east)+(-2mm,3mm)$);
-                \draw ($(current page.south east)+(-3mm,0mm)$) -- ($(current page.south east)+(-3mm,2mm)$);
+                \draw ($(current page.north east)+(0mm,-2mm)$) -- ($(current page.north east)+(-1.5mm,-2mm)$);
+                \draw ($(current page.north east)+(-2mm,0mm)$) -- ($(current page.north east)+(-2mm,-1.5mm)$);
+                \draw ($(current page.south east)+(0mm,2mm)$) -- ($(current page.south east)+(-1.5mm,2mm)$);
+                \draw ($(current page.south east)+(-2mm,0mm)$) -- ($(current page.south east)+(-2mm,1.5mm)$);
             \end{tikzpicture}%
         \else%
             \begin{tikzpicture}[remember picture,overlay]
-                \draw ($(current page.north west)+(0mm,-3mm)$) -- ($(current page.north west)+(2mm,-3mm)$);
-                \draw ($(current page.north west)+(3mm,0mm)$) -- ($(current page.north west)+(3mm,-2mm)$);
-                \draw ($(current page.south west)+(0mm,3mm)$) -- ($(current page.south west)+(2mm,3mm)$);
-                \draw ($(current page.south west)+(3mm,0mm)$) -- ($(current page.south west)+(3mm,2mm)$);
+                \draw ($(current page.north west)+(0mm,-2mm)$) -- ($(current page.north west)+(1.5mm,-2mm)$);
+                \draw ($(current page.north west)+(2mm,0mm)$) -- ($(current page.north west)+(2mm,-1.5mm)$);
+                \draw ($(current page.south west)+(0mm,2mm)$) -- ($(current page.south west)+(1.5mm,2mm)$);
+                \draw ($(current page.south west)+(2mm,0mm)$) -- ($(current page.south west)+(2mm,1.5mm)$);
             \end{tikzpicture}%
         \fi%
     }
