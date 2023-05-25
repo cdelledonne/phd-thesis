@@ -262,15 +262,17 @@ logic --- like simple arithmetic and branching instructions --- used for flow co
 do not have any dependencies on data originating from other nodes. Fully-classical code blocks ---
 which include local processing and communication with other end nodes --- mainly produce input data
 for the next quantum code blocks. That is, a classical code block typically precedes a quantum code
-block whose instructions depend on external data coming from a remote end node. In our system,
-quantum code blocks expressed in \emph{NetQASM}~\cite{dahlberg_2022_netqasm}. NetQASM is an
-open-source \acrfull{sdk} and instruction set for quantum applications~\cite{netqasm_sdk}. The
-NetQASM \acrshort{sdk} compiles a quantum network application, written in Python, into a series of
-classical and quantum code blocks. The instruction set used for the quantum code blocks is similar
-to other QASM languages~\cite{cross_2017_qasm, khammassi_2018_cqasm, fu_2019_eqasm}, but it is
-extended to include instructions for quantum networking. NetQASM is not a strict requirement of
-\acrshort{qnodeos}, but it does impose certain conventions (described in
-Ref.~\cite{dahlberg_2022_netqasm}) on a particular implementation of the system.
+block whose instructions depend on external data coming from a remote end node. In our
+implementation, quantum code blocks are expressed in \emph{NetQASM}~\cite{dahlberg_2022_netqasm}.
+NetQASM is an open-source \acrfull{sdk} and instruction set for quantum
+applications~\cite{netqasm_sdk}. The NetQASM \acrshort{sdk} compiles a quantum network application,
+written in Python, into a series of classical and quantum code blocks. The instruction set used for
+the quantum code blocks is similar to other QASM languages~\cite{cross_2017_qasm,
+khammassi_2018_cqasm, fu_2019_eqasm}, but it is extended to include instructions for quantum
+networking. NetQASM is not a strict requirement of \acrshort{qnodeos} --- one can implement it to
+support other low-level languages as well --- but it does impose certain conventions (described in
+Ref.~\cite{dahlberg_2022_netqasm}) on a particular implementation of the system, which however do
+not impose noteworthy design constraints.
 
 In principle, classical and quantum code blocks can be run on a single system, provided that this
 has a connection to the quantum device to execute the actual quantum instructions. However, in the
