@@ -41,8 +41,8 @@ network stack and protocols proposed by \textcite{dahlberg_2019_egp} and by
 \section{General Design Considerations}
 \label{sec:arch:considerations}
 
-We assume that the operating system builds upon a quantum hardware system capable of the execution
-of \emph{physical instructions} addressing specific qubits on the quantum chip. These physical
+We assume that the \acrshort{os} builds upon a quantum hardware system capable of the execution of
+\emph{physical instructions} addressing specific qubits on the quantum chip. These physical
 instructions may be dependent on the type of quantum hardware (e.g. \acrshort{nv} in diamond, or ion
 traps), and include instructions for initializing and measuring qubits on the chip, moving the state
 of a qubit to another location in the quantum memory, performing quantum gates, as well as to make
@@ -52,39 +52,45 @@ quantum hardware furthermore exposes the capabilities of the quantum chip: (1) t
 can be performed on on the qubit(s) and (5) the average quality of these instructions
 (\cref{chp:background}). We emphasize that, unlike in classical computing, there is currently no
 established low-level microarchitecture that defines the line between (quantum) hardware and
-software upon which such an operating system would be built. We nevertheless expect that almost all
-of the below would be functions taken on by any operating system, some of which could possibly be
-shifted to control hardware in the future.
+software upon which such an \acrshort{os} would be built. We nevertheless expect that almost all of
+the below would be functions taken on by any \acrshort{os}, some of which could possibly be shifted
+to control hardware in the future.
 
-Each node in the network runs its own independent quantum network operating system. Nodes may
-interact with each other using both classical message passing as well as entanglement generation.
-The goal of the combined system is to execute quantum network applications, which themselves consist
-of separate programs running on the operating system(s) of two (or more) network nodes. Such
-programs generally also communicate via classical message passing and entanglement generation. Each
-program itself consists of both classical and quantum blocks of code, where the quantum blocks of
-code may contain low-level classical logic (specifically, branching on classical variables and
-loops). Classical blocks of code may depend on quantum ones via classical variables generated during
-the quantum execution (measurement results, notification of entanglement generation, and information
-on the state of the quantum system such as the availability of qubits). Similarly, quantum blocks
-may depend on variables set by the classical blocks, such as messages received from remote network
-nodes. Finally, quantum blocks may themselves depend on other quantum blocks via qubits in the
-quantum memory. It is the responsibility of the programmer or compiler to identify what is a
-classical and what is a quantum block. Similarly, we assume that (potentially fine-grained)
-deadlines or priorities in the execution are determined by the programmer (or compiler) using the
-knowledge of the exposed capabilities of the quantum hardware system (e.g. memory lifetimes).
-Determining precise deadlines (e.g. when too much time has elapsed for the qubits to be useful) is
-in general a computationally expensive procedure, sometimes estimated in practice by a repeated
-simulation of the execution. We remark that there is no way in quantum mechanics to measure the
-current quality of a qubit or operation during the ongoing execution, and such qualities are
-determined by performing estimates independently of the program execution itself. Of course, the
-operating system could itself engage in such estimates when idling in order to update its knowledge
-of the capabilities of the quantum hardware.
+Each node in the network runs its own independent quantum network \acrshort{os}. Nodes may interact
+with each other using both classical message passing as well as entanglement generation. The goal of
+the combined system is to execute quantum network applications, which themselves consist of separate
+programs running on the \acrshort{os} of two (or more) network nodes. Such programs generally also
+communicate via classical message passing and entanglement generation. Each program itself consists
+of both classical and quantum blocks of code, where the quantum blocks of code may contain low-level
+classical logic (specifically, branching on classical variables and loops). Classical blocks of code
+may depend on quantum ones via classical variables generated during the quantum execution
+(measurement results, notification of entanglement generation, and information on the state of the
+quantum system such as the availability of qubits). Similarly, quantum blocks may depend on
+variables set by the classical blocks, such as messages received from remote network nodes. Finally,
+quantum blocks may themselves depend on other quantum blocks via qubits in the quantum memory.
+
+Whilst the \acrshort{os} should be capable of understanding dependencies and should provide
+mechanism to specify them, a non-goal of the \acrshort{os} is to identify what is a classical block
+and what is a quantum block --- decomposing a program is not necessarily a trivial task, and might
+result in unnecessary latency at the \acrshort{os} level. Similarly, we assume that it is not the
+\acrshort{os}'s responsibility to determine (potentially fine-grained) deadlines or priorities in
+the execution, given that computing precise deadlines (e.g. when too much time has elapsed for the
+qubits to be useful) is in general a computationally expensive procedure, sometimes estimated in
+practice by a repeated simulation of the execution. Instead, program decomposition and deadline
+estimation would be the compiler's job, which can leverage application-level information and
+knowledge of the capabilities of the quantum hardware system (e.g. memory lifetimes) to perform
+these tasks. At the compiler level, latency is much less an issue, meaning that computing block
+boundaries and deadlines can be carried out without stringent timing constraints. We remark that ---
+especially in the near term --- some of these tasks might require the programmer's intervention, at
+least until compilers for quantum networking applications become more sophisticated. Nevertheless,
+drawing the line between compiler's and programmer's responsibilities lies outside the scope of this
+work.
 
 \section{Key OS Components}
 \label{sec:arch:components}
 
-We now describe the essential components we envision any operating system for quantum network nodes
-to have.
+We now describe the essential components we envision any \acrshort{os} for quantum network nodes to
+have.
 
 \subsection{Memory Management Unit}
 
@@ -95,9 +101,9 @@ capabilities. This may be taken up by a \emph{\acrlong{qmmu}} (\acrshort{qmmu}).
 has knowledge of the physical qubits available on the underlying quantum hardware, and may keep any
 other information about said qubits, such as the qubit type (communication or storage qubit) and
 qubit lifetime. A \acrshort{qmmu} allows physical qubits to be assigned to different applications or
-to the operating system itself, and may allow a transfer of ownership of the qubits from one owner
-to another. A \acrshort{qmmu} may also provide abstractions familiar to classical computing such as
-a virtual address space, where the applications refer to virtual qubit addresses that are then
+to the \acrshort{os} itself, and may allow a transfer of ownership of the qubits from one owner to
+another. A \acrshort{qmmu} may also provide abstractions familiar to classical computing such as a
+virtual address space, where the applications refer to virtual qubit addresses that are then
 translated to physical qubit addresses. This avoids the situation in which physical qubit addresses
 must be bound at compile time, particularly limiting when allowing multiple applications to
 concurrently run on the same node. Advanced forms of a \acrshort{qmmu} may also cater to the
@@ -183,8 +189,8 @@ importantly, the qubits --- based on a set of well-defined constraints, the fund
 \end{enumerate}
 
 Additionally, scheduling at any level could optionally process another set of input variables, where
-we generally assume that the programmer or compiler provide aggregate advice based on these input
-variables to the \acrshort{os}:
+we generally assume that the compiler provides aggregate advice based on these input variables to
+the \acrshort{os}:
 
 \begin{enumerate}
     \item \emph{Duration of operations}: local quantum operations typically take a fixed amount of
@@ -202,20 +208,20 @@ variables to the \acrshort{os}:
 
 In an \acrshort{os} allowing the execution of concurrent quantum network applications, the task of
 an application-level scheduler would be to decide which application to schedule next. We remark that
-a programmer (or compiler) aware of the underlying capabilities of the hardware system (e.g. memory
-lifetimes) can provide advice in the form of a deadline by which the network application must have
-completed in order to be successful. To allow for potentially time-consuming classical pre- and
-post-processing, it is natural to apply such deadlines not for the entirety of the application, but
-for the period between initializing the qubits and terminating the quantum part of the execution.
-This suggests in general using real-time schedulers for quantum network applications, taking
-inspiration from the extensive work on this topic in classical systems (see e.g.
-Ref.~\cite{liu_1973_scheduling}). While outside the scope of this work, we remark that this type of
-scheduling offers to inspire interesting new work in a form of ``quantum soft-real time''
-scheduling, where deadlines may occasionally be missed at the expense of reduced application
-performance (success probability), to maximize the overall performance of the system in which
-applications are typically executed repeatedly. A benchmark for the quantum performance of any
-application-level scheduler is the quality of the quantum execution when the entire system (all
-nodes) are reserved for only one application at the time.
+a compiler aware of the underlying capabilities of the hardware system (e.g. memory lifetimes) can
+provide advice in the form of a deadline by which the network application must have completed in
+order to be successful. To allow for potentially time-consuming classical pre- and post-processing,
+it is natural to apply such deadlines not for the entirety of the application, but for the period
+between initializing the qubits and terminating the quantum part of the execution. This suggests in
+general using real-time schedulers for quantum network applications, taking inspiration from the
+extensive work on this topic in classical systems (see e.g. Ref.~\cite{liu_1973_scheduling}). While
+outside the scope of this work, we remark that this type of scheduling offers to inspire interesting
+new work in a form of ``quantum soft-real time'' scheduling, where deadlines may occasionally be
+missed at the expense of reduced application performance (success probability), to maximize the
+overall performance of the system in which applications are typically executed repeatedly. A
+benchmark for the quantum performance of any application-level scheduler is the quality of the
+quantum execution when the entire system (all nodes) are reserved for only one application at the
+time.
 
 \paragraph{Scheduling of quantum blocks}
 
@@ -224,7 +230,7 @@ principle also take the form of a (soft) real-time scheduler that schedules bloc
 running application, or schedule blocks of several applications (potentially independently of any
 application level scheduling) depending on the availability of resources on the quantum hardware
 system. This form of scheduling may be appealing for efficiency reasons, depending on where what
-parts of the operating system are executed, where some parts are closer to the underlying hardware
+parts of the \acrshort{os} are executed, where some parts are closer to the underlying hardware
 system than others (see e.g. \cref{sec:arch:design}).
 
 \paragraph{Scheduling of operations}
@@ -241,11 +247,11 @@ instance in the work by \textcite{fu_2017_microarch}.
 \section{QNodeOS Design}
 \label{sec:arch:design}
 
-\acrshort{qnodeos} is an operating system for quantum network nodes, designed to address the
-challenges described in \cref{chp:background}. It includes all the identified key components, plus
-some additional convenience abstraction layers. The current design of \acrshort{qnodeos} is
-considered \emph{best-effort} --- it is meant to explore the main design aspects of an operating
-system for quantum networks, and to provide a minimum working system.
+\acrshort{qnodeos} is an \acrshort{os} for quantum network nodes, designed to address the challenges
+described in \cref{chp:background}. It includes all the identified key components, plus some
+additional convenience abstraction layers. The current design of \acrshort{qnodeos} is considered
+\emph{best-effort} --- it is meant to explore the main design aspects of an \acrshort{os} for
+quantum networks, and to provide a minimum working system.
 
 \subsection{Full Stack of a Quantum Network Node}
 
