@@ -230,9 +230,12 @@ quantum operations (such as measurements and gates) and network operations canno
 simultaneously~\cite{vardoyan_2019_performance}. This limitation, however, could be mitigated by a
 new quantum hardware architecture separating the devices~\cite{vardoyan_2022_netarch}. Finally, the
 last challenge is a fundamental issue, as it applies to quantum network applications regardless of
-technological progress. It is the last two points that fundamentally differentiate a quantum
-networking node from a quantum computing system, and are the key driver for a \emph{networked}
-quantum node operating system.
+technological progress. The last two challenges may sound similar --- they are both arising from the
+need for information from a remote node. However, the fourth challenge describes a distributed
+scheduling problem, whereas the fifth encapsulates two local requirements --- \acrshort{os}-level
+locking mechanisms and ``good'' quantum memories. It is the last two challenges that fundamentally
+differentiate a quantum networking node from a quantum computing system, and are the key driver for
+a \emph{networked} quantum node operating system.
 
 \section{Related Work}
 \label{sec:qnodeos:relwork}
