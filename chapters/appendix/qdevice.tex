@@ -231,8 +231,11 @@ The \texttt{SWP} instruction swaps the state of two qubits.
 
 \paragraph{Entanglement swap (\texttt{ESW})}
 
-The \texttt{ESW} instruction results in two qubits belonging to two entangled pairs to have their
-roles swapped.
+The \texttt{ESW} instruction is effectively a Bell state measurement executed on two qubits --- each
+of which belongs to an entangled pair shared between the local node and a remote counterpart ---
+resulting in an entangled pair shared between the two remote nodes. The outcome of the measurement
+is typically used by the quantum network stack to issue appropriate Pauli corrections on one of the
+end nodes in order to deliver the desired state.
 
 \smallskip\noindent
 \begin{tabularx}{\linewidth}{>{\ttfamily}l X}
