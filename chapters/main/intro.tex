@@ -95,11 +95,11 @@ Then, how similar are quantum networks and classical networks? Which are the cha
 have in common, and which ones are exclusive to quantum networking? How much can we capitalize on
 the vast body of classical networking literature? In principle, quantum networks are just networks
 with a special physical layer, which, albeit more technologically complex, could be abstracted away
-and encapsulated into an ad-hoc networking protocol. This simplification disregards, however,
-some fundamental limitations that are inherent to quantum information, as well as the imperfect
-nature of near-term quantum hardware. Standard networking routines like signal amplification,
-classical error correction, and data retransmission would not work in quantum networks --- one
-fundamental theorem of quantum mechanics states that \emph{an arbitrary quantum state cannot be
+and encapsulated into an ad-hoc networking protocol. This simplification disregards, however, some
+fundamental limitations that are inherent to quantum information, as well as the imperfect nature of
+near-term quantum hardware. Standard networking routines like signal amplification, classical error
+correction, and data retransmission would not work in quantum networks --- one fundamental theorem
+of quantum mechanics states that \emph{an arbitrary quantum state cannot be
 cloned}~\cite{wootters_1982_nocloning, dieks_1982_communication}. Moreover, quantum states are
 subject to \emph{decoherence}, a physical process whereby the quality of the stored information
 degrades over time and due to external interferences. Thus, not only do computation and networking
@@ -171,6 +171,18 @@ More specifically, we will address the following questions:
           generation if the quantum network stack would communicate over an authenticated classical
           channels, as opposed to exchanging non-authenticated classical messages.
 \end{enumerate}
+
+When measuring performance, we are mostly interested in two types of indicators:
+%
+\begin{inlinelist}
+    \item \emph{User-level quantum metrics} --- most importantly quantum \emph{fidelity}, which is
+          typically an indicator of the quality of execution of the application, and which depends
+          on the behavior of the \acrshort{os} as well as the quality of the quantum hardware.
+    \item \emph{\acrshort{os}-level timings} --- classical metrics like latency and throughput at
+          various levels of the \acrshort{os} that provide insights into bottlenecks and
+          shortcomings of the design and/or implementation of the \acrshort{os} itself, which in
+          most cases have an impact on the quantum fidelity.
+\end{inlinelist}
 
 This work is aimed at designing, implementing and evaluating a ``product'' that, although
 experimental and not production-ready, is a fully-functional research tool, and as such is ready to
