@@ -68,8 +68,15 @@ the whole node system. \acrshort{qnodeos} is implemented in C++ on top of FreeRT
 a tiny operating system for microcontrollers. The stack runs on a dedicated MicroZed~\cite{microzed}
 --- an off-the-shelf platform based on the Zynq-7000 SoC, which hosts two ARM Cortex-A9 processing
 cores, of which only one is used, clocked at \qty{667}{\MHz}. \acrshort{qnodeos} connects to peer
-\acrshort{qnodeos} systems via \acrshort{tcp} over a Gigabit Ethernet interface. For the
-\acrshort{qdevice}, we replicated the setup used for \cref{chp:netstack}, which mainly consists of:
+\acrshort{qnodeos} systems via \acrshort{tcp} over a Gigabit Ethernet interface. We opted for a
+device like the Zynq-7000 SoC for its advantageous trade-off between high flexibility and moderate
+cost (around €~100 in the Netherlands at the time of writing). Whilst more concrete device
+requirements may arise from our future benchmarking of \acrshort{qnodeos}, we believe that the
+selected SoC provides enough computational bandwidth for the envisioned tasks, and it also offers
+the possibility to implement optimized hardware modules on its \acrshort{fpga} fabric. We however
+remark that the design of \acrshort{qnodeos} is in no way tied to a certain computing architecture.
+For the \acrshort{qdevice}, we replicated the setup used for \cref{chp:netstack}, which mainly
+consists of:
 %
 \begin{inlinelist}
     \item an ADwin-Pro II~\cite{adwin} acting as the main orchestrator of the setup;
@@ -81,8 +88,8 @@ cores, of which only one is used, clocked at \qty{667}{\MHz}. \acrshort{qnodeos}
 The \acrshort{qdevice} is where the time-critical qubit control lies. \acrshort{qnodeos} interfaces
 with the \acrshort{qdevice}'s ADwin-Pro II through a \qty{12.5}{\MHz} \acrshort{spi} interface, used
 to exchange 4-byte control messages at a rate of \qty{50}{kHz}. Finally, the host layer is a Python
-runtime executing on a general-purpose 4-core desktop machine running Linux. The host machine
-connects to \acrshort{qnodeos} via \acrshort{tcp} over the same Gigabit Ethernet interface that
+runtime running on a general-purpose 4-core desktop machine running Linux. The host machine connects
+to \acrshort{qnodeos} via \acrshort{tcp} over the same Gigabit Ethernet interface that
 \acrshort{qnodeos} uses to connect to its peers (average ping \acrshort{rtt} of \qty{0.1}{\ms}), and
 sends application registration requests and quantum code blocks over this interface (\num{10} to
 \num{1000} bytes, depending on the length of the block).
