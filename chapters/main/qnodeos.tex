@@ -52,6 +52,17 @@ interface to the \acrshort{qdevice}.
 \section{Implementation}
 \label{sec:qnodeos:implementation}
 
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/node-deployment.pdf}
+    \caption{
+        Node deployment overview. Our quantum network node consists of a desktop machine for the
+        host runtime, a Zynq-7000 SoC for \acrshort{qnodeos}, and a series of digital and analog
+        controllers for the \acrshort{qdevice}.
+    }
+    \label{fig:node-deployment}
+\end{figure}
+
 \Cref{fig:node-deployment} outlines software and hardware implementation of \acrshort{qnodeos} and
 the whole node system. \acrshort{qnodeos} is implemented in C++ on top of FreeRTOS~\cite{freertos},
 a tiny operating system for microcontrollers. The stack runs on a dedicated MicroZed~\cite{microzed}
@@ -76,25 +87,56 @@ connects to \acrshort{qnodeos} via \acrshort{tcp} over the same Gigabit Ethernet
 sends application registration requests and quantum code blocks over this interface (\num{10} to
 \num{1000} bytes, depending on the length of the block).
 
-We implemented \acrshort{qnodeos} on top of FreeRTOS to avoid re-implementing standard \acrshort{os}
-primitives like threads and network communication. FreeRTOS provides basic \acrshort{os}
-abstractions like tasks, inter-task message passing, and the \acrshort{tcpip} stack. The FreeRTOS
-kernel --- like any other standard \acrshort{os} --- cannot however directly manage the quantum
-resources (qubits, entanglement requests and entangled pairs), and hence its task scheduler cannot
-take decisions based on such resources. \acrshort{qnodeos} adds these capabilities and takes care of
-the scheduling of quantum code blocks based on the status of the quantum resources.
-
-\begin{figure}[t]
+\begin{table}[t]
     \centering
-    \includegraphics[width=0.6\linewidth]{figures/node-deployment.pdf}
+    \begin{tabularx}{\linewidth}{llrYYYY}
+        \toprule
+                                   &                    &                & \multicolumn{4}{c}{\textbf{Lines of code}}                           \\
+        \cmidrule(l){4-7}
+        \textbf{Component}         & \textbf{File type} & \textbf{Files} & \textbf{Total} & \textbf{Blanks} & \textbf{Comments} & \textbf{Code} \\
+        \midrule
+        \multirow{4}{*}{Core code} & C/C++              & 85             & 16273          & 2779            & 1953              & 11541         \\
+                                   & C/C++ header       & 121            & 13281          & 2418            & 4188              & 6675          \\
+                                   & CMake              & 25             & 486            & 99              & 43                & 344           \\
+                                   & Assembly           & 1              & 141            & 15              & 0                 & 126           \\
+        \midrule
+        \multirow{4}{*}{Test code} & C/C++              & 57             & 21849          & 3842            & 2195              & 15812         \\
+                                   & C/C++ header       & 17             & 1725           & 288             & 177               & 1260          \\
+                                   & Python             & 14             & 2577           & 527             & 427               & 1623          \\
+                                   & CMake              & 25             & 483            & 97              & 22                & 364           \\
+        \midrule
+        \multicolumn{3}{l}{Estimated schedule effort (COCOMO)} & \multicolumn{4}{l}{\num{15.47} months} \\
+        \multicolumn{3}{l}{Estimated people required (COCOMO)} & \multicolumn{4}{l}{\num{11.81}}        \\
+        \bottomrule
+    \end{tabularx}
     \caption{
-        Node deployment overview. Our quantum network node consists of a desktop machine for the
-        host runtime, a Zynq-7000 SoC for \acrshort{qnodeos}, and a series of digital and analog
-        controllers for the \acrshort{qdevice}.
+        Code metrics for \acrshort{qnodeos} core code and testing code, including number of files
+        per language, lines of code, and \emph{constructive cost model} (COCOMO) effort
+        estimates~\cite{boehm_2009}, generated using \texttt{scc}~\cite{scc}. The COCOMO metrics
+        were generated using the ``Semi-detached'' model, meaning that the estimated are computed
+        assuming that the project requires a certain level of expertise and creativity and the
+        problem is not well understood (i.e. there is research involved).
     }
-    \label{fig:node-deployment}
-\end{figure}
+    \label{tab:code-metrics}
+\end{table}
 
+\acrshort{qnodeos} is a complex project, developed by multiple researchers and engineers over the
+course of around three years and counting. Its test infrastructure is also relatively large, with a
+continuous-integration pipeline consisting of an extensive set of unit tests for each of the
+\acrshort{os} core components and some system-level application tests. \Cref{tab:code-metrics}
+reports code metrics for \acrshort{qnodeos} code code and testing code, including number of files
+per language, lines of code, and \emph{constructive cost model} (COCOMO) effort
+estimates~\cite{boehm_2009}, generated using \textit{scc}~\cite{scc}. Although these metrics do not
+fully capture the research effort put into \acrshort{qnodeos}, they are an indicator of the amount
+of engineering work involved. We also point out that \acrshort{qnodeos} builds on top of existing
+real-time software frameworks --- namely, FreeRTOS. We implemented \acrshort{qnodeos} on top of
+FreeRTOS to avoid re-implementing standard \acrshort{os} primitives like threads and network
+communication. FreeRTOS provides basic \acrshort{os} abstractions like tasks, inter-task message
+passing, and the \acrshort{tcpip} stack. The FreeRTOS kernel --- like any other standard
+\acrshort{os} --- cannot however directly manage the quantum resources (qubits, entanglement
+requests and entangled pairs), and hence its task scheduler cannot take decisions based on such
+resources. \acrshort{qnodeos} adds these capabilities and takes care of the scheduling of quantum
+code blocks based on the status of the quantum resources.
 \section{Evaluation}
 \label{sec:qnodeos:evaluation}
 
