@@ -163,9 +163,9 @@ More specifically, we will address the following questions:
           \acrshort{os}, and evaluate their performance for a basic networking feature: entanglement
           delivery.
     \item \emph{What is the performance of the whole \acrshort{os}?} We implement the proposed
-          architecture, and evaluate its functioning and performance for some basic quantum
-          networking applications, including scenarios of concurrent execution of multiple
-          applications.
+          architecture, and design test cases aimed at evaluating its functioning and performance,
+          including basic quantum networking applications and scenarios of concurrent execution of
+          multiple applications.
     \item \emph{How would \acrlong{doa} affect the performance of a quantum link?} We evaluate, this
           time in simulation, what penalty would be incurred in the rate of entanglement generation
           if the quantum network stack would communicate over an authenticated classical channel, as
@@ -200,21 +200,17 @@ diamond~\cite{pompili_2021_multinode}, deployed in a laboratory environment.
     \centering
     \begin{tabularx}{\linewidth}{lX}
         \toprule
-        \textbf{Object}                                  & \textbf{Location}                                                                            \\
+        \textbf{Object}                       & \textbf{Location}                                                                              \\
         \midrule
-        Datasets for \cref{chp:netstack}                 & \href{https://doi.org/10.4121/16912522}{\textsc{doi}: \texttt{10.4121/16912522}}             \\
-        Datasets for \cref{chp:qnodeos}                  & \href{https://doi.org/xx.xxxx/xxxxxxxx}{\textsc{doi}: \texttt{TBD}}                          \\
-        Datasets for \cref{chp:doa}                      & \href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{TBD}}                          \\
-        Data analysis for \cref{chp:netstack}            & With data (\href{https://doi.org/10.4121/16912522}{\textsc{doi}: \texttt{10.4121/16912522}}) \\
-        Data analysis for \cref{chp:qnodeos}             & With data (\href{https://doi.org/xx.xxxx/xxxxxxxx}{\textsc{doi}: \texttt{TBD}})              \\
-        Data analysis for \cref{chp:doa}                 & With data (\href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{TBD}})              \\
-        Application \acrshort{sdk} (NetQASM)             & \url{https://github.com/QuTech-Delft/netqasm}                                                \\
-        Applications for \cref{chp:netstack,chp:qnodeos} & \url{https://gitlab.tudelft.nl/TBD/}                                                         \\
+        Datasets for \cref{chp:netstack}      & \href{https://doi.org/10.4121/16912522}{\textsc{doi}: \texttt{10.4121/16912522}}               \\
+        Datasets for \cref{chp:doa}           & \href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{\note{To be added}}}             \\
+        Data analysis for \cref{chp:netstack} & With data (\href{https://doi.org/10.4121/16912522}{\textsc{doi}: \texttt{10.4121/16912522}})   \\
+        Data analysis for \cref{chp:doa}      & With data (\href{https://doi.org/yy.yyyy/yyyyyyyy}{\textsc{doi}: \texttt{\note{To be added}}}) \\
+        Application \acrshort{sdk} (NetQASM)  & \url{https://github.com/QuTech-Delft/netqasm}                                                  \\
         \bottomrule
     \end{tabularx}
     \caption{
         Location of experimental data and software supporting this thesis.
-        \note{Add missing links after publishing data}
     }
     \label{tab:data-and-soft}
 \end{table}
@@ -223,10 +219,9 @@ diamond~\cite{pompili_2021_multinode}, deployed in a laboratory environment.
 
 The datasets that support this thesis are made public and available in the online data repository
 4TU.ResearchData. The software to analyze such data is also made public. The application
-\acrfull{sdk} is open-sourced on GitHub. The application scripts themselves are also open-sourced.
-Finally, the software for the \acrlong{os} implemented in this thesis is part of a larger project
-that is still under development, and this not currently available for external use. Refer to
-\cref{tab:data-and-soft} for pointers to data and software.
+\acrfull{sdk} is open-sourced on GitHub. Finally, the software for the \acrlong{os} implemented in
+this thesis is part of a larger project that is still under development, and this not currently
+available for external use. Refer to \cref{tab:data-and-soft} for pointers to data and software.
 
 \section{Thesis Outline}
 
@@ -234,13 +229,14 @@ The rest of this thesis is organized as follows. \Cref{chp:background} offers so
 quantum information, quantum networking and classical networking, and recaps the main challenges
 involved. \Cref{chp:arch} outlines the most important design considerations that serve as the basis
 for the design of our \acrshort{os} (question Q1), and describes our proposal for the architecture
-of a quantum network node's \acrshort{os} (question Q2). \Cref{chp:netstack} evaluates the
+of a quantum network node's \acrshort{os} (question Q2). \Cref{chp:netstack} showcases the
 performance of the quantum network stack integrated in the \acrshort{os} for entanglement generation
-(question Q3). \Cref{chp:qnodeos} validates and benchmarks the full \acrshort{os} against a set of
-simple quantum networking applications, also when running multiple of these concurrently (question
-Q4). \Cref{chp:doa} quantifies, this time in simulation, the effect of authenticating classical
-messages in the quantum network stack on the performance of a quantum link (question Q5). Finally,
-\cref{chp:conclusion} concludes this thesis and reflects upon future steps.
+(question Q3). \Cref{chp:qnodeos} described the implementation of the \acrshort{os} and proposes
+test cases for evaluating its performance, including simple quantum networking applications and
+concurrent execution of multiple applications (question Q4). \Cref{chp:doa} quantifies, this time in
+simulation, the effect of authenticating classical messages in the quantum network stack on the
+performance of a quantum link (question Q5). Finally, \cref{chp:conclusion} concludes this thesis
+and reflects upon future steps.
 
 \begin{xstretch}
 \printbibliography[heading=subbibintoc,title={References},notcategory=noprint]

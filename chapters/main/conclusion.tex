@@ -57,13 +57,12 @@ this overhead. These results were presented in \cref{chp:netstack}.
 \paragraph{Quantum networking applications and multitasking}
 
 To further showcase the service offered by \acrshort{qnodeos} and to establish a performance
-baseline for an \acrshort{os} for quantum network nodes, we took the experiments to another level by
-running fully-fledged quantum networking applications through \acrshort{qnodeos}. Primarily, we
-demonstrated the complete run of a delegated quantum computation protocol, as well as the concurrent
-execution of multiple applications, leveraging the multitasking capabilities of \acrshort{qnodeos}.
-The results, again obtained on a two-node quantum network based on \acrshort{nv} centers, asserted
-the importance of a robust stack of abstraction layers for quantum networking. \note{Refine after
-\acrshort{qnodeos} experiments are done.} We presented these results in \cref{chp:qnodeos}.
+baseline for an \acrshort{os} for quantum network nodes, we proposed a set of fully-fledged quantum
+networking applications, which will be tested on \acrshort{qnodeos} as part of upcoming work. These
+test cases consist of delegated quantum computation protocol, as well as the concurrent execution of
+multiple applications, which will leverage the multitasking capabilities of \acrshort{qnodeos}. Once
+obtained, the results of this evaluation will assert the importance of a robust stack of abstraction
+layers for quantum networking. We presented these test cases in \cref{chp:qnodeos}.
 
 \paragraph{Data origin authentication in quantum networking}
 
@@ -71,15 +70,23 @@ In perspective of a large-scale, fully-operational quantum network, where classi
 ought to be more secure than in a laboratory, we have also analyzed the performance penalty that
 would be incurred if classical messages exchanged at the quantum networking stack were to be
 authenticated so as to ensure integrity. Using a combination of experimentally-measured
-authentication delays and the simulation of a quantum link, we have shown that the additional delay
-incurred by \acrlong{doa} would not be detrimental to the fidelity of the delivered entangled
-states. This topic was investigated in \cref{chp:doa}.
+authentication delays and the simulation of a quantum link, we have shown that the delay incurred by
+\acrlong{doa} would not be detrimental to the fidelity of the delivered entangled states. This topic
+was investigated in \cref{chp:doa}.
 
 \section{Future Work}
 
 We hope that our work and results open the door to further research on the topic of \acrshortpl{os}
 for quantum networking. On that regard, we have identified a few areas of this field that would
 benefit from a deeper investigation.
+
+\paragraph{Further experimental validation of QNodeOS}
+
+The natural next step for the evaluation of \acrshort{qnodeos} is to run the test cases presented in
+\cref{chp:qnodeos} to push the boundaries of experimental demonstrations of quantum networking even
+further. As discussed already, this experimental validation will serve both to construct a baseline
+performance overview of \acrshortpl{os} for quantum networking and to demonstrate the capabilities
+of such systems.
 
 \paragraph{Quantum network node architecture}
 
@@ -121,7 +128,7 @@ Additionally, it could have access to device-specific descriptions of the underl
 to improve allocation strategies that better cater to memory lifetime requirements and to the
 limitations of near-term quantum devices.
 
-\paragraph{Large-scale experimental validation and benchmarking}
+\paragraph{Larger-scale experimental validation and benchmarking}
 
 As quantum networks become larger in scale, and the nodes therein begin to offer a larger set of
 quantum resources, a natural experimental follow-up of this thesis would see \acrshort{qnodeos}, or
