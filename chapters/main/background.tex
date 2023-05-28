@@ -202,40 +202,58 @@ into its quantum performance.
 \label{sec:background:challenges}
 
 Whilst the high-level goals for an operating system for quantum nodes mimic those of a classical
-operating system, we face a number of general challenges inherent to (near-term) quantum network
-nodes and network applications:
+operating system, we face a number of general challenges that are inherent to (near-term) quantum
+network nodes and network applications. Some of the challenges are technological limitations of the
+quantum physical layer, and we expect them to be less relevant in the future with further progress
+in quantum hardware development. To a certain extent, these issues apply to quantum computing too,
+from which we can draw some inspiration for their solutions. These challenges include:
 %
-\begin{inlinelist}
+\begin{enumerate}
     \item limited available qubits, which imposes strict limits on the processing, networking, and
           storage capabilities of networking nodes;
     \item limited qubit lifetimes, which imposes strict deadlines on how fast the data must be
           processed before it becomes useless;
     \item noisy operations, which implies that applying operations on qubits degrades the quality of
           the qubit states themselves;
+\end{enumerate}
+
+Nevertheless, quantum networking comes with an additional set of fundamental challenges related to
+time and data synchronization at various levels. At the physical layer, entanglement generation
+required both nodes involved to execute an operation at the same moment in time, with sub-nanosecond
+precision. At higher layers in the stack, this translates to the need for a network schedule that is
+shared among neighboring nodes --- even though at these layers the granularity of the synchronized
+schedule can be coarser if the timing of the actual entanglement generation attempts can be fully
+coordinated at the physical layer. Moreover, the cross-node data dependencies inherent to many
+networking applications render time synchronization much more challenging, as the run-time schedule
+of a node may end up being delayed when said node needs to wait for information necessary to make
+logical decisions about next steps and such information comes from a remote party. Quantum
+networking applications that have cross-node data dependencies may incur more or less disruptive
+delays. Such applications are grouped into three categories of varying data synchronization
+implications by \textcite{van_meter_2017_timings} --- some applications allow post-selection of
+successful runs, some allow post-operation local corrections, and some require completion of certain
+operations before proceeding. These fundamental challenges can be summarized as:
+%
+\begin{enumerate}[resume]
     \item cross-node scheduling dependencies, meaning that the operations on one node cannot be
           scheduled independently of other nodes;
-    \item interaction between classical and quantum parts of a program, which requires keeping
-          quantum data alive in memory while waiting for an event to occur (e.g. a message from a
+    \item data dependencies between various parts of a program, which require keeping quantum data
+          alive in memory while waiting for an event to occur (in most cases, a message from a
           remote network node).
-\end{inlinelist}
+\end{enumerate}
 
-The first three challenges are technological, that is, we expect the situation to improve with
-further progress in quantum hardware development. Furthermore, to a certain extent, these issues are
-common to quantum computing too, from which we can draw some inspiration for their solutions. The
-fourth challenge is inherent to the nature of entanglement generation and to the physics of the
-devices currently in use. Successful entanglement generation requires both nodes to execute a
-network operation at the same moment in time. Moreover, at this stage of development, the same
-quantum device functions as the processing unit and as the network device, and consequently local
-quantum operations (such as measurements and gates) and network operations cannot be performed
+The fourth challenge is inherent to the nature of entanglement generation and to the physics of the
+devices currently in use. At this stage of development, the same quantum device functions as the
+processing unit and as the network device, and consequently local quantum operations (such as
+measurements and gates) and network operations cannot be performed
 simultaneously~\cite{vardoyan_2019_performance}. This limitation, however, could be mitigated by a
 new quantum hardware architecture separating the devices~\cite{vardoyan_2022_netarch}. Finally, the
 last challenge is a fundamental issue, as it applies to quantum network applications regardless of
-technological progress. The last two challenges may sound similar --- they are both arising from the
-need for information from a remote node. However, the fourth challenge describes a distributed
-scheduling problem, whereas the fifth encapsulates two local requirements --- \acrshort{os}-level
-locking mechanisms and ``good'' quantum memories. It is the last two challenges that fundamentally
-differentiate a quantum networking node from a quantum computing system, and are the key driver for
-a \emph{networked} quantum node operating system.
+technological progress. These last two challenges are both arising from the need for information
+from a remote node at a certain level and with a certain degree of precision. However, the fourth
+challenge describes a distributed scheduling problem, whereas the fifth encapsulates two local
+requirements --- \acrshort{os}-level locking mechanisms and ``good'' quantum memories. It is the
+last two challenges that fundamentally differentiate a quantum networking node from a quantum
+computing system, and are the key driver for a \emph{networked} quantum node operating system.
 
 \section{Related Work}
 \label{sec:qnodeos:relwork}
