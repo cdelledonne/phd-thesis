@@ -71,12 +71,12 @@ it may result in no service at all. Classical processing and communication overh
 kept to a minimum, such that the generated entangled qubits can be used as quickly as possible.
 
 On top of that, control messages must be transmitted in a secure manner for a quantum network to
-function reliably. \textcite{satoh_2020_attacking} mention forged classical messages as a general
+function reliably. \textcite{satoh_2020_attacking} list forged classical messages as a general
 concern for quantum networks. To prevent such forgeries, quantum network nodes may employ
-\acrfull{doa} cryptography software suites, to distinguish between genuine and fraudulent control
-messages. \acrshort{doa} is performed using a secret that is shared between two parties. Then, a
-\acrfull{mac} algorithm can produce a tag for each control message both at the sending and at the
-receiving end, to verify that the message contents
+\acrfull{doa} cryptography suites, to distinguish between genuine and fraudulent control messages.
+\acrshort{doa} is performed using a secret that is shared between two parties. Then, a \acrfull{mac}
+algorithm can produce a tag for each control message both at the sending and at the receiving end,
+to verify that the message contents
 %
 \begin{inlinelist}
     \item were not altered and
@@ -98,13 +98,13 @@ This process --- known as \emph{authentication} --- is illustrated in \cref{fig:
 Inevitably, performing \acrshort{doa} on control messages would incur some computation and
 communication overhead. Such latency is typically neglected when modeling, simulating, or
 experimentally validating network protocols for quantum communications. In this work, we examine the
-effects of latency caused by classical \acrshort{doa} authentication on a simulated quantum network
-link requested to generate entanglement between two nodes (henceforth referred to as the simulated
-quantum link). First, we experimentally measure the latency incurred by a \acrshort{doa} system
-using \acrshort{qkd}-powered authentication algorithms. We then analyze the behavior of the
-simulated quantum link --- using a simulator for quantum networks~\cite{coopmans_2021_netsquid} ---
-where the model of the control channel of the network includes the measured latencies incurred by
-the \acrshort{qkd}-powered \acrshort{doa}. The contributions of this work are as follows:
+effects of latency caused by classical \acrshort{doa} on a simulated quantum network link requested
+to generate entanglement between two nodes (henceforth referred to as the simulated quantum link).
+First, we experimentally measure the latency incurred by a \acrshort{doa} system using
+\acrshort{qkd}-powered authentication algorithms. We then analyze the behavior of the simulated
+quantum link --- using a simulator for quantum networks~\cite{coopmans_2021_netsquid} --- where the
+model of the control channel of the network includes the measured latencies incurred by the
+\acrshort{qkd}-powered \acrshort{doa}. The contributions of this work are as follows:
 
 \begin{enumerate}
     \item We provide a concise motivation for why \acrshort{doa} is a necessary component to uphold
@@ -131,8 +131,8 @@ attacker may:
 \begin{itemize}
     \item Disrupt the network in any number of ways, affecting its \emph{availability}.
     \item Interfere with data sent via the network, hampering the \emph{integrity} of quantum data.
-    \item Read out quantum data through the accompanying classical control data, affecting
-          \emph{confidentiality}.
+    \item Read out quantum data through the accompanying classical control data, affecting the
+          \emph{confidentiality} of quantum data.
 \end{itemize}
 
 All identified proposals of quantum network designs and quantum network protocols use some form of
@@ -187,8 +187,8 @@ entanglement has failed.
 
 \begin{example}
 \textit{Integrity.}
-Modify a heralding signal from a heralding station by changing the state announcement such that
-Alice or Bob apply the wrong Pauli corrections to their qubits.
+Modify a signal from a heralding station by changing the state announcement such that Alice or Bob
+apply the wrong Pauli corrections to their qubits.
 \end{example}
 
 \begin{example}
@@ -207,7 +207,7 @@ the number of available memory qubits and the expiration of requests.
 \begin{example}
 \textit{Availability.}
 Continually send requests for entanglement, exhausting the resources of nodes receiving
-them~\cite{kozlowski_wehner_2019}.
+them~\cite{kozlowski_2019_towards}.
 \end{example}
 
 \begin{example}
@@ -331,11 +331,11 @@ We collect control communication latency measurements under three different conf
 
 We do not report on a configuration where the \acrshort{doa} servers use an
 information-theoretically secure \acrshort{mac}, as such an authentication scheme would consume
-considerably more key material than a \acrshort{qkd} system could deliver. We did verify this
+considerably more key material than the \acrshort{qkd} system could deliver. We did verify this
 assessment by configuring the \acrshort{doa} servers to use
 \acrshort{vmac}~\cite{krovetz_2007_message} --- an information-theoretically secure \acrshort{mac}
---- during which \acrshort{doa} servers attempted to use considerably more \acrshort{qkd}-key
-material than available.
+--- during which the \acrshort{doa} servers attempted to use considerably more key material than
+available.
 
 \begin{figure}[t]
     \centering
@@ -419,12 +419,12 @@ message.
 \paragraph{Results}
 
 We record the \acrlong{rtt} of 360,000 ping messages per configuration (\acrshort{doa} server
-configuration and size of message). The computed statistics of the results are reported in
-\cref{tab:rtt}, whilst the raw distributions of \acrshort{rtt} measurements are presented in
-\cref{app:rtt}.
+configuration and size of message). Mean and standard deviation of the measured \acrshortpl{rtt} are
+reported in \cref{tab:rtt}, whilst the raw distributions of \acrshort{rtt} measurements are
+presented in \cref{app:rtt}.
 
-When bypassing the \acrshort{doa} servers altogether, \acrshort{rtt} measurements follow a simple
-Gaussian distribution, with a mean of less than \qty{4}{\ms} and a standard deviation of around
+When bypassing the \acrshort{doa} servers altogether, \acrshort{rtt} delays follow a simple Gaussian
+distribution, with a mean of less than \qty{4}{\ms} and a standard deviation of around
 \qty{20}{\us}. When messages go through the \acrshort{doa} servers (configurations ``No
 \acrshort{mac}'' and ``\acrshort{poly}''), \acrshort{rtt} measurements can be approximated by
 bimodal Gaussian distributions (see \cref{app:rtt}). This bimodal distribution is likely the result
@@ -436,12 +436,12 @@ deviation of the strongest modes of each distribution, which are deemed to be th
 representative statistics to use in our simulations. Refer to \cref{app:rtt} for a more in-depth
 analysis of the \acrshort{rtt} distributions.
 
-The noticeable difference in statistics between the ``Bypass servers'' configuration and the other
-two is an indicator of the suboptimal packet processing performance of the \acrshort{doa} server,
-which is merely a soft-processing packet pipeline implemented in Python. The computational overhead
-introduced by the actual \acrshort{mac} is overshadowed by the baseline latency of the
-\acrshort{doa} servers, as observed in the \acrshort{poly} configuration. Interestingly, the size of
-messages does not appear to be a noticeable factor in the mean end-to-end latency.
+The noticeable gap between ``Bypass servers'' and the other two configurations is an indicator of
+the suboptimal packet processing performance of the \acrshort{doa} server, which is merely a
+soft-processing packet pipeline implemented in Python. The computational overhead introduced by the
+actual \acrshort{mac} is overshadowed by the baseline latency of the \acrshort{doa} servers, as
+observed in the ``\acrshort{poly}'' configuration. Interestingly, the size of messages does not
+appear to be a noticeable factor in the mean end-to-end latency.
 
 \begin{table}
     \centering
@@ -502,7 +502,7 @@ entangled pairs generated per second.
 
 We use \acrshort{rtt} statistics from \cref{tab:rtt} for our simulations. As described in
 \cref{sec:doa:latency}, \acrshort{rtt} measurements for the ``Bypass servers'' configuration can be
-approximated by a simple Gaussian distribution. \acrshortpl{rtt} for the ``No \acrshort{mac}'' and
+approximated by a Gaussian distribution. \acrshortpl{rtt} for the ``No \acrshort{mac}'' and
 ``\acrshort{poly}'' configurations instead follow bimodal Gaussian distributions, with one of the
 modes dominating over the other. For these two configurations, we use mean and standard deviation of
 the strongest mode.
@@ -643,11 +643,11 @@ delays incurred by the \acrshort{doa} servers itself --- the delays of the serve
 and not the delays of the authentication software running on the server --- we observe that an
 authenticated classical control channel introduces a negligible amount of extra classical overhead.
 
-However, we have also seen that transmission delays themselves have a noticeable effect on the
+However, we have also seen that even just transmission delays have a noticeable effect on the
 performance of a quantum link, whether or not \acrlong{doa} is applied --- entanglement generation
-throughput drops when classical communication delays are larger. Nevertheless, we see in our
-simulations that even when entanglement must be stored in quantum memories with limited lifetimes,
-the quantum link remains operational.
+throughput drops when classical communication delays are larger. Nevertheless, we have observed in
+our simulations that even when the entangled qubits must be stored in quantum memories with limited
+lifetimes, the quantum link remains operational.
 
 \begin{xstretch}
 \printbibliography[heading=subbibintoc,title={References},notcategory=noprint]
