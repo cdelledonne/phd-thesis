@@ -25,15 +25,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.68118421"
-     inkscape:cx="630.51961"
-     inkscape:cy="462.42998"
+     inkscape:zoom="4.1769799"
+     inkscape:cx="218.21987"
+     inkscape:cy="815.18228"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer7"
      showguides="true"><sodipodi:guide
        position="170,243"
        orientation="-1,0"
@@ -340,15 +340,15 @@
        inkscape:label="Bleed info"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13541">Bleed margin: 2mm
+         id="tspan769">Bleed margin: 2mm
 </tspan><tspan
          x="42.792969"
          y="107.76562"
-         id="tspan13543">Extend image beyond document
+         id="tspan771">Extend image beyond document
 </tspan><tspan
          x="42.792969"
          y="127.76562"
-         id="tspan13545">and up to the bleed margin</tspan></text><path
+         id="tspan773">and up to the bleed margin</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
        d="m -34.539575,-9.1329992 c 28.3267272,0 28.9745658,0 28.9745658,0"
        id="path640"
@@ -364,7 +364,7 @@
        inkscape:label="Document height text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13547">Document height: 240mm</tspan></text><path
+         id="tspan775">Document height: 240mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 169.75,-17.999996 c -165.7101709,0 -169.50000012,0 -169.50000012,0"
        id="path3486"
@@ -376,7 +376,7 @@
        inkscape:label="Back side width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13549">Back side width: 170mm</tspan></text><path
+         id="tspan777">Back side width: 170mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 349.75,-17.999996 c -165.71017,0 -169.5,0 -169.5,0"
        id="path3567"
@@ -388,7 +388,7 @@
        inkscape:label="Front side width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13551">Front side width: 170mm</tspan></text><path
+         id="tspan779">Front side width: 170mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 179.75006,-17.999996 c -9.28765,0 -9.50006,0 -9.50006,0"
        id="path3595"
@@ -400,7 +400,7 @@
        inkscape:label="Spine width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13553">Spine width: 10mm</tspan></text><path
+         id="tspan781">Spine width: 10mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 414.75002,-17.999996 c -58.16966,0 -59.50002,0 -59.50002,0"
        id="path3686"
@@ -416,7 +416,7 @@
        inkscape:label="Margin width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13555">Margin: 5mm</tspan></text><text
+         id="tspan783">Margin: 5mm</tspan></text><text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,352.93065,-43.254394)"
        id="text3785"
@@ -424,7 +424,7 @@
        inkscape:label="Bookmark width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13557">Bookmark width: 60mm</tspan></text><path
+         id="tspan785">Bookmark width: 60mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500002;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 414.75001,248.00001 c -405.2322551,0 -414.50000899,0 -414.50000899,0"
        id="path3886"
@@ -436,7 +436,7 @@
        inkscape:label="Document width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13559">Document width: 415mm</tspan></text><path
+         id="tspan787">Document width: 415mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500002;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 416.74999,262.99999 c -409.1428002,0 -418.499989,0 -418.499989,0"
        id="path3992"
@@ -448,7 +448,7 @@
        inkscape:label="Total image width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13561">Total image width (including bleed): 419mm</tspan></text><path
+         id="tspan789">Total image width (including bleed): 419mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m -23.000001,-1.7499995 c 0,238.0555995 0,243.4999895 0,243.4999895"
        id="path4174"
@@ -460,7 +460,7 @@
        inkscape:label="Total image height text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13563">Total image height (including bleed): 244mm</tspan></text><path
+         id="tspan791">Total image height (including bleed): 244mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 169.75006,-7.9999919 c -6.35472,0 -6.50006,0 -6.50006,0"
        id="path4350"
@@ -472,7 +472,7 @@
        inkscape:label="Back crease width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13565">Crease: 7mm</tspan></text><path
+         id="tspan793">Crease: 7mm</tspan></text><path
        style="fill:#e42020;stroke:#e42020;stroke-width:0.500001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:18.9;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3075);marker-end:url(#Stop)"
        d="m 186.75006,-7.9999919 c -6.35472,0 -6.50006,0 -6.50006,0"
        id="path4378"
@@ -484,7 +484,7 @@
        inkscape:label="Front crease width text"><tspan
          x="42.792969"
          y="87.765625"
-         id="tspan13567">Crease: 7mm</tspan></text></g><g
+         id="tspan795">Crease: 7mm</tspan></text></g><g
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Page padding markers"
@@ -813,7 +813,7 @@
          x="-219.14178"
          y="19.734711"
          id="tspan1420"
-         rotate="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0">ISBN XXX-XX-XXXX-XXX-X</tspan></text></g><g
+         rotate="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0">ISBN 978-94-6384-457-4</tspan></text></g><g
      inkscape:groupmode="layer"
      id="layer6"
      inkscape:label="Front"><rect
