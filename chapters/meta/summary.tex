@@ -2,4 +2,31 @@
 \addcontentsline{toc}{chapter}{Summary}
 \setheader{Summary}
 
-Your summary.
+Computer networks have been one of the most revolutionary concepts and technologies of the last
+fifty years. Currently, it is arguably impossible to imagine a world without the internet. And yet,
+just five decades ago, hardly anybody knew what it even meant. Today, the first quantum computer
+networks are starting to take shape, along with the promise of a future quantum internet. Quantum
+networking exploits fundamental primitives of quantum mechanics --- most importantly
+\emph{entanglement} --- to offer a new paradigm of connectivity, which will enhance communication
+networks and bring some new exciting applications into the scene.
+
+Quantum networking has been studied for a few years already. Nevertheless, the current state of the
+art of quantum networks is somewhat comparable to that of the classical internet at the end of the
+1960s: lots of interesting ideas, some experimental demonstrations, and very few reliable testbeds.
+Scaling up to larger networks of quantum computers requires joint efforts of physics, mathematics,
+electronics and computer science, at the very least. Bringing these disciplines together is a very
+bumpy road, given that we do not yet have standard quantum physical platforms to work with, nor
+universal frameworks and testbeds to validate our hypotheses against. One of the missing links
+between the highly-complex physical platforms and networks and the high-level descriptions of
+quantum networking applications is a framework that bridges that gap between these two, providing
+platform-independent abstractions of the underlying physics to programmers and users of a quantum
+network.
+
+The goal of this thesis is threefold: discuss the requirements for such a framework of abstractions
+--- which we refer to as an \acrlong{os} --- for quantum networks, propose a design for such an
+\acrlong{os}, and implement and validate this design on a physical quantum network. Whilst we are
+interested in measuring the performance of the \acrlong{os}, we consider our design to be
+best-effort, and thus we are primarily aiming at establishing a baseline for future research in this
+field. Nevertheless, we are after a fully-functional product that we hope can be used to push the
+boundaries of quantum networking demonstrations, and to better understand the challenges of
+designing and implementing efficient \acrlongpl{os} for quantum network nodes.
