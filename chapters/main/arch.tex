@@ -327,7 +327,7 @@ blocks only, and thus we only discuss \acrshort{qnodeos} processes from this poi
 this does not exclude that, in a future iteration of the design, host and \acrshort{qnodeos} could
 be merged into one system, and therefore classical and quantum blocks would be scheduled jointly.
 
-\paragraph{QNodeOS user processes}
+\paragraph{User processes}
 
 \acrshort{qnodeos} allocates a new \emph{user process} to each quantum network application
 registered by the host. A user process becomes active (ready to be scheduled) as soon as
@@ -338,7 +338,7 @@ version of \acrshort{qnodeos}). A running user process executes its quantum code
 except for entanglement requests, which are instead submitted to the quantum network stack and
 executed asynchronously.
 
-\paragraph{QNodeOS network process}
+\paragraph{Network process}
 
 \acrshort{qnodeos} also defines \emph{kernel processes}, which are similar to user processes, but
 are created by default (on boot) and have different priority values. Currently, the only existing
@@ -354,7 +354,7 @@ design, the network process follows a \emph{time-division multiple access schedu
 centralized network controller (as originally proposed by \textcite{skrzypczyk_2021_arch}) and
 installed on each \acrshort{qnodeos} node.
 
-\paragraph{QNodeOS process states}
+\paragraph{Process states}
 
 A \acrshort{qnodeos} process can be in any of the following states:
 %
@@ -415,21 +415,30 @@ network process, the qubit is handed over to the waiting user process. When all 
 that the user process was waiting for are delivered, the user process becomes ready and can start
 running again.
 
+\paragraph{\Acrlong{pcb}}
+
+Each process has a \emph{\acrlong{pcb}} (\acrshort{pcb}) assigned to it. The \acrshort{pcb} stores
+metadata including process ID, process priority, process state and process data. Additionally, the
+\acrshort{pcb} of a process maintains a flag that is set when the process tries to issue a quantum
+instruction that needs the communication qubit and such a qubit is not available. This flag is
+checked by the scheduler when a process needs to be selected for execution, to avoid scheduling
+processes that need a resource that is not available.
+
 \subsection{Process Scheduling}
 
 As previously mentioned, we focus our attention on the quantum blocks of an application, and thus we
 only discuss the scheduling of \acrshort{qnodeos} processes. At present, the \acrshort{qnodeos}
 scheduler does not give any guarantees on when a process is scheduled --- for that, one would need
 to define concrete real-time constraints to feed to the scheduler. Instead, the current version of
-\acrshort{qnodeos} implements a best-effort scheduler, which selects processes on the basis of their
-priority, and does not allow preemption. The scheduling algorithm is represented in the flowchart in
-\cref{fig:scheduler}.
+\acrshort{qnodeos} implements a scheduler that offers a \emph{best-effort} service, where processes
+are selected on the basis of their priority, and preemption is not allowed. The scheduling algorithm
+is represented in the flowchart in \cref{fig:scheduler}.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{figures/scheduler.pdf}
     \caption[]{
-        Schematic representation of the scheduling algorithm employed by \acrshort{qnodeos}. The
+        Flowchart representation of the scheduling algorithm employed by \acrshort{qnodeos}. The
         scheduler is activated when a process $P$ transitions to a new state $S$. If $S$ is
         \emph{idle} or \emph{waiting}, the process has (temporarily) terminated its execution, and
         thus relinquished the processor, in which case the scheduler can proceed. If $S$ is
@@ -459,13 +468,41 @@ schedule activates it~\cite{skrzypczyk_2021_arch}. Prioritizing entanglement gen
 operations is key for a node to be able to fulfill its networking duty, and to avoid peer nodes to
 waste their resources.
 
+\paragraph{Ready queue}
+
+The main data structure supporting the functioning of the scheduler is a \emph{ready queue}. This is
+essentially an ordered list of processes ready to be selected for execution. When a process becomes
+ready, it is inserted into the appropriate location in the queue, according to the properties
+specified in its \acrshort{pcb}. The ready queue is sorted by process priority. Processes of the
+same priority are stored first-in first-out.
+
+\paragraph{Shared resources}
+
+The most important resources to be shared among processes are qubits --- in particular, the
+\emph{communication qubit}. In the current design, there is only one ready queue. The scheduler
+selects the queue's head for execution, unless that process needs the communication qubit and this
+is not available --- in which case, the queue is searched either for the communication qubit's owner
+process, or for a process that does not need the communication qubit. An alternative design could
+have two ready queues, where one is dedicated to processes that do not need the communication qubit.
+In this case, when the communication qubit is available, the scheduler would need to look up both
+queues, and select the appropriate process according to priority and time of arrival. In either
+case, the scarce availability of the shared resource (the communication qubit) might result in the
+high-priority network process to become blocked until a lower-priority user process relinquishes the
+resource, if such a process owns the resource itself. In a more sophisticated design, one should
+make sure that low-priority processes always relinquish the shared resource within a finite amount
+of time.
+
 \paragraph{No preemption}
 
 To avoid context switching overhead, potentially leading to degraded fidelity, the
 \acrshort{qnodeos} scheduler is \emph{cooperative}. That is, once a process is scheduled, it gets to
 run until it either completes all of its instructions or it blocks waiting for entanglement.
-Allowing process preemption would need a definition of critical section and could potentially impact
-the quality of the affected qubit states.
+Processes of the same priority are selected first-in first-out, and they are not executed in a
+round-robin manner --- again, that would require preemption. Allowing process preemption would need
+a definition of critical section and could potentially impact the quality of the affected qubit
+states. However, no preemption means that the execution of the high-priority network process might
+get delayed by a long-running user process. Again, a future version of \acrshort{qnodeos} could
+time-cap the execution of user processes when these are blocking the network process.
 
 \subsection{QNodeOS Architecture}
 
