@@ -125,8 +125,8 @@ networking applications. \citeauthor{kozlowski_2019_towards} mention that the se
 communications is of concern when designing a quantum network~\cite{kozlowski_2019_towards}.
 \citeauthor{satoh_2020_attacking} present a general motivation for authenticating the control
 channel of a quantum link~\cite{satoh_2020_attacking}. They model attack vectors on quantum
-communications through the lens of \acrfull{cia}. Without any security measures in place, an
-attacker may:
+communications through the lens of confidentiality, integrity, and availability. Without any
+security measures in place, an attacker may:
 
 \begin{itemize}
     \item Disrupt the network in any number of ways, affecting its \emph{availability}.
@@ -249,11 +249,12 @@ entanglement swap outcome, and thus apply the wrong corrections to their qubits.
     \includegraphics[width=0.6\linewidth]{figures/doa-examples.pdf}
     \caption{
         A summary of example effects of tampering with control messages at each layer of the quantum
-        network stack through the lens of \acrfull{cia}. We take as examples concrete
-        implementations of quantum network protocols --- including \acrshort{qnp}, \acrshort{qegp} and
-        \acrshort{mhp}~\cite{kozlowski_2020_qnp, dahlberg_2019_egp} --- to highlight the
-        potential vulnerabilities at each layer of the stack. In this work, we do not focus on
-        confidentiality issues, as identified by \textcite{satoh_2020_attacking}.
+        network stack through the lens of confidentiality, integrity, and availability (CIA). We
+        take as examples concrete implementations of quantum network protocols --- including
+        \acrshort{qnp}, \acrshort{qegp} and \acrshort{mhp}~\cite{kozlowski_2020_qnp,
+        dahlberg_2019_egp} --- to highlight the potential vulnerabilities at each layer of the
+        stack. In this work, we do not focus on confidentiality issues, as identified by
+        \textcite{satoh_2020_attacking}.
     }
     \label{fig:doa-examples}
 \end{figure}
@@ -629,10 +630,10 @@ To summarize, our experiments and simulations demonstrate that
 \section{Discussion}
 
 We have shown how the classical data plane of a quantum network stack presents a significant attack
-surface for \acrlong{cia} of the quantum link and data therein. To address these concerns one must
-employ, among other things, \acrlong{doa} on the classical control messages exchanged at the quantum
-network stack level. We conclude that \acrlong{doa} is necessary to both uphold the integrity of
-quantum data and the availability of the quantum network itself.
+surface for confidentiality, integrity, and availability of the quantum link and data therein. To
+address these concerns one must employ, among other things, \acrlong{doa} on the classical control
+messages exchanged at the quantum network stack level. We conclude that \acrlong{doa} is necessary
+to both uphold the integrity of quantum data and the availability of the quantum network itself.
 
 We have also simulated the performance of a hypothetical quantum link under the assumption that
 control messages are authenticated by conventional \acrshort{doa} techniques. Here, we modeled
