@@ -22,21 +22,20 @@ Contributions: as indicated in \cref{chp:background}.
 
 \newpage
 
-\lettrine{A}{n} \acrfull{os} is usually the cornerstone of a system's control software: it manages
-and marshals access to physical resources, abstracts low-level hardware functionalities into
-user-friendly services, and provides an interface to users to program and run applications on the
-system. Our goal here is to apply basic principles from classical \acrshort{os} design literature to
-our novel use case of programmable and scalable quantum networking nodes, and to (hopefully) create
-a framework where the challenges outlined in \cref{chp:background} can be studied and addressed. We
-thus investigate the general requirements that such a system should satisfy, illustrated with the
-example of a quantum processor based on \acrfull{nv} centers in diamond. This provides a guideline
-for future systems of this form. We also propose the \emph{first proof-of-principle architecture for
-an \acrlong{os} for quantum network nodes}, which we call \acrshort{qnodeos}. Our system's
-capabilities include quantum memory management, scheduling different types of quantum operations on
-the device, as well as an interface to different drivers addressing several possible quantum
-hardware architectures. On the quantum networking front, \acrshort{qnodeos} adopts the quantum
-network stack and protocols proposed by \textcite{dahlberg_2019_egp} and by
-\textcite{kozlowski_2020_qnp}.
+\lettrine{A}{n} \acrfull{os} is the cornerstone of a system's control software: it marshals access
+to physical resources, abstracts low-level hardware functionalities into user-friendly services, and
+provides an interface to users to program and run applications on the system. Our goal here is to
+apply basic principles from classical \acrshort{os} design literature to our novel use case of
+programmable and scalable quantum networking nodes, and to (hopefully) create a framework where the
+challenges outlined in \cref{chp:background} can be studied and addressed. We thus investigate the
+general requirements that such a system should satisfy, illustrated with the example of a quantum
+processor based on \acrfull{nv} centers in diamond. This provides a guideline for future systems of
+this form. We also propose the \emph{first proof-of-principle architecture for an \acrlong{os} for
+quantum network nodes}, which we call \acrshort{qnodeos}. Our system's capabilities include quantum
+memory management, scheduling different types of quantum operations on the device, as well as an
+interface to different drivers addressing several possible quantum hardware architectures. On the
+quantum networking front, \acrshort{qnodeos} adopts the quantum network stack and protocols proposed
+by \textcite{dahlberg_2019_egp} and by \textcite{kozlowski_2020_qnp}.
 
 \section{General Design Considerations}
 \label{sec:arch:considerations}
@@ -69,22 +68,20 @@ quantum system such as the availability of qubits). Similarly, quantum blocks ma
 variables set by the classical blocks, such as messages received from remote network nodes. Finally,
 quantum blocks may themselves depend on other quantum blocks via qubits in the quantum memory.
 
-Whilst the \acrshort{os} should be capable of understanding dependencies and should provide
-mechanism to specify them, a non-goal of the \acrshort{os} is to identify what is a classical block
-and what is a quantum block --- decomposing a program is not necessarily a trivial task, and might
-result in unnecessary latency at the \acrshort{os} level. Similarly, we assume that it is not the
-\acrshort{os}'s responsibility to determine (potentially fine-grained) deadlines or priorities in
-the execution, given that computing precise deadlines (e.g. when too much time has elapsed for the
-qubits to be useful) is in general a computationally expensive procedure, sometimes estimated in
-practice by a repeated simulation of the execution. Instead, program decomposition and deadline
-estimation would be the compiler's job, which can leverage application-level information and
-knowledge of the capabilities of the quantum hardware system (e.g. memory lifetimes) to perform
-these tasks. At the compiler level, latency is much less an issue, meaning that computing block
-boundaries and deadlines can be carried out without stringent timing constraints. We remark that ---
+Whilst the \acrshort{os} should understand dependencies and provide mechanisms to specify them, a
+non-goal of the \acrshort{os} is to identify what is a classical block and what is a quantum block
+--- decomposing a program is not necessarily a trivial task, and might result in unwarranted latency
+at the \acrshort{os} level. Similarly, we assume that it is not the \acrshort{os}'s responsibility
+to determine deadlines or priorities in the execution, given that setting deadlines (e.g. when too
+much time has elapsed for the qubits to be useful) is in general a computationally expensive
+procedure, sometimes estimated by a repeated simulation of the execution. Instead, program
+decomposition and deadline estimation would be the compiler's job, which can leverage
+application-level information and knowledge of the quantum hardware (e.g. memory lifetimes) to carry
+out these tasks. At the compiler level, latency is much less an issue, and thus computing block
+boundaries and deadlines can be performed without stringent time constraints. We remark that ---
 especially in the near term --- some of these tasks might require the programmer's intervention, at
-least until compilers for quantum networking applications become more sophisticated. Nevertheless,
-drawing the line between compiler's and programmer's responsibilities lies outside the scope of this
-work.
+least until compilers for quantum networking applications become more sophisticated. Drawing the
+line between compiler's and programmer's responsibilities is outside the scope of this work.
 
 \section{Key OS Components}
 \label{sec:arch:components}
@@ -98,21 +95,20 @@ Executing quantum network applications demands a continuing interaction between 
 quantum parts of the execution, including keeping qubits alive in memory to take further actions
 depending on messages from remote network nodes. We thus require persistent memory management
 capabilities. This may be taken up by a \emph{\acrlong{qmmu}} (\acrshort{qmmu}). A \acrshort{qmmu}
-has knowledge of the physical qubits available on the underlying quantum hardware, and may keep any
-other information about said qubits, such as the qubit type (communication or storage qubit) and
-qubit lifetime. A \acrshort{qmmu} allows physical qubits to be assigned to different applications or
-to the \acrshort{os} itself, and may allow a transfer of ownership of the qubits from one owner to
-another. A \acrshort{qmmu} may also provide abstractions familiar to classical computing such as a
-virtual address space, where the applications refer to virtual qubit addresses that are then
-translated to physical qubit addresses. This avoids the situation in which physical qubit addresses
-must be bound at compile time, particularly limiting when allowing multiple applications to
-concurrently run on the same node. Advanced forms of a \acrshort{qmmu} may also cater to the
-limitations of near term quantum devices, by matching memory lifetime requirements specified by the
-application code to the capabilities of the underlying qubits, as well their topology (i.e. taking
-into account which two qubits allow two-qubit gates to be performed on them directly). While one
-cannot measure the decoherence of a qubit during a general program execution on the quantum level,
-the \acrshort{qmmu} could also take into account additional information from the classical control
-system to signal to the application that a qubit has become invalid.
+has knowledge of the physical qubits available on the underlying quantum hardware, and may store
+metadata such as qubit type (communication or storage qubit) and qubit lifetime. A \acrshort{qmmu}
+allows physical qubits to be assigned to different applications or to the \acrshort{os} itself, and
+may allow a transfer of ownership of the qubits from one owner to another. A \acrshort{qmmu} may
+also provide abstractions familiar to classical computing such as a virtual address space, where the
+applications refer to virtual qubit addresses that are then translated to physical qubit addresses.
+This avoids the situation in which physical qubit addresses must be bound at compile time,
+particularly limiting when allowing multiple applications to concurrently run on the same node.
+Advanced forms of a \acrshort{qmmu} may also cater to the limitations of near term quantum devices,
+by matching memory lifetime requirements specified by the application code to the capabilities of
+the underlying qubits, as well their topology. While one cannot measure the decoherence of a qubit
+during a general program execution on the quantum level, the \acrshort{qmmu} could also take into
+account additional information from the classical control system to signal to the application that a
+qubit has become invalid.
 
 \subsection{Quantum Network Stack}
 
@@ -170,7 +166,7 @@ a direct impact on the quantum performance, resulting in general in trade-offs b
 quantum performance metrics when assessing any scheduler.
 
 Practically, the scheduler in question should allocate the underlying physical resources --- most
-importantly, the qubits --- based on a set of well-defined constraints, the fundamental ones being:
+importantly, the qubits --- based on a set of well-defined constraints:
 
 \begin{enumerate}
     \item \emph{Synchronized network schedule}: due to the bilateral nature of entanglement, each
@@ -227,7 +223,7 @@ time.
 
 Scheduling can also (additionally) be performed on the level of quantum blocks of code. This can in
 principle also take the form of a (soft) real-time scheduler that schedules blocks of the currently
-running application, or schedule blocks of several applications (potentially independently of any
+running application, or schedules blocks of several applications (potentially independently of any
 application level scheduling) depending on the availability of resources on the quantum hardware
 system. This form of scheduling may be appealing for efficiency reasons, depending on where what
 parts of the \acrshort{os} are executed, where some parts are closer to the underlying hardware
@@ -237,11 +233,11 @@ system than others (see e.g. \cref{sec:arch:design}).
 
 Finally, scheduling can be performed at two levels of operations: First, one can consider the
 problem of scheduling local versus networked instructions, where one simple way of realizing a
-schedule that respects the constraints inherent in such a schedule is presented in
+schedule that respects the constraints inherent to such a schedule is presented in
 \cref{sec:arch:design}. Second, one can consider scheduling any form of operation on the underlying
 quantum processor. While our current realization of \acrshort{qnodeos} achieves this by populating
 an instruction queue in software, we envision that this form of scheduling would later be moved from
-\acrshort{qnodeos} to a hardware module in a microarchitecture for quantum networking nodes, as for
+\acrshort{qnodeos} to a hardware module in a microarchitecture for quantum network nodes, as for
 instance in the work by \textcite{fu_2017_microarch}.
 
 \section{QNodeOS Design}
@@ -271,8 +267,26 @@ the quantum code blocks is similar to other QASM languages~\cite{cross_2017_qasm
 khammassi_2018_cqasm, fu_2019_eqasm}, but it is extended to include instructions for quantum
 networking. NetQASM is not a strict requirement of \acrshort{qnodeos} --- one can implement it to
 support other low-level languages as well --- but it does impose certain conventions (described in
-Ref.~\cite{dahlberg_2022_netqasm}) on a particular implementation of the system, which however do
-not impose noteworthy design constraints.
+Ref.~\cite{dahlberg_2022_netqasm}) on a particular implementation of the system.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/quantum-node.pdf}
+    \caption{
+        Full-stack architecture of a quantum network node. User applications start in the host
+        environment, which runs classical code blocks and offloads quantum code blocks to the
+        \acrshort{qnpu}. \acrshort{qnodeos}, lying at the top of the \acrshort{qnpu}, processes
+        quantum code blocks and invokes the quantum device (\acrshort{qdevice}) to run the actual
+        quantum instructions. \acrshort{qnodeos} consists of an end-node \acrshort{api} handler, a
+        quantum network stack (Q. net. stack), a process manager (Proc. manager), a quantum memory
+        management unit (\acrshort{qmmu}), a scheduler, a processor, and a \acrshort{qdevice} driver
+        to communicate with the \acrshort{qdevice} itself. The host shares a classical communication
+        channel with other end nodes' hosts for application data. \acrshort{qnodeos} shares a
+        classical channel with its neighbors. The \acrshort{qdevice} shares a classical channel for
+        coordination and a quantum channel for entanglement with its neighbors.
+    }
+    \label{fig:quantum-node}
+\end{figure}
 
 In principle, classical and quantum code blocks can be run on a single system, provided that this
 has a connection to the quantum device to execute the actual quantum instructions. However, in the
@@ -293,25 +307,6 @@ architecture could merge host and \acrshort{qnodeos} into the same system, poten
 performance optimizations, at the cost of a higher system complexity. We also note that the host,
 \acrshort{qnodeos} and the classical control modules of the \acrshort{qdevice} can be deployed on
 distinct physical devices, or combined in some way.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.6\linewidth]{figures/quantum-node.pdf}
-    \caption{
-        Full-stack architecture of a quantum network node. User applications start in the host
-        environment, which runs classical code blocks and offloads quantum code blocks to the
-        \acrshort{qnpu}. \acrshort{qnodeos}, lying at the top of the \acrshort{qnpu}, processes
-        quantum code blocks and invokes the quantum device (\acrshort{qdevice}) to run the actual
-        quantum instructions. \acrshort{qnodeos} consists of an end-node \acrshort{api} handler, a
-        quantum network stack (Q. net. stack), a process manager (Proc. manager), a quantum memory
-        management unit (\acrshort{qmmu}), a scheduler, a processor, and a \acrshort{qdevice} driver
-        to communicate with the \acrshort{qdevice} itself. The host shares a classical communication
-        channel with other end nodes' hosts for application data. \acrshort{qnodeos} shares a
-        classical channel with its neighbors. The \acrshort{qdevice} shares a classical channel for
-        coordination and a quantum channel for entanglement with its neighbors.
-    }
-    \label{fig:quantum-node}
-\end{figure}
 
 \subsection{Processes}
 
@@ -338,9 +333,10 @@ be merged into one system, and therefore classical and quantum blocks would be s
 registered by the host. A user process becomes active (ready to be scheduled) as soon as
 \acrshort{qnodeos} receives a quantum code block from the host. Multiple user processes --- relative
 to different host applications --- can be concurrently active on \acrshort{qnodeos}, but only one
-can be running at any time. A running user process executes its quantum code block directly, except
-for entanglement requests, which are instead submitted to the quantum network stack and executed
-asynchronously.
+can be running at any time (multi-core support is in principle possible, but not included in this
+version of \acrshort{qnodeos}). A running user process executes its quantum code block directly,
+except for entanglement requests, which are instead submitted to the quantum network stack and
+executed asynchronously.
 
 \paragraph{QNodeOS network process}
 
@@ -371,6 +367,23 @@ A \acrshort{qnodeos} process can be in any of the following states:
 User processes enter the waiting state when they need one or more entangled pairs to proceed, and
 become ready again once all the requested pairs are delivered by the network process.
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/process-flow.pdf}
+    \caption{
+        Flow of execution between a user process requesting entanglement and the network process
+        responsible for generating entanglement. The user process starts by issuing an asynchronous
+        entanglement request. Once issued, it is free to continue with other local operations or
+        classical processing. Once it reaches a point in its execution where entanglement is
+        required the process enters the waiting state. The network process is then scheduled once
+        the appropriate time bin starts, as determined by the network schedule. Once it is running,
+        the network process attempts entanglement generation until entanglement success (or until a
+        set timeout). The entangled qubit is then transferred to the user process. This unblocks the
+        process which consumes the entanglement and releases the qubit.
+    }
+    \label{fig:process-flow}
+\end{figure}
+
 \paragraph{Inter-process communication}
 
 At the moment, \acrshort{qnodeos} does not allow for any explicit inter-process communication. The
@@ -389,23 +402,6 @@ quantum instructions. This is rather important in a quantum network, since entan
 must be synchronized with the neighboring node (and possibly the rest of the
 network~\cite{skrzypczyk_2021_arch}). Additionally, separating user applications into user processes
 also allows \acrshort{qnodeos} to schedule several applications \emph{concurrently}.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.6\linewidth]{figures/process-flow.pdf}
-    \caption{
-        Flow of execution between a user process requesting entanglement and the network process
-        responsible for generating entanglement. The user process starts by issuing an asynchronous
-        entanglement request. Once issued, it is free to continue with other local operations or
-        classical processing. Once it reaches a point in its execution where entanglement is
-        required the process enters the waiting state. The network process is then scheduled once
-        the appropriate time bin starts, as determined by the network schedule. Once it is running,
-        the network process attempts entanglement generation until entanglement success (or until a
-        set timeout). The entangled qubit is then transferred to the user process. This unblocks the
-        process which consumes the entanglement and releases the qubit.
-    }
-    \label{fig:process-flow}
-\end{figure}
 
 \paragraph{Process flow}
 
