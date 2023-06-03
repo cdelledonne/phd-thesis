@@ -155,6 +155,9 @@
 % to be used to avoid overflow in list of references.
 \newenvironment{xstretch}{\par\emergencystretch=1em}{\par}
 
+% Turn off crop marks even in print builds, as the printing company does not need them.
+\renewcommand*\cropmarks{}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
