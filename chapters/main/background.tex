@@ -214,7 +214,7 @@ from which we can draw some inspiration for their solutions. These challenges in
     \item limited qubit lifetimes, which imposes strict deadlines on how fast the data must be
           processed before it becomes useless;
     \item noisy operations, which implies that applying operations on qubits degrades the quality of
-          the qubit states themselves;
+          the qubit states themselves.
 \end{enumerate}
 
 Nevertheless, quantum networking comes with an additional set of fundamental challenges related to
@@ -247,12 +247,12 @@ processing unit and as the network device, and consequently local quantum operat
 measurements and gates) and network operations cannot be performed
 simultaneously~\cite{vardoyan_2019_performance}. This limitation, however, could be mitigated by a
 new quantum hardware architecture separating the devices~\cite{vardoyan_2022_netarch}. Finally, the
-last challenge is a fundamental issue, as it applies to quantum network applications regardless of
-technological progress. These last two challenges are both arising from the need for information
-from a remote node at a certain level and with a certain degree of precision. However, the fourth
-challenge describes a distributed scheduling problem, whereas the fifth encapsulates two local
-requirements --- \acrshort{os}-level locking mechanisms and ``good'' quantum memories. It is the
-last two challenges that fundamentally differentiate a quantum networking node from a quantum
+fifth and last challenge is a fundamental issue, as it applies to quantum network applications
+regardless of technological progress. Challenges four and five are both arising from the need for
+information from a remote node at a certain level and with a certain degree of precision. However,
+the fourth challenge describes a distributed scheduling problem, whereas the fifth encapsulates two
+local requirements --- \acrshort{os}-level locking mechanisms and ``good'' quantum memories. It is
+the last two challenges that fundamentally differentiate a quantum networking node from a quantum
 computing system, and are the key driver for a \emph{networked} quantum node operating system.
 
 \section{Related Work}
