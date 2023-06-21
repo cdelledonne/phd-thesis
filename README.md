@@ -2,7 +2,8 @@
 
 Dissertation, propositions, and cover image of Carlo Delle Donne's PhD thesis.
 The LaTeX template was taken from
-https://github.com/Inventitech/phd-thesis-template.
+https://github.com/Inventitech/phd-thesis-template. The final result can be
+found at https://doi.org/10.4233/uuid:11fac685-6a2d-46eb-b15e-6d05fdcd9f1b.
 
 ## Dissertation
 
