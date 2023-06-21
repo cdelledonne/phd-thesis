@@ -54,3 +54,7 @@ cat cover.svg |
     sed '0,/width.*/s//width="60mm"/' |
     inkscape --pipe --export-filename=bookmark.pdf
 ```
+
+## License
+
+Cover image: 無音の暴君 (*Silent tyrant*), Copyright of Mari Nakagawa
